@@ -1,0 +1,19 @@
+<section class="page-container wishlist-page" aria-labelledby="wishlist-heading">
+  <h1 id="wishlist-heading">المفضلة</h1>
+
+  @if (wishlist.items().length === 0) {
+    <app-empty-state
+      title="قائمة المفضلة فارغة"
+      actionLabel="تسوق الآن"
+      (action)="goShop()"
+    />
+  } @else {
+    <ul class="wishlist-grid">
+      @for (item of wishlist.items(); track item.id) {
+        <li>
+          <app-product-card [product]="item" />
+        </li>
+      }
+    </ul>
+  }
+</section>

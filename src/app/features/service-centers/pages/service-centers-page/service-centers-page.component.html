@@ -1,0 +1,91 @@
+<section class="centers-page page-container">
+  <header class="centers-hero" aria-labelledby="centers-heading">
+    <app-page-breadcrumb [items]="breadcrumb" />
+    <span class="centers-hero__icon" aria-hidden="true">
+      <app-icon name="wrench" />
+    </span>
+    <h1 id="centers-heading">مراكز الصيانة</h1>
+    <p>ابحث حسب المحافظة ونوع الجهاز. نعرض المراكز المعتمدة فقط عند توفر بياناتها.</p>
+  </header>
+
+  <div class="centers-layout">
+    <section class="centers-results" aria-labelledby="centers-results-heading">
+      <h2 id="centers-results-heading" class="visually-hidden">نتائج البحث</h2>
+
+      <form class="centers-toolbar" role="search" (submit)="$event.preventDefault()">
+        <label class="centers-toolbar__search">
+          <span class="visually-hidden">ابحث عن مركز صيانة</span>
+          <app-icon name="search" />
+          <input
+            type="search"
+            name="q"
+            placeholder="ابحث باسم المركز..."
+            [value]="searchText()"
+            (input)="onSearchInput($event)"
+          />
+        </label>
+
+        <label>
+          <span class="visually-hidden">المحافظة</span>
+          <select [value]="store.query().governorate" (change)="onGovernorate($event)">
+            <option value="">كل المحافظات</option>
+            @for (item of governorates; track item.slug) {
+              <option [value]="item.slug">{{ item.label }}</option>
+            }
+          </select>
+        </label>
+
+        <label>
+          <span class="visually-hidden">نوع الجهاز</span>
+          <select [value]="store.query().category" (change)="onCategory($event)">
+            <option value="">كل الأجهزة</option>
+            @for (category of categories; track category.slug) {
+              <option [value]="category.slug">{{ category.label }}</option>
+            }
+          </select>
+        </label>
+      </form>
+
+      @if (store.loading()) {
+        <app-loading-spinner label="جاري البحث عن مراكز الصيانة" />
+      } @else if (store.error()) {
+        <app-error-state [message]="errorMessage" (retry)="retry()" />
+      } @else if (store.empty()) {
+        <app-empty-state
+          title="لا توجد مراكز صيانة معتمدة مطابقة"
+          description="القائمة تُعرض عند توفر بيانات معتمدة. يمكنك طلب صيانة أو التواصل معنا للمتابعة."
+        />
+        <p class="centers-empty-actions">
+          <a class="btn-primary" routerLink="/contact" [queryParams]="{ type: 'maintenance' }">
+            اطلب صيانة
+          </a>
+          <a class="btn-secondary" routerLink="/contact">تواصل معنا</a>
+        </p>
+      } @else {
+        <ul class="centers-list">
+          @for (center of store.result().items; track center.id) {
+            <li>
+              <h3>{{ center.name }}</h3>
+              @if (center.address) {
+                <p>{{ center.address }}</p>
+              }
+            </li>
+          }
+        </ul>
+      }
+    </section>
+  </div>
+
+  <section class="centers-cta" aria-labelledby="centers-cta-heading">
+    <div class="centers-cta__copy">
+      <h2 id="centers-cta-heading">احجز طلب صيانة</h2>
+      <p>صف نوع الجهاز والعطل من نموذج التواصل، وسنتابع الطلب عند توفر الخدمة.</p>
+      <a class="btn-primary" routerLink="/contact" [queryParams]="{ type: 'maintenance' }">
+        اطلب صيانة
+      </a>
+    </div>
+    <div class="centers-cta__media">
+      <app-site-image [asset]="ctaImage" [fill]="true" objectFit="cover" sizes="(min-width: 768px) 36vw, 100vw" />
+    </div>
+  </section>
+</section>

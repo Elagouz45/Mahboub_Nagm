@@ -1,0 +1,230 @@
+.contact-page {
+  display: grid;
+  gap: var(--space-6);
+  padding-block: var(--space-5) var(--space-10);
+}
+
+.page-hero {
+  display: grid;
+  gap: var(--space-5);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.page-hero__copy {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  align-content: center;
+}
+
+.page-hero__copy h1,
+.page-hero__copy p {
+  margin: 0;
+  color: inherit;
+}
+
+.page-hero__kicker {
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.page-hero__media {
+  position: relative;
+  min-height: 12rem;
+}
+
+:host ::ng-deep .page-hero .page-breadcrumb,
+:host ::ng-deep .page-hero .page-breadcrumb a,
+:host ::ng-deep .page-hero .page-breadcrumb span {
+  color: rgb(255 255 255 / 0.82);
+}
+
+.purpose-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.purpose-card {
+  display: grid;
+  gap: var(--space-2);
+  place-items: center;
+  min-height: 5.5rem;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  font-weight: 700;
+  text-align: center;
+}
+
+.purpose-card.is-active,
+.purpose-card:hover,
+.purpose-card:focus-visible {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.contact-layout,
+.contact-form,
+.contact-aside,
+.contact-faq {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.contact-form,
+.contact-aside,
+.contact-faq li {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}
+
+.contact-form h2,
+.contact-aside h2,
+.contact-faq h2,
+.contact-form p {
+  margin: 0;
+}
+
+.contact-form label,
+.file-field {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  min-height: var(--touch-min);
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-background);
+}
+
+.contact-form small {
+  color: var(--color-error);
+}
+
+.char-count {
+  color: var(--color-text-secondary) !important;
+  justify-self: end;
+}
+
+.form-note,
+.contact-aside p {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.contact-form button[type='submit'] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--touch-min);
+  border-radius: var(--radius-md);
+  background: var(--color-accent);
+  color: var(--color-surface);
+  font-weight: 700;
+}
+
+.contact-form button[type='submit']:disabled {
+  opacity: 0.65;
+}
+
+.form-status {
+  min-height: 1.5rem;
+  color: var(--color-error);
+}
+
+.file-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.file-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.file-list button {
+  min-height: var(--touch-min);
+  color: var(--color-accent);
+}
+
+.contact-aside {
+  background: var(--color-primary);
+  color: var(--color-surface);
+  align-content: start;
+}
+
+.contact-aside a,
+.contact-aside h2 {
+  color: inherit;
+}
+
+.faq-head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.faq-head a {
+  color: var(--color-accent);
+  min-height: var(--touch-min);
+  display: inline-flex;
+  align-items: center;
+}
+
+.contact-faq ul {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-faq button {
+  width: 100%;
+  min-height: var(--touch-min);
+  text-align: start;
+  font-weight: 700;
+}
+
+@media (min-width: 768px) {
+  .page-hero,
+  .contact-layout {
+    grid-template-columns: minmax(0, 1.4fr) minmax(16rem, 0.8fr);
+  }
+
+  .purpose-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .page-hero__media {
+    min-height: 100%;
+  }
+}
+
+@media (max-width: 359px) {
+  .purpose-grid {
+    grid-template-columns: 1fr;
+  }
+}

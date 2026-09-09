@@ -1,0 +1,112 @@
+<app-auth-shell title="إنشاء حساب">
+  <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <p class="auth-form__lead">بيانات بسيطة لإنشاء حسابك ومتابعة طلباتك.</p>
+
+    @if (formError()) {
+      <p class="auth-form__error" role="alert">{{ formError() }}</p>
+    }
+
+    <div class="names">
+      <label>
+        <span>الاسم الأول</span>
+        <input type="text" formControlName="firstName" autocomplete="given-name" [attr.aria-invalid]="fieldInvalid('firstName')" />
+        @if (fieldInvalid('firstName')) {
+          <small>الاسم الأول مطلوب.</small>
+        }
+      </label>
+      <label>
+        <span>اسم العائلة</span>
+        <input type="text" formControlName="lastName" autocomplete="family-name" [attr.aria-invalid]="fieldInvalid('lastName')" />
+        @if (fieldInvalid('lastName')) {
+          <small>اسم العائلة مطلوب.</small>
+        }
+      </label>
+    </div>
+
+    <label>
+      <span>رقم الهاتف</span>
+      <input
+        type="tel"
+        formControlName="phone"
+        autocomplete="tel"
+        inputmode="tel"
+        placeholder="01012345678"
+        [attr.aria-invalid]="fieldInvalid('phone')"
+      />
+      @if (fieldInvalid('phone')) {
+        <small>
+          {{ form.controls.phone.hasError('duplicate') ? 'رقم الهاتف مسجّل بالفعل.' : 'أدخل رقمًا مصريًا صحيحًا مثل 01012345678.' }}
+        </small>
+      }
+    </label>
+
+    <label>
+      <span>البريد الإلكتروني</span>
+      <input
+        type="email"
+        formControlName="email"
+        autocomplete="email"
+        inputmode="email"
+        [attr.aria-invalid]="fieldInvalid('email')"
+      />
+      @if (fieldInvalid('email')) {
+        <small>
+          {{ form.controls.email.hasError('duplicate') ? 'هذا البريد الإلكتروني مسجّل بالفعل.' : 'أدخل بريدًا إلكترونيًا صحيحًا.' }}
+        </small>
+      }
+    </label>
+
+    <label>
+      <span>كلمة المرور</span>
+      <span class="password-field">
+        <input
+          [type]="showPassword() ? 'text' : 'password'"
+          formControlName="password"
+          autocomplete="new-password"
+          [attr.aria-invalid]="fieldInvalid('password')"
+        />
+        <button type="button" (click)="togglePassword()">
+          {{ showPassword() ? 'إخفاء' : 'إظهار' }}
+        </button>
+      </span>
+      @if (fieldInvalid('password')) {
+        <small>ثماني أحرف على الأقل، حرف واحد ورقم واحد.</small>
+      }
+    </label>
+
+    <label>
+      <span>تأكيد كلمة المرور</span>
+      <input
+        [type]="showPassword() ? 'text' : 'password'"
+        formControlName="confirmPassword"
+        autocomplete="new-password"
+        [attr.aria-invalid]="fieldInvalid('confirmPassword')"
+      />
+      @if (fieldInvalid('confirmPassword')) {
+        <small>كلمتا المرور غير متطابقتين.</small>
+      }
+    </label>
+
+    <label class="check-row">
+      <input type="checkbox" formControlName="terms" />
+      <span>
+        أوافق على
+        <a routerLink="/privacy-policy">سياسة الخصوصية</a>
+        و
+        <a routerLink="/return-policy">سياسة الاستبدال والاسترجاع</a>
+      </span>
+    </label>
+    @if (fieldInvalid('terms')) {
+      <small class="auth-form__error">يجب الموافقة على السياسات للمتابعة.</small>
+    }
+
+    <button type="submit" class="auth-form__submit" [disabled]="submitting()">
+      {{ submitting() ? 'جارٍ إنشاء الحساب...' : 'إنشاء الحساب' }}
+    </button>
+
+    <p class="auth-form__switch">
+      لديك حساب؟
+      <a routerLink="/auth/login">تسجيل الدخول</a>
+    </p>
+  </form>
+</app-auth-shell>

@@ -1,0 +1,42 @@
+:host {
+  display: block;
+  flex: none;
+}
+
+.brand-logo {
+  --brand-logo-size: 2.75rem;
+
+  position: relative;
+  display: block;
+  width: var(--brand-logo-size);
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #070b12;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.14);
+}
+
+.brand-logo--footer {
+  --brand-logo-size: 3.75rem;
+}
+
+.brand-logo--page {
+  --brand-logo-size: min(8.5rem, 42vw);
+  box-shadow: 0 8px 24px rgb(15 23 42 / 0.28);
+}
+
+@media (min-width: 768px) {
+  .brand-logo--header {
+    --brand-logo-size: 3.25rem;
+  }
+
+  .brand-logo--footer {
+    --brand-logo-size: 4.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .brand-logo--header {
+    --brand-logo-size: 3.5rem;
+  }
+}

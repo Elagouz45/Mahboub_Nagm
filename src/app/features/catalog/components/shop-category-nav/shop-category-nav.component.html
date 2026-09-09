@@ -1,0 +1,73 @@
+<section class="shop-category-nav">
+  <header class="shop-category-nav__header">
+    <h2>تسوق حسب القسم</h2>
+    <p>اختر القسم المناسب لعرض المنتجات</p>
+  </header>
+
+  <div class="shop-category-nav__viewport">
+    @if (canScroll()) {
+      <button
+        type="button"
+        class="shop-category-nav__scroll shop-category-nav__scroll--prev"
+        aria-label="تمرير الأقسام للسابق"
+        (click)="scrollStrip(-1)"
+      >
+        <app-icon name="chevron-prev" />
+      </button>
+    }
+
+    <nav class="shop-category-nav__scroller" aria-label="أقسام المتجر">
+      <ul #strip>
+        <li>
+          <button
+            type="button"
+            class="shop-category-nav__item shop-category-nav__item--all"
+            [class.is-selected]="!selected()"
+            [attr.aria-pressed]="!selected()"
+            (click)="select('')"
+          >
+            <span class="shop-category-nav__media" aria-hidden="true">
+              <app-icon name="grid" />
+            </span>
+            <span class="shop-category-nav__label">كل المنتجات</span>
+          </button>
+        </li>
+        @for (item of items; track item.slug; let index = $index) {
+          <li>
+            <button
+              type="button"
+              class="shop-category-nav__item"
+              [class.is-selected]="selected() === item.slug"
+              [attr.aria-pressed]="selected() === item.slug"
+              (click)="select(item.slug)"
+            >
+              <span class="shop-category-nav__media">
+                <app-site-image
+                  [asset]="imageBySlug[item.slug]"
+                  [alt]="item.label"
+                  [decorative]="true"
+                  [fill]="true"
+                  objectFit="contain"
+                  [priority]="index < 4"
+                  [sizes]="imageSizes"
+                />
+              </span>
+              <span class="shop-category-nav__label">{{ item.label }}</span>
+            </button>
+          </li>
+        }
+      </ul>
+    </nav>
+
+    @if (canScroll()) {
+      <button
+        type="button"
+        class="shop-category-nav__scroll shop-category-nav__scroll--next"
+        aria-label="تمرير الأقسام للتالي"
+        (click)="scrollStrip(1)"
+      >
+        <app-icon name="chevron-next" />
+      </button>
+    }
+  </div>
+</section>

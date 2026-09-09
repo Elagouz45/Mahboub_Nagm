@@ -1,0 +1,99 @@
+<section class="addresses" aria-labelledby="addresses-heading">
+  <header>
+    <h1 id="addresses-heading">العناوين</h1>
+    <button type="button" (click)="openCreate()">إضافة عنوان</button>
+  </header>
+
+  @if (addresses().length === 0 && !editorOpen()) {
+    <app-empty-state title="لا توجد عناوين بعد" actionLabel="إضافة عنوان" (action)="openCreate()" />
+  }
+
+  <ul>
+    @for (address of addresses(); track address.id) {
+      <li>
+        <p>
+          <strong>{{ labels[address.label] }}</strong>
+          @if (address.isDefault) {
+            <span>افتراضي</span>
+          }
+        </p>
+        <p>{{ address.recipientName }} — {{ address.phone }}</p>
+        <p>{{ governorateLabel(address.governorateSlug) }} — {{ address.city }}</p>
+        <p>{{ address.street }}</p>
+        @if (address.details) {
+          <p>{{ address.details }}</p>
+        }
+        <div>
+          <button type="button" (click)="openEdit(address)">تعديل</button>
+          <button type="button" (click)="remove(address)">حذف</button>
+        </div>
+      </li>
+    }
+  </ul>
+
+  @if (editorOpen()) {
+    <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+      <h2>{{ editingId() ? 'تعديل العنوان' : 'عنوان جديد' }}</h2>
+      <label>
+        <span>النوع</span>
+        <select formControlName="label">
+          @for (option of labelOptions; track option) {
+            <option [value]="option">{{ labels[option] }}</option>
+          }
+        </select>
+      </label>
+      <label>
+        <span>اسم المستلم</span>
+        <input type="text" formControlName="recipientName" autocomplete="name" />
+        @if (fieldInvalid('recipientName')) {
+          <small>اسم المستلم مطلوب.</small>
+        }
+      </label>
+      <label>
+        <span>الهاتف</span>
+        <input type="tel" formControlName="phone" autocomplete="tel" inputmode="tel" />
+        @if (fieldInvalid('phone')) {
+          <small>أدخل رقمًا مصريًا صحيحًا.</small>
+        }
+      </label>
+      <label>
+        <span>المحافظة</span>
+        <select formControlName="governorateSlug">
+          <option value="">اختر المحافظة</option>
+          @for (item of governorates; track item.slug) {
+            <option [value]="item.slug">{{ item.label }}</option>
+          }
+        </select>
+        @if (fieldInvalid('governorateSlug')) {
+          <small>المحافظة مطلوبة.</small>
+        }
+      </label>
+      <label>
+        <span>المدينة</span>
+        <input type="text" formControlName="city" />
+        @if (fieldInvalid('city')) {
+          <small>المدينة مطلوبة.</small>
+        }
+      </label>
+      <label>
+        <span>الشارع</span>
+        <input type="text" formControlName="street" />
+        @if (fieldInvalid('street')) {
+          <small>الشارع مطلوب.</small>
+        }
+      </label>
+      <label>
+        <span>تفاصيل إضافية</span>
+        <input type="text" formControlName="details" />
+      </label>
+      <label class="check">
+        <input type="checkbox" formControlName="isDefault" />
+        <span>اجعله العنوان الافتراضي</span>
+      </label>
+      <div class="actions">
+        <button type="submit">حفظ</button>
+        <button type="button" (click)="closeEditor()">إلغاء</button>
+      </div>
+    </form>
+  }
+</section>

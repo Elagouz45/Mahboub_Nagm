@@ -1,0 +1,46 @@
+.requests,
+.requests ul {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.requests h1,
+.requests p {
+  margin: 0;
+}
+
+.requests ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.requests li {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+
+.requests h1,
+.requests p {
+  margin: 0;
+}
+
+.requests ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.requests li {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}

@@ -1,0 +1,64 @@
+<section class="policy-page page-container">
+  <section class="page-hero" aria-labelledby="return-heading">
+    <div class="page-hero__copy">
+      <app-page-breadcrumb [items]="breadcrumb" />
+      <h1 id="return-heading">{{ story.title }}</h1>
+      <p>{{ story.lead }}</p>
+      <a class="btn-primary" routerLink="/contact" [queryParams]="{ type: 'complaint', topic: 'returns' }">
+        {{ cta.submitLabel }}
+      </a>
+    </div>
+    <div class="page-hero__media">
+      <app-site-image
+        [asset]="hero"
+        [fill]="true"
+        [priority]="true"
+        objectFit="cover"
+        sizes="(min-width: 768px) 42vw, 100vw"
+      />
+    </div>
+  </section>
+
+  <div class="policy-layout">
+    <app-page-toc [items]="toc" [activeId]="activeId()" />
+
+    <div class="policy-body">
+      <section id="return-prep" aria-labelledby="return-prep-heading">
+        <h2 id="return-prep-heading">{{ prep.title }}</h2>
+        <ul>
+          @for (item of prep.items; track item) {
+            <li>{{ item }}</li>
+          }
+        </ul>
+      </section>
+
+      <section id="return-steps" aria-labelledby="return-steps-heading">
+        <h2 id="return-steps-heading">خطوات الطلب</h2>
+        <ol>
+          @for (step of steps; track step.title; let index = $index) {
+            <li>
+              <span>{{ index + 1 }}</span>
+              <div>
+                <h3>{{ step.title }}</h3>
+                <p>{{ step.description }}</p>
+              </div>
+            </li>
+          }
+        </ol>
+      </section>
+
+      <section id="return-details" aria-labelledby="return-details-heading">
+        <h2 id="return-details-heading">التفاصيل</h2>
+        <app-page-accordion [items]="accordion" [openId]="openId()" (toggled)="toggleAccordion($event)" />
+      </section>
+    </div>
+  </div>
+
+  <section class="policy-strip" aria-labelledby="return-cta-heading">
+    <div>
+      <h2 id="return-cta-heading">{{ cta.title }}</h2>
+      <p>{{ cta.description }}</p>
+    </div>
+    <a class="btn-secondary" routerLink="/contact">{{ cta.contactLabel }}</a>
+  </section>
+</section>

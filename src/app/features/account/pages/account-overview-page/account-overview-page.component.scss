@@ -1,0 +1,57 @@
+.overview,
+.stats,
+.cards,
+.shortcuts {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.overview h1,
+.overview p {
+  margin: 0;
+}
+
+.stats {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.stats li,
+.cards article,
+.shortcuts a {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+
+.stats strong {
+  display: block;
+  font-size: 1.5rem;
+}
+
+.cards article h2,
+.cards article p {
+  margin: 0 0 var(--space-2);
+}
+
+.shortcuts {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.shortcuts a {
+  min-height: var(--touch-min);
+  display: grid;
+  place-items: center;
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+@media (min-width: 768px) {
+  .cards,
+  .shortcuts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

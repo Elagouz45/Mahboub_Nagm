@@ -1,0 +1,17 @@
+<nav class="breadcrumb" aria-label="مسار التنقل">
+  <ol>
+    <li><a routerLink="/">الرئيسية</a></li>
+    <li>
+      @if (categorySlug()) {
+        <a routerLink="/products">المتجر</a>
+      } @else {
+        <span aria-current="page">المتجر</span>
+      }
+    </li>
+    @if (categorySlug(); as slug) {
+      <li>
+        <span aria-current="page">{{ categoryLabel(slug) }}</span>
+      </li>
+    }
+  </ol>
+</nav>

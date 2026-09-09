@@ -1,0 +1,42 @@
+:root {
+  --color-primary: #0b1f3a;
+  --color-primary-hover: #132f52;
+  --color-accent: #f97316;
+  --color-accent-hover: #ea580c;
+  --color-discount: #dc2626;
+  --color-whatsapp: #22c55e;
+
+  --color-background: #f7f9fc;
+  --color-surface: #ffffff;
+  --color-text-primary: #102a46;
+  --color-success: #16a34a;
+  --color-error: #dc2626;
+  --color-text-secondary: #64748b;
+  --color-border: #e2e8f0;
+  --color-focus: #132f52;
+
+  --shadow-sm: 0 1px 3px rgb(15 23 42 / 0.08);
+  --shadow-md: 0 8px 24px rgb(15 23 42 / 0.1);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  --container-max-width: 1280px;
+  --touch-min: 44px;
+  --header-z: 20;
+  --overlay-z: 40;
+
+  --font-heading: 'Alexandria', Tahoma, Arial, sans-serif;
+  --font-body: 'Tajawal', Tahoma, Arial, sans-serif;
+}

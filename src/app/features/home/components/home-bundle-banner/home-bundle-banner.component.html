@@ -1,0 +1,18 @@
+<section class="bundle">
+  <div class="bundle__inner page-container">
+    <div class="bundle__copy">
+      <h2>جهزي بيتك بالكامل</h2>
+      <p>باقات متكاملة بأفضل الأسعار وخيارات تقسيط مناسبة</p>
+      <a routerLink="/products" [queryParams]="{ bundle: 'home' }">اكتشفي الباقات</a>
+    </div>
+    <div class="bundle__media">
+      <app-site-image
+        [asset]="bundleImage"
+        [fill]="true"
+        objectFit="cover"
+        objectPosition="center"
+        sizes="(max-width: 800px) 100vw, 70vw"
+      />
+    </div>
+  </div>
+</section>

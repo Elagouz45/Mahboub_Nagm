@@ -1,0 +1,48 @@
+<section class="policy-page page-container">
+  <section class="page-hero" aria-labelledby="privacy-heading">
+    <div class="page-hero__copy">
+      <app-page-breadcrumb [items]="breadcrumb" />
+      <h1 id="privacy-heading">{{ story.title }}</h1>
+      <p>{{ story.lead }}</p>
+    </div>
+    <div class="page-hero__mark" aria-hidden="true">
+      <svg viewBox="0 0 64 64" width="96" height="96" focusable="false">
+        <path
+          fill="currentColor"
+          d="M32 6 10 14v18c0 14.4 9.3 22.7 22 26 12.7-3.3 22-11.6 22-26V14L32 6zm0 8.4 16 5.8v12c0 10.4-6.4 16.8-16 19.6-9.6-2.8-16-9.2-16-19.6v-12l16-5.8z"
+        />
+      </svg>
+    </div>
+  </section>
+
+  <div class="policy-layout">
+    <app-page-toc [items]="toc" [activeId]="activeId()" />
+
+    <div class="policy-body">
+      <section id="privacy-use" aria-labelledby="privacy-use-heading">
+        <h2 id="privacy-use-heading">استخدام البيانات</h2>
+        <ul class="privacy-uses">
+          @for (item of uses; track item.title) {
+            <li>
+              <h3>{{ item.title }}</h3>
+              <p>{{ item.description }}</p>
+            </li>
+          }
+        </ul>
+      </section>
+
+      <section aria-labelledby="privacy-details-heading">
+        <h2 id="privacy-details-heading" class="visually-hidden">تفاصيل إضافية</h2>
+        <app-page-accordion [items]="accordion" [openId]="openId()" (toggled)="toggleAccordion($event)" />
+      </section>
+    </div>
+  </div>
+
+  <section class="policy-cta" aria-labelledby="privacy-cta-heading">
+    <div>
+      <h2 id="privacy-cta-heading">{{ cta.title }}</h2>
+      <p>{{ cta.description }}</p>
+    </div>
+    <a class="btn-primary" routerLink="/contact" [queryParams]="{ topic: 'privacy' }">{{ cta.label }}</a>
+  </section>
+</section>

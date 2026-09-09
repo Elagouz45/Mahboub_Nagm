@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-label="Flat screen television">
+  <rect width="320" height="240" fill="#eef2f6"/>
+  <ellipse cx="160" cy="214" rx="70" ry="8" fill="#c5d0dc"/>
+  <rect x="42" y="36" width="236" height="142" rx="10" fill="#0b1f3a"/>
+  <rect x="54" y="48" width="212" height="118" rx="4" fill="#7dd3fc"/>
+  <rect x="70" y="70" width="70" height="44" rx="4" fill="#f8fafc" opacity=".55"/>
+  <path d="M150 150l40-28 48 28H86z" fill="#0b1f3a" opacity=".18"/>
+  <rect x="148" y="178" width="24" height="18" fill="#0b1f3a"/>
+  <rect x="108" y="196" width="104" height="8" rx="3" fill="#0b1f3a"/>
+  <circle cx="160" cy="172" r="3" fill="#f97316"/>
+</svg>

@@ -1,0 +1,15 @@
+@if (chips().length > 0) {
+  <div class="chips">
+    <ul>
+      @for (chip of chips(); track chip.id) {
+        <li>
+          <button type="button" (click)="remove.emit(chip.id)">
+            {{ chip.label }}
+            <span aria-hidden="true">×</span>
+          </button>
+        </li>
+      }
+    </ul>
+    <button type="button" class="chips__clear" (click)="clear.emit()">مسح الكل</button>
+  </div>
+}

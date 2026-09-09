@@ -1,0 +1,110 @@
+<footer class="app-footer" role="contentinfo">
+  <div class="page-container app-footer__inner">
+    <section class="app-footer__identity">
+      <a class="app-footer__brand" routerLink="/" [attr.aria-label]="appName">
+        <app-brand-logo variant="footer" />
+        <span class="app-footer__brand-text">
+          <span class="app-footer__brand-name">{{ shortName }}</span>
+          <span class="app-footer__brand-slogan">{{ slogan }}</span>
+        </span>
+      </a>
+      <p>{{ identityCopy }}</p>
+      <ul class="app-footer__trust">
+        @for (point of trustPoints; track point.id) {
+          <li>
+            <app-icon [name]="point.icon" />
+            <span>{{ point.label }}</span>
+          </li>
+        }
+      </ul>
+      <div class="app-footer__contact">
+        <h2>تواصل معنا</h2>
+        @if (phone) {
+          <a class="app-footer__contact-line" [href]="'tel:' + phone">
+            <app-icon name="phone" />
+            <span><span class="visually-hidden">الهاتف: </span>{{ phone }}</span>
+          </a>
+        }
+        @if (email) {
+          <a class="app-footer__contact-line" [href]="'mailto:' + email">
+            <app-icon name="mail" />
+            <span><span class="visually-hidden">البريد: </span>{{ email }}</span>
+          </a>
+        }
+        @if (workingHours) {
+          <p class="app-footer__contact-line">{{ workingHours }}</p>
+        }
+        @if (whatsappUrl) {
+          <a class="app-footer__whatsapp" [href]="whatsappUrl" target="_blank" rel="noopener noreferrer">
+            <app-icon name="whatsapp" />
+            واتساب
+          </a>
+        }
+        @if (!hasDirectContact) {
+          <p>تُضاف بيانات الهاتف والعنوان عند توفرها من إدارة المتجر.</p>
+        }
+        <a class="app-footer__contact-cta" routerLink="/contact">
+          <app-icon name="send" />
+          راسلنا من النموذج
+        </a>
+        @if (socialLinks.length > 0) {
+          <ul class="app-footer__social">
+            @for (link of socialLinks; track link.platform) {
+              <li>
+                <a [href]="link.url" target="_blank" rel="noopener noreferrer" [attr.aria-label]="link.label">
+                  <app-icon [name]="link.icon" />
+                </a>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    </section>
+
+    <div class="app-footer__navs">
+      @for (column of navColumns; track column.id) {
+        <nav
+          class="app-footer__col"
+          [class.is-open]="isNavOpen(column.id)"
+          [attr.aria-label]="column.label"
+        >
+          <h2>
+            @if (compactFooter()) {
+              <button
+                type="button"
+                class="app-footer__toggle"
+                [attr.aria-expanded]="isNavOpen(column.id)"
+                [attr.aria-controls]="column.id"
+                (click)="toggleNav(column.id)"
+              >
+                <span>{{ column.label }}</span>
+                <app-icon name="chevron-down" />
+              </button>
+            } @else {
+              {{ column.label }}
+            }
+          </h2>
+          <ul [id]="column.id" [hidden]="compactFooter() && !isNavOpen(column.id)">
+            @for (link of column.links; track link.label) {
+              <li>
+                <a [routerLink]="link.path" [queryParams]="link.queryParams">{{ link.label }}</a>
+              </li>
+            }
+          </ul>
+        </nav>
+      }
+    </div>
+  </div>
+
+  <div class="app-footer__legal">
+    <div class="page-container app-footer__legal-inner">
+      <p>© {{ year }} {{ shortName }}. جميع الحقوق محفوظة.</p>
+      <nav class="app-footer__legal-links" aria-label="روابط قانونية">
+        @for (link of legalLinks; track link.label) {
+          <a [routerLink]="link.path">{{ link.label }}</a>
+        }
+      </nav>
+      <p>صنع في مصر لخدمة كل بيت</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,46 @@
+<section class="orders" aria-labelledby="orders-heading">
+  <h1 id="orders-heading">طلباتي</h1>
+
+  <div class="filters">
+    <label>
+      <span class="visually-hidden">بحث في الطلبات</span>
+      <input type="search" placeholder="رقم الطلب أو اسم المنتج" (input)="onSearch($event)" />
+    </label>
+    <label>
+      <span class="visually-hidden">حالة الطلب</span>
+      <select (change)="onStatus($event)">
+        <option value="all">كل الحالات</option>
+        @for (status of statuses; track status) {
+          <option [value]="status">{{ statusLabels[status] }}</option>
+        }
+      </select>
+    </label>
+    <label>
+      <span class="visually-hidden">الترتيب</span>
+      <select (change)="onSort($event)">
+        <option value="newest">الأحدث</option>
+        <option value="oldest">الأقدم</option>
+      </select>
+    </label>
+  </div>
+
+  @if (orders().length === 0) {
+    <app-empty-state title="لا توجد طلبات بعد" actionLabel="تسوق الآن" (action)="goShop()" />
+  } @else if (filtered().length === 0) {
+    <app-empty-state title="لا توجد نتائج مطابقة" />
+  } @else {
+    <ul>
+      @for (order of filtered(); track order.id) {
+        <li>
+          <a [routerLink]="['/account/orders', order.id]">
+            <strong>{{ order.number }}</strong>
+            <span>{{ statusLabels[order.status] }}</span>
+            <span>{{ order.placedAt | date: 'd/M/yyyy' }}</span>
+            <span>{{ formatPrice(order.total) }}</span>
+            <span>{{ order.lines[0]?.title }}</span>
+          </a>
+        </li>
+      }
+    </ul>
+  }
+</section>

@@ -1,0 +1,414 @@
+{
+  "project": "Mahboub Nagm Electrical Appliances",
+  "brandArabic": "محبوب نجم للأجهزة الكهربائية",
+  "version": "1.0.0",
+  "imageCount": 50,
+  "format": "WebP",
+  "notes": [
+    "All images are AI-generated specifically for this project.",
+    "No third-party brand logos or readable product labels are intentionally included.",
+    "Use the preview contact sheet for selection only; do not render it on the website."
+  ],
+  "assets": [
+    {
+      "id": "01",
+      "group": "banners",
+      "file": "banners/hero-appliance-collection.webp",
+      "usage": "Main homepage hero with right-side copy space",
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "id": "02",
+      "group": "banners",
+      "file": "banners/hero-laundry-care.webp",
+      "usage": "Laundry campaign hero",
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "id": "03",
+      "group": "banners",
+      "file": "banners/hero-home-entertainment.webp",
+      "usage": "Television and entertainment campaign hero",
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "id": "04",
+      "group": "banners",
+      "file": "banners/hero-summer-cooling.webp",
+      "usage": "Air-conditioner seasonal campaign hero",
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "id": "05",
+      "group": "banners",
+      "file": "banners/hero-kitchen-appliances.webp",
+      "usage": "Small kitchen appliance campaign hero",
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "id": "06",
+      "group": "banners",
+      "file": "banners/home-bundle-showcase.webp",
+      "usage": "Full-home appliance bundle promotional banner",
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "id": "07",
+      "group": "categories",
+      "file": "categories/category-refrigerators.webp",
+      "usage": "Refrigerators category card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "08",
+      "group": "categories",
+      "file": "categories/category-washing-machines.webp",
+      "usage": "Washing machines category card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "09",
+      "group": "categories",
+      "file": "categories/category-televisions.webp",
+      "usage": "Televisions category card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "10",
+      "group": "categories",
+      "file": "categories/category-air-conditioners.webp",
+      "usage": "Air conditioners category card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "11",
+      "group": "categories",
+      "file": "categories/category-cookers.webp",
+      "usage": "Cookers category card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "12",
+      "group": "categories",
+      "file": "categories/category-ovens.webp",
+      "usage": "Ovens and microwaves category card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "13",
+      "group": "categories",
+      "file": "categories/category-water-heaters.webp",
+      "usage": "Water heaters category card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "14",
+      "group": "categories",
+      "file": "categories/category-fans.webp",
+      "usage": "Fans category card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "15",
+      "group": "categories",
+      "file": "categories/category-small-appliances.webp",
+      "usage": "Small appliances category card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "16",
+      "group": "categories",
+      "file": "categories/category-vacuum-cleaners.webp",
+      "usage": "Vacuum cleaners category card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "17",
+      "group": "products",
+      "file": "products/refrigerator-french-door-silver.webp",
+      "usage": "Premium French-door refrigerator product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "18",
+      "group": "products",
+      "file": "products/refrigerator-top-freezer-white.webp",
+      "usage": "White top-freezer refrigerator product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "19",
+      "group": "products",
+      "file": "products/refrigerator-side-by-side-black.webp",
+      "usage": "Black side-by-side refrigerator product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "20",
+      "group": "products",
+      "file": "products/washing-machine-front-load-silver.webp",
+      "usage": "Silver front-load washing machine product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "21",
+      "group": "products",
+      "file": "products/washing-machine-top-load-white.webp",
+      "usage": "White top-load washing machine product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "22",
+      "group": "products",
+      "file": "products/washer-dryer-graphite.webp",
+      "usage": "Graphite washer-dryer product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "23",
+      "group": "products",
+      "file": "products/smart-tv-55-inch.webp",
+      "usage": "55-inch smart television product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "24",
+      "group": "products",
+      "file": "products/smart-tv-65-inch.webp",
+      "usage": "65-inch premium television product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "25",
+      "group": "products",
+      "file": "products/smart-tv-43-inch.webp",
+      "usage": "Compact 43-inch smart television product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "26",
+      "group": "products",
+      "file": "products/air-conditioner-split-white.webp",
+      "usage": "White split air conditioner product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "27",
+      "group": "products",
+      "file": "products/air-conditioner-inverter-silver.webp",
+      "usage": "Silver-accent inverter air conditioner product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "28",
+      "group": "products",
+      "file": "products/air-conditioner-premium-black.webp",
+      "usage": "Premium dark-accent air conditioner product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "29",
+      "group": "products",
+      "file": "products/gas-cooker-stainless-steel.webp",
+      "usage": "Stainless-steel gas cooker product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "30",
+      "group": "products",
+      "file": "products/gas-cooker-black-glass.webp",
+      "usage": "Black-glass gas cooker product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "31",
+      "group": "products",
+      "file": "products/built-in-gas-hob.webp",
+      "usage": "Built-in gas hob product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "32",
+      "group": "products",
+      "file": "products/built-in-electric-oven.webp",
+      "usage": "Built-in electric oven product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "33",
+      "group": "products",
+      "file": "products/air-fryer-black.webp",
+      "usage": "Air fryer product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "34",
+      "group": "products",
+      "file": "products/countertop-blender.webp",
+      "usage": "Countertop blender product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "35",
+      "group": "products",
+      "file": "products/microwave-black.webp",
+      "usage": "Microwave product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "36",
+      "group": "products",
+      "file": "products/coffee-maker.webp",
+      "usage": "Coffee maker product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "37",
+      "group": "products",
+      "file": "products/food-processor.webp",
+      "usage": "Food processor product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "38",
+      "group": "products",
+      "file": "products/cordless-vacuum-cleaner.webp",
+      "usage": "Cordless vacuum product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "39",
+      "group": "products",
+      "file": "products/electric-water-heater.webp",
+      "usage": "Electric water heater product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "40",
+      "group": "products",
+      "file": "products/pedestal-fan.webp",
+      "usage": "Pedestal fan product card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "41",
+      "group": "lifestyle",
+      "file": "lifestyle/modern-family-kitchen.webp",
+      "usage": "Homepage lifestyle section for kitchen appliances",
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "id": "42",
+      "group": "lifestyle",
+      "file": "lifestyle/organized-laundry-room.webp",
+      "usage": "Laundry category lifestyle image",
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "id": "43",
+      "group": "lifestyle",
+      "file": "lifestyle/home-entertainment-room.webp",
+      "usage": "Television category lifestyle image",
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "id": "44",
+      "group": "lifestyle",
+      "file": "lifestyle/kitchen-counter-appliances.webp",
+      "usage": "Small-appliance lifestyle section",
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "id": "45",
+      "group": "lifestyle",
+      "file": "lifestyle/appliance-shopping-family.webp",
+      "usage": "Trust and buying-guidance content section",
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "id": "46",
+      "group": "lifestyle",
+      "file": "lifestyle/home-delivery-installation.webp",
+      "usage": "Delivery and installation content section",
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "id": "47",
+      "group": "services",
+      "file": "services/fast-delivery.webp",
+      "usage": "Fast delivery trust card and delivery page",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "48",
+      "group": "services",
+      "file": "services/authorized-warranty.webp",
+      "usage": "Warranty and after-sales trust card",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "49",
+      "group": "services",
+      "file": "services/whatsapp-support.webp",
+      "usage": "WhatsApp assistance banner and contact content",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": "50",
+      "group": "services",
+      "file": "services/original-products.webp",
+      "usage": "Authenticity and quality trust card",
+      "width": 1000,
+      "height": 1000
+    }
+  ]
+}

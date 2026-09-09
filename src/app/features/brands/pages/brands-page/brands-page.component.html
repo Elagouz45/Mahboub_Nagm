@@ -1,0 +1,137 @@
+<section class="brands-page page-container">
+  <section class="page-hero" aria-labelledby="brands-heading">
+    <div class="page-hero__copy">
+      <app-page-breadcrumb [items]="breadcrumb" />
+      <p class="page-hero__kicker">علامات أصلية لبيتك</p>
+      <h1 id="brands-heading">تسوق من علامات تجارية موثوقة</h1>
+      <p>
+        أجهزة كهربائية أصلية من ماركات متوفرة في الكتالوج، مع ضمان معتمد ودعم واضح بعد البيع.
+      </p>
+    </div>
+    <div class="page-hero__media">
+      <app-site-image
+        [asset]="hero"
+        [fill]="true"
+        [priority]="true"
+        objectFit="cover"
+        sizes="(min-width: 768px) 46vw, 100vw"
+      />
+    </div>
+  </section>
+
+  <form class="brands-toolbar" role="search" (submit)="$event.preventDefault()">
+    <label class="brands-toolbar__search">
+      <span class="visually-hidden">ابحث عن علامة تجارية</span>
+      <app-icon name="search" />
+      <input
+        type="search"
+        name="q"
+        placeholder="ابحث باسم الماركة..."
+        [value]="searchText()"
+        (input)="onSearchInput($event)"
+      />
+    </label>
+
+    <label>
+      <span class="visually-hidden">التصنيف</span>
+      <select [value]="store.query().category" (change)="onCategory($event)">
+        <option value="">كل التصنيفات</option>
+        @for (category of categories; track category.slug) {
+          <option [value]="category.slug">{{ category.label }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      <span class="visually-hidden">الترتيب</span>
+      <select [value]="store.query().sort" (change)="onSort($event)">
+        <option value="name">الاسم</option>
+        <option value="relevance">الأكثر صلة</option>
+      </select>
+    </label>
+  </form>
+
+  @if (store.result().initials.length) {
+    <div class="brands-alphabet" role="group" aria-label="الفهرس الأبجدي">
+      <button
+        type="button"
+        [class.is-active]="!store.query().initial"
+        (click)="onInitial('')"
+      >
+        الكل
+      </button>
+      @for (letter of store.result().initials; track letter) {
+        <button
+          type="button"
+          [class.is-active]="store.query().initial === letter"
+          (click)="onInitial(letter)"
+        >
+          {{ letter }}
+        </button>
+      }
+    </div>
+  }
+
+  @if (store.result().featured; as featured) {
+    <article class="brand-featured">
+      <a [routerLink]="['/products']" [queryParams]="{ brand: featured.slug }">
+        @if (featured.imageSrc) {
+          <img [src]="featured.imageSrc" [alt]="featured.name" width="160" height="64" />
+        } @else {
+          <span class="brand-card__fallback">{{ featured.name }}</span>
+        }
+        <div>
+          <p class="brand-featured__kicker">علامة مميزة</p>
+          <h2>{{ featured.name }}</h2>
+          <p>{{ featured.categoryLabel }}</p>
+        </div>
+      </a>
+    </article>
+  }
+
+  @if (store.loading()) {
+    <ul class="brands-grid" aria-hidden="true">
+      @for (item of [1, 2, 3, 4, 5, 6, 7, 8]; track item) {
+        <li class="brand-card brand-card--skeleton"></li>
+      }
+    </ul>
+  } @else if (store.error()) {
+    <app-error-state title="تعذر تحميل العلامات التجارية" [message]="errorMessage" (retry)="retry()" />
+  } @else if (store.empty()) {
+    <app-empty-state
+      title="لم نجد علامة تجارية مطابقة لاختياراتك"
+      description="جرّب كلمة بحث أخرى أو أزل الفلاتر الحالية."
+      actionLabel="مسح الاختيارات"
+      (action)="clearFilters()"
+    />
+  } @else {
+    <ul class="brands-grid">
+      @for (brand of store.result().items; track brand.id) {
+        <li>
+          <a class="brand-card" [routerLink]="['/products']" [queryParams]="{ brand: brand.slug }">
+            @if (brand.imageSrc) {
+              <img [src]="brand.imageSrc" [alt]="brand.name" width="160" height="64" loading="lazy" />
+              <strong>{{ brand.name }}</strong>
+            } @else {
+              <strong class="brand-card__fallback">{{ brand.name }}</strong>
+            }
+            <span>{{ brand.categoryLabel }}</span>
+          </a>
+        </li>
+      }
+    </ul>
+  }
+
+  @if (!store.loading() && !store.error() && store.result().total > store.query().pageSize) {
+    <app-catalog-pagination
+      [page]="store.query().page"
+      [totalPages]="store.totalPages()"
+      [pageSize]="store.query().pageSize"
+      sizeLabel="عدد العلامات"
+      (pageChange)="onPage($event)"
+      (pageSizeChange)="onPageSize($event)"
+    />
+  }
+
+  <app-page-trust-strip [items]="trustItems" />
+</section>

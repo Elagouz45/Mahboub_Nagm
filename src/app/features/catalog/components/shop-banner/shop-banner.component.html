@@ -1,0 +1,19 @@
+<section class="shop-banner" aria-labelledby="shop-banner-title">
+  <div class="shop-banner__media">
+    <app-site-image
+      [asset]="banner"
+      [fill]="true"
+      [priority]="true"
+      [decorative]="true"
+      objectFit="cover"
+      objectPosition="left center"
+      [sizes]="imageSizes"
+    />
+  </div>
+  <div class="shop-banner__copy">
+    <app-shop-breadcrumb [categorySlug]="categorySlug()" />
+    <h1 id="shop-banner-title">كل احتياجات بيتك في مكان واحد</h1>
+    <p>اكتشف أحدث الأجهزة الكهربائية من أفضل الماركات، وقارن بين المنتجات والأسعار بسهولة.</p>
+    <button type="button" class="shop-banner__cta" (click)="explore.emit()">تسوق الآن</button>
+  </div>
+</section>

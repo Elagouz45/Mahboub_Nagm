@@ -1,0 +1,15 @@
+<section class="empty-state" role="status">
+  @if (icon()) {
+    <p class="empty-state__icon" aria-hidden="true">{{ icon() }}</p>
+  }
+
+  <h2>{{ title() }}</h2>
+
+  @if (description()) {
+    <p>{{ description() }}</p>
+  }
+
+  @if (actionLabel()) {
+    <button type="button" (click)="action.emit()">{{ actionLabel() }}</button>
+  }
+</section>

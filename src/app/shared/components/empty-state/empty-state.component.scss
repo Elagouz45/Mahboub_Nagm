@@ -1,0 +1,30 @@
+.empty-state {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  text-align: center;
+  padding: var(--space-8);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.empty-state h2 {
+  margin: 0;
+}
+
+.empty-state p {
+  margin: 0;
+}
+
+.empty-state button {
+  min-height: var(--touch-min);
+  padding-inline: var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.empty-state__icon {
+  font-size: 1.5rem;
+}

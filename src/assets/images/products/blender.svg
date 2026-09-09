@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-label="Electric blender">
+  <rect width="320" height="240" fill="#eef2f6"/>
+  <ellipse cx="160" cy="216" rx="54" ry="8" fill="#c5d0dc"/>
+  <rect x="132" y="18" width="56" height="18" rx="6" fill="#0b1f3a"/>
+  <path d="M118 46h84l-10 86H128z" fill="#bae6fd" stroke="#0b1f3a" stroke-width="3"/>
+  <path d="M148 92h24" stroke="#0b1f3a" stroke-width="3" stroke-linecap="round"/>
+  <path d="M160 86v22" stroke="#0b1f3a" stroke-width="3" stroke-linecap="round"/>
+  <rect x="112" y="132" width="96" height="70" rx="20" fill="#e2e8f0" stroke="#0b1f3a" stroke-width="3"/>
+  <circle cx="138" cy="166" r="8" fill="#0b1f3a"/>
+  <circle cx="160" cy="166" r="8" fill="#f97316"/>
+  <circle cx="182" cy="166" r="8" fill="#0b1f3a"/>
+  <rect x="126" y="186" width="68" height="8" rx="3" fill="#94a3b8"/>
+</svg>

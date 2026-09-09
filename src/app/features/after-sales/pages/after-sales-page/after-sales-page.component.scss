@@ -1,0 +1,168 @@
+.after-sales {
+  display: grid;
+  gap: var(--space-8);
+  padding-block: var(--space-5) var(--space-10);
+}
+
+.page-hero,
+.services,
+.steps,
+.help-strip {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.page-hero {
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-primary) 6%, var(--color-background));
+}
+
+.page-hero__copy {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  align-content: center;
+  justify-items: start;
+}
+
+.page-hero__copy h1,
+.page-hero__copy p,
+.services h2,
+.steps h2,
+.help-strip h2,
+.help-strip p {
+  margin: 0;
+}
+
+.page-hero__media {
+  position: relative;
+  min-height: 12rem;
+  border-start-start-radius: 3rem;
+  border-end-end-radius: 3rem;
+  overflow: hidden;
+}
+
+.page-hero__actions,
+.help-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.btn-primary,
+.btn-secondary,
+.services a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-min);
+  padding-inline: var(--space-5);
+  border-radius: var(--radius-md);
+  font-weight: 700;
+}
+
+.btn-primary,
+.btn-secondary,
+.services a,
+.help-strip a {
+  transition: none;
+}
+
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.services a:focus-visible,
+.help-strip a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  color: var(--color-surface);
+}
+
+.btn-secondary,
+.services a {
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.services ul,
+.steps ol {
+  display: grid;
+  gap: var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.services li,
+.steps li {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: start;
+}
+
+.services app-icon,
+.steps span {
+  color: var(--color-accent);
+}
+
+.steps {
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-primary) 6%, var(--color-background));
+}
+
+.steps li {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+}
+
+.steps span {
+  display: grid;
+  place-items: center;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
+  border-radius: 999px;
+  background: var(--color-surface);
+  font-weight: 700;
+}
+
+.help-strip {
+  justify-content: space-between;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+#after-sales-services {
+  scroll-margin-block-start: 7.5rem;
+}
+
+@media (min-width: 768px) {
+  .page-hero {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    min-height: 18rem;
+  }
+
+  .services ul,
+  .steps ol {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .page-hero__media {
+    min-height: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-hero__media,
+  .btn-primary,
+  .btn-secondary,
+  .services a {
+    transition: none;
+  }
+}

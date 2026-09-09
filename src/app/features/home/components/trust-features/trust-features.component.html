@@ -1,0 +1,18 @@
+<section class="trust page-container" aria-label="مزايا الشراء">
+  <ul>
+    @for (item of items; track item.title) {
+      <li>
+        <div class="trust__media">
+          <app-site-image
+            [asset]="item.image"
+            [decorative]="true"
+            [fill]="true"
+            objectFit="contain"
+          />
+        </div>
+        <h2>{{ item.title }}</h2>
+        <p>{{ item.text }}</p>
+      </li>
+    }
+  </ul>
+</section>

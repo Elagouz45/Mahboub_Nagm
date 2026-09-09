@@ -1,0 +1,9 @@
+<div class="home-page">
+  <app-hero-banner />
+  <app-category-grid [state]="store.categories()" (retry)="store.retryCategories()" />
+  <app-offers-section [state]="store.offers()" (retry)="store.retryOffers()" />
+  <app-best-sellers-section [state]="store.bestSellers()" (retry)="store.retryBestSellers()" />
+  <app-home-bundle-banner />
+  <app-trust-features />
+  <app-whatsapp-banner />
+</div>

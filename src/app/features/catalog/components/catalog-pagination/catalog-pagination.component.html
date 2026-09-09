@@ -1,0 +1,48 @@
+<nav class="pagination" aria-label="ترقيم الصفحات">
+  <button
+    type="button"
+    [disabled]="disabled() || page() <= 1"
+    (click)="pageChange.emit(page() - 1)"
+  >
+    <app-icon name="chevron-next" />
+    السابق
+  </button>
+
+  <ol>
+    @for (item of items(); track $index) {
+      <li>
+        @if (item === 'ellipsis') {
+          <span class="pagination__ellipsis">…</span>
+        } @else {
+          <button
+            type="button"
+            [class.is-current]="item === page()"
+            [attr.aria-current]="item === page() ? 'page' : null"
+            [disabled]="disabled()"
+            (click)="pageChange.emit(item)"
+          >
+            {{ item }}
+          </button>
+        }
+      </li>
+    }
+  </ol>
+
+  <button
+    type="button"
+    [disabled]="disabled() || page() >= totalPages()"
+    (click)="pageChange.emit(page() + 1)"
+  >
+    التالي
+    <app-icon name="chevron-prev" />
+  </button>
+
+  <label class="pagination__size">
+    <span>{{ sizeLabel() }}</span>
+    <select [value]="pageSize()" [disabled]="disabled()" (change)="onPageSize($event)">
+      @for (size of pageSizes; track size) {
+        <option [value]="size">{{ size }}</option>
+      }
+    </select>
+  </label>
+</nav>

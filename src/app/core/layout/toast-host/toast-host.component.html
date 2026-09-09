@@ -1,0 +1,10 @@
+<div class="toast-host" aria-live="polite" aria-relevant="additions">
+  @for (message of toast.messages(); track message.id) {
+    <p class="toast-host__item">
+      <span>{{ message.text }}</span>
+      @if (message.actionLabel && message.actionLink) {
+        <a [routerLink]="message.actionLink">{{ message.actionLabel }}</a>
+      }
+    </p>
+  }
+</div>

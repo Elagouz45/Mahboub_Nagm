@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-label="Air conditioner category">
+  <rect width="320" height="240" fill="#eef2f6"/>
+  <ellipse cx="160" cy="214" rx="78" ry="8" fill="#c5d0dc"/>
+  <rect x="48" y="62" width="224" height="78" rx="16" fill="#e8eef4" stroke="#0b1f3a" stroke-width="3"/>
+  <rect x="62" y="76" width="196" height="18" rx="4" fill="#cbd5e1"/>
+  <rect x="62" y="102" width="196" height="22" rx="4" fill="#94a3b8"/>
+  <rect x="200" y="76" width="46" height="14" rx="3" fill="#0b1f3a"/>
+  <path d="M90 154c12 20 28 30 46 30s34-10 46-30" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+</svg>

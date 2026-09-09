@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-label="Gas cooker">
+  <rect width="320" height="240" fill="#eef2f6"/>
+  <ellipse cx="160" cy="216" rx="88" ry="8" fill="#c5d0dc"/>
+  <rect x="58" y="36" width="204" height="168" rx="10" fill="#dbe4ee" stroke="#0b1f3a" stroke-width="3"/>
+  <rect x="70" y="48" width="180" height="72" rx="8" fill="#cbd5e1"/>
+  <circle cx="106" cy="74" r="16" fill="#0b1f3a"/>
+  <circle cx="160" cy="74" r="16" fill="#0b1f3a"/>
+  <circle cx="214" cy="74" r="16" fill="#0b1f3a"/>
+  <circle cx="133" cy="102" r="12" fill="#0b1f3a"/>
+  <circle cx="187" cy="102" r="12" fill="#0b1f3a"/>
+  <circle cx="106" cy="74" r="6" fill="#f97316"/>
+  <circle cx="160" cy="74" r="6" fill="#f97316"/>
+  <circle cx="214" cy="74" r="6" fill="#f97316"/>
+  <rect x="78" y="128" width="164" height="58" rx="6" fill="#94a3b8"/>
+  <rect x="90" y="138" width="140" height="38" rx="4" fill="#e2e8f0"/>
+  <circle cx="96" cy="188" r="5" fill="#0b1f3a"/>
+  <circle cx="112" cy="188" r="5" fill="#0b1f3a"/>
+  <circle cx="128" cy="188" r="5" fill="#0b1f3a"/>
+  <circle cx="144" cy="188" r="5" fill="#0b1f3a"/>
+  <circle cx="160" cy="188" r="5" fill="#f97316"/>
+</svg>

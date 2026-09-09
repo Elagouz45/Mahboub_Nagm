@@ -1,0 +1,9 @@
+<section class="auth-shell page-container">
+  <div class="auth-shell__form">
+    <h1>{{ title() }}</h1>
+    <ng-content />
+  </div>
+  <div class="auth-shell__visual" aria-hidden="true">
+    <app-site-image [asset]="image" [fill]="true" objectFit="cover" sizes="50vw" />
+  </div>
+</section>

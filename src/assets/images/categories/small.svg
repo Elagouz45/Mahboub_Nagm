@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-label="Small home accessories">
+  <rect width="320" height="240" fill="#eef2f6"/>
+  <ellipse cx="160" cy="216" rx="92" ry="8" fill="#c5d0dc"/>
+  <rect x="42" y="126" width="78" height="58" rx="10" fill="#e2e8f0" stroke="#0b1f3a" stroke-width="3"/>
+  <rect x="54" y="138" width="22" height="12" rx="2" fill="#f97316"/>
+  <rect x="82" y="138" width="22" height="12" rx="2" fill="#f97316"/>
+  <path d="M54 168h54" stroke="#0b1f3a" stroke-width="3"/>
+  <path d="M168 78c22-28 62-18 62 18v70c0 14-12 24-28 24h-8c-16 0-28-10-28-24V96c0-8 0-14 2-18z" fill="#e2e8f0" stroke="#0b1f3a" stroke-width="3"/>
+  <rect x="188" y="70" width="28" height="14" rx="4" fill="#0b1f3a"/>
+  <path d="M230 92c12-8 28-4 34 10" fill="none" stroke="#0b1f3a" stroke-width="3" stroke-linecap="round"/>
+  <rect x="126" y="150" width="36" height="40" rx="6" fill="#dbe4ee" stroke="#0b1f3a" stroke-width="3"/>
+  <rect x="132" y="132" width="24" height="20" rx="4" fill="#f97316"/>
+</svg>

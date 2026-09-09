@@ -1,0 +1,21 @@
+:host {
+  display: block;
+  max-width: 100%;
+}
+
+:host(.site-image--fill) {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.site-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+:host(.site-image--fill) .site-image {
+  max-width: none;
+}

@@ -1,0 +1,85 @@
+<article class="product-card">
+  <a class="product-card__media" [routerLink]="['/products', product().slug]">
+    <div class="product-card__badges">
+      @if (product().discountPercent; as discount) {
+        <span class="product-card__badge product-card__badge--discount">خصم {{ discount }}٪</span>
+      }
+      @if (product().isTodaysOffer) {
+        <span class="product-card__badge product-card__badge--offer">عرض اليوم</span>
+      }
+      @if (product().isBestseller) {
+        <span class="product-card__badge product-card__badge--best">الأكثر مبيعًا</span>
+      }
+    </div>
+    <app-site-image
+      [src]="product().imageSrc"
+      [alt]="product().imageAlt"
+      [fill]="true"
+      objectFit="contain"
+      [sizes]="layout() === 'list' ? '(max-width: 768px) 40vw, 18vw' : '(max-width: 640px) 50vw, 20vw'"
+    />
+  </a>
+
+  <button
+    type="button"
+    class="product-card__wish"
+    [class.is-active]="wishlisted()"
+    [attr.aria-label]="wishlisted() ? 'إزالة من المفضلة' : 'أضف إلى المفضلة'"
+    [attr.aria-pressed]="wishlisted()"
+    (click)="toggleWishlist($event)"
+  >
+    <app-icon name="heart" />
+  </button>
+
+  <div class="product-card__body">
+    <p class="product-card__brand">{{ product().brand }}</p>
+    <h3>
+      <a [routerLink]="['/products', product().slug]">{{ product().title }}</a>
+    </h3>
+    @if (!compact()) {
+      <p class="product-card__spec">{{ product().spec }}</p>
+    }
+    @if (layout() === 'list' && product().description) {
+      <p class="product-card__description">{{ product().description }}</p>
+    }
+    <app-rating-display [rating]="product().rating" [reviewCount]="product().reviewCount" />
+    <app-price-display [price]="product().price" [oldPrice]="product().oldPrice" />
+    @if (stockLabel(); as stock) {
+      <p class="product-card__stock" [class.is-unavailable]="!canPurchase()">{{ stock }}</p>
+    }
+  </div>
+
+  <div class="product-card__actions">
+    @if (whatsappHref(); as href) {
+      <a
+        class="btn btn--whatsapp"
+        [href]="href"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="استفسر عن هذا المنتج عبر واتساب"
+        (click)="stopCardNavigation($event)"
+      >
+        <app-icon name="whatsapp" />
+        <span class="visually-hidden">استفسر عن هذا المنتج عبر واتساب</span>
+      </a>
+    } @else {
+      <button
+        type="button"
+        class="btn btn--whatsapp"
+        disabled
+        aria-label="استفسر عن هذا المنتج عبر واتساب"
+      >
+        <app-icon name="whatsapp" />
+      </button>
+    }
+    <button
+      type="button"
+      class="btn btn--cart"
+      [disabled]="!canPurchase()"
+      (click)="addToCart($event)"
+    >
+      <app-icon name="cart" />
+      <span>أضف للسلة</span>
+    </button>
+  </div>
+</article>

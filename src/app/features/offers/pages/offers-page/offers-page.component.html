@@ -1,0 +1,93 @@
+<section class="offers-page page-container">
+  <section class="page-hero" aria-labelledby="offers-heading">
+    <div class="page-hero__copy">
+      <app-page-breadcrumb [items]="breadcrumb" />
+      <p class="page-hero__kicker">خصومات على أجهزة الكتالوج</p>
+      <h1 id="offers-heading">عروض حقيقية لبيتك</h1>
+      <p>اختر من المنتجات المخفضة المتوفرة الآن، وقارن السعر قبل وبعد الخصم ثم أضف للسلة أو المفضلة.</p>
+      @if (store.result().maxDiscountPercent > 0) {
+        <p class="page-hero__badge">حتى {{ store.result().maxDiscountPercent }}٪</p>
+      }
+      <a class="page-hero__cta" routerLink="/offers" fragment="offers-grid">تسوق العروض</a>
+    </div>
+    <div class="page-hero__media">
+      <app-site-image
+        [asset]="hero"
+        [fill]="true"
+        [priority]="true"
+        objectFit="cover"
+        sizes="(min-width: 768px) 46vw, 100vw"
+      />
+    </div>
+  </section>
+
+  <div class="offers-tabs" role="tablist" aria-label="أنواع العروض">
+    @for (type of types; track type) {
+      <button
+        type="button"
+        role="tab"
+        [attr.aria-selected]="store.query().type === type"
+        [class.is-active]="store.query().type === type"
+        (click)="onType(type)"
+      >
+        {{ typeLabels[type] }}
+      </button>
+    }
+  </div>
+
+  <div class="offers-toolbar">
+    <label>
+      <span class="visually-hidden">التصنيف</span>
+      <select [value]="store.query().category" (change)="onCategory($event)">
+        <option value="">كل التصنيفات</option>
+        @for (category of categories; track category.slug) {
+          <option [value]="category.slug">{{ category.label }}</option>
+        }
+      </select>
+    </label>
+    <label>
+      <span class="visually-hidden">الماركة</span>
+      <select [value]="selectedBrand()" (change)="onBrand($event)">
+        <option value="">كل الماركات</option>
+        @for (brand of store.result().filters.brands; track brand.value) {
+          <option [value]="brand.value">{{ brand.label }}</option>
+        }
+      </select>
+    </label>
+    <label>
+      <span class="visually-hidden">الترتيب</span>
+      <select [value]="store.query().sort" (change)="onSort($event)">
+        @for (sort of sorts; track sort) {
+          <option [value]="sort">{{ sortLabels[sort] }}</option>
+        }
+      </select>
+    </label>
+  </div>
+
+  <div id="offers-grid">
+    @if (store.error()) {
+      <app-error-state title="تعذر تحميل العروض" [message]="errorMessage" (retry)="retry()" />
+    } @else if (!store.loading() && store.empty()) {
+      <app-empty-state
+        title="لا توجد عروض مطابقة حاليًا"
+        description="جرّب تصنيفًا آخر أو عد إلى كل العروض."
+        actionLabel="عرض كل العروض"
+        (action)="clearFilters()"
+      />
+    } @else {
+      <app-product-grid [products]="store.result().items" [loading]="store.loading()" />
+    }
+  </div>
+
+  @if (!store.loading() && !store.error() && store.result().total > store.query().pageSize) {
+    <app-catalog-pagination
+      [page]="store.query().page"
+      [totalPages]="store.totalPages()"
+      [pageSize]="store.query().pageSize"
+      (pageChange)="onPage($event)"
+      (pageSizeChange)="onPageSize($event)"
+    />
+  }
+
+  <app-page-trust-strip [items]="trustItems" />
+</section>

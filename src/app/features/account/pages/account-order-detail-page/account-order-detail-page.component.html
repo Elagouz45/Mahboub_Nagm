@@ -1,0 +1,54 @@
+<section class="order-detail" aria-labelledby="order-heading">
+  @if (order() === undefined) {
+    <p>جارٍ التحميل...</p>
+  } @else if (!order()) {
+    <app-error-state title="الطلب غير موجود" message="تعذر العثور على هذا الطلب في حسابك." [retryable]="false" />
+    <a routerLink="/account/orders">العودة إلى الطلبات</a>
+  } @else {
+    <h1 id="order-heading">طلب {{ order()!.number }}</h1>
+    <p>{{ statusLabels[order()!.status] }} — {{ order()!.placedAt | date: 'd/M/yyyy' }}</p>
+
+    <ol class="timeline">
+      @for (step of timeline; track step.status) {
+        <li [class.is-done]="isStepDone(step.status)">{{ step.label }}</li>
+      }
+    </ol>
+
+    <ul class="lines">
+      @for (line of order()!.lines; track line.productId) {
+        <li>
+          <a [routerLink]="['/products', line.slug]">
+            <app-site-image [src]="line.imageSrc" [alt]="line.imageAlt" sizes="20vw" />
+            <span>
+              <strong>{{ line.title }}</strong>
+              <small>{{ line.quantity }} × {{ formatPrice(line.unitPrice) }}</small>
+            </span>
+          </a>
+        </li>
+      }
+    </ul>
+
+    <dl>
+      <div>
+        <dt>المجموع الفرعي</dt>
+        <dd>{{ formatPrice(order()!.subtotal) }}</dd>
+      </div>
+      <div>
+        <dt>الشحن</dt>
+        <dd>{{ order()!.shippingFee === 0 ? 'مجاني' : formatPrice(order()!.shippingFee) }}</dd>
+      </div>
+      <div>
+        <dt>الإجمالي</dt>
+        <dd>{{ formatPrice(order()!.total) }}</dd>
+      </div>
+      <div>
+        <dt>طريقة الدفع</dt>
+        <dd>{{ order()!.paymentLabel }}</dd>
+      </div>
+      <div>
+        <dt>عنوان التوصيل</dt>
+        <dd>{{ order()!.shippingLabel }}</dd>
+      </div>
+    </dl>
+  }
+</section>

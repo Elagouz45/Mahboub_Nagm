@@ -1,0 +1,198 @@
+<header class="app-header" role="banner">
+  <div class="app-header__top">
+    <div class="page-container app-header__top-inner">
+      <a class="brand" routerLink="/" (click)="closeMenus()" [attr.aria-label]="appName">
+        <app-brand-logo variant="header" [priority]="true" />
+        <span class="brand__text">
+          <span class="brand__name">{{ shortName }}</span>
+          <span class="brand__slogan">{{ slogan }}</span>
+        </span>
+      </a>
+
+      <form class="search" role="search" (submit)="submitSearch($event)">
+        <label class="visually-hidden" for="site-search">بحث المنتجات</label>
+        <input
+          id="site-search"
+          type="search"
+          name="q"
+          placeholder="ابحث عن منتج أو ماركة..."
+          [value]="searchQuery()"
+          (input)="onSearchInput($event)"
+        />
+        <button type="submit" class="search__submit" aria-label="بحث">
+          <app-icon name="search" />
+        </button>
+      </form>
+
+      <div class="app-header__actions">
+        <div #accountMenuRoot class="account-control">
+          <button
+            #accountToggle
+            type="button"
+            class="icon-action"
+            [attr.aria-expanded]="!compactNav() && accountMenuOpen()"
+            [attr.aria-controls]="compactNav() ? null : 'account-menu'"
+            (click)="onAccountAction($event)"
+          >
+            @if (user()) {
+              <span class="account-control__avatar" aria-hidden="true">{{ initial() }}</span>
+              <span class="icon-action__label">مرحبًا، {{ firstName() }}</span>
+            } @else {
+              <app-icon name="user" />
+              <span class="icon-action__label">حسابي</span>
+            }
+          </button>
+          @if (!compactNav() && accountMenuOpen()) {
+            <div class="account-menu" id="account-menu" role="menu">
+              @if (user()) {
+                @for (link of accountNav; track link.path) {
+                  <a
+                    role="menuitem"
+                    [routerLink]="link.path"
+                    routerLinkActive="is-active"
+                    [routerLinkActiveOptions]="{ exact: link.exact }"
+                    (click)="closeAccountMenu()"
+                  >
+                    {{ link.label }}
+                  </a>
+                }
+                <button type="button" role="menuitem" class="account-menu__logout" (click)="logout()">
+                  تسجيل الخروج
+                </button>
+              } @else {
+                <a role="menuitem" routerLink="/auth/login" (click)="closeAccountMenu()">تسجيل الدخول</a>
+                <a role="menuitem" routerLink="/auth/register" (click)="closeAccountMenu()">إنشاء حساب</a>
+              }
+            </div>
+          }
+        </div>
+        <a class="icon-action" routerLink="/wishlist" aria-label="المفضلة" (click)="closeMenus()">
+          <app-icon name="heart" />
+          <span class="icon-action__label">المفضلة</span>
+          @if (wishlistCount() > 0) {
+            <span class="icon-action__badge">{{ badgeLabel(wishlistCount()) }}</span>
+          }
+        </a>
+        <a class="icon-action" routerLink="/cart" aria-label="سلة التسوق" (click)="closeMenus()">
+          <app-icon name="cart" />
+          <span class="icon-action__label">سلة التسوق</span>
+          @if (cartCount() > 0) {
+            <span class="icon-action__badge">{{ badgeLabel(cartCount()) }}</span>
+          }
+        </a>
+        <button
+          #menuToggle
+          type="button"
+          class="icon-action menu-toggle"
+          [attr.aria-expanded]="menuOpen()"
+          aria-controls="mobile-nav"
+          aria-label="قائمة التنقل"
+          (click)="toggleMenu()"
+        >
+          <app-icon [name]="menuOpen() ? 'close' : 'menu'" />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <nav
+    class="app-header__nav"
+    id="site-nav"
+    aria-label="التنقل الرئيسي"
+    [attr.inert]="compactNav() ? '' : null"
+  >
+    <div class="page-container">
+      <ul>
+        @for (link of navLinks; track link.label) {
+          <li>
+            @if (isShopLink(link)) {
+              <a
+                class="nav-link"
+                [routerLink]="link.path"
+                [class.is-active]="shopActive()"
+                [attr.aria-current]="shopActive() ? 'page' : null"
+              >
+                {{ link.label }}
+              </a>
+            } @else {
+              <a
+                class="nav-link"
+                [routerLink]="link.path"
+                [queryParams]="link.queryParams"
+                routerLinkActive="is-active"
+                [routerLinkActiveOptions]="navActiveOptions(link)"
+                ariaCurrentWhenActive="page"
+              >
+                {{ link.label }}
+              </a>
+            }
+          </li>
+        }
+      </ul>
+    </div>
+  </nav>
+
+  @if (menuOpen()) {
+    <button type="button" class="app-header__backdrop" aria-label="إغلاق القائمة" (click)="closeMenus()"></button>
+  }
+
+  <nav
+    #drawer
+    class="app-header__drawer"
+    id="mobile-nav"
+    aria-label="التنقل الرئيسي"
+    [class.is-open]="menuOpen()"
+    [attr.inert]="menuOpen() ? null : ''"
+  >
+    <ul>
+      @for (link of navLinks; track link.label) {
+        <li>
+          @if (isShopLink(link)) {
+            <a
+              class="nav-link"
+              [routerLink]="link.path"
+              [class.is-active]="shopActive()"
+              [attr.aria-current]="shopActive() ? 'page' : null"
+              (click)="closeMenus()"
+            >
+              {{ link.label }}
+            </a>
+          } @else {
+            <a
+              class="nav-link"
+              [routerLink]="link.path"
+              [queryParams]="link.queryParams"
+              routerLinkActive="is-active"
+              [routerLinkActiveOptions]="navActiveOptions(link)"
+              ariaCurrentWhenActive="page"
+              (click)="closeMenus()"
+            >
+              {{ link.label }}
+            </a>
+          }
+        </li>
+      }
+    </ul>
+    <div class="app-header__drawer-account">
+      <p>حسابي</p>
+      @if (user()) {
+        <p class="app-header__drawer-user">مرحبًا، {{ firstName() }}</p>
+        @for (link of accountNav; track link.path) {
+          <a
+            class="nav-link"
+            [routerLink]="link.path"
+            routerLinkActive="is-active"
+            [routerLinkActiveOptions]="{ exact: link.exact }"
+            (click)="closeMenus()"
+          >
+            {{ link.label }}
+          </a>
+        }
+        <button type="button" class="nav-link" (click)="logout()">تسجيل الخروج</button>
+      } @else {
+        <a class="nav-link" routerLink="/auth/login" (click)="closeMenus()">تسجيل الدخول</a>
+        <a class="nav-link" routerLink="/auth/register" (click)="closeMenus()">إنشاء حساب</a>
+      }
+    </div>
+  </nav>
+</header>

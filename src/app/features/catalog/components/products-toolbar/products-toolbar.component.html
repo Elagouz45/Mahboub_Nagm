@@ -1,0 +1,53 @@
+<div class="toolbar">
+  <label class="toolbar__search">
+    <span class="visually-hidden">ابحث في المنتجات</span>
+    <app-icon name="search" />
+    <input
+      type="search"
+      [value]="search()"
+      (input)="searchChange.emit(inputValue($event))"
+      placeholder="ابحث داخل المتجر عن منتج أو ماركة..."
+    />
+  </label>
+
+  @if (resultRange()) {
+    <p class="toolbar__count">{{ resultRange() }}</p>
+  }
+
+  <label class="toolbar__sort">
+    <span>ترتيب حسب</span>
+    <select [value]="sort()" (change)="onSortChange(inputValue($event))">
+      @for (key of sortKeys; track key) {
+        <option [value]="key">{{ sorts[key] }}</option>
+      }
+    </select>
+  </label>
+
+  <div class="toolbar__views" role="group" aria-label="طريقة العرض">
+    <button
+      type="button"
+      [class.is-active]="view() === 'grid'"
+      [attr.aria-pressed]="view() === 'grid'"
+      aria-label="عرض شبكي"
+      (click)="viewChange.emit('grid')"
+    >
+      <app-icon name="grid" />
+    </button>
+    <button
+      type="button"
+      [class.is-active]="view() === 'list'"
+      [attr.aria-pressed]="view() === 'list'"
+      aria-label="عرض قائمة"
+      (click)="viewChange.emit('list')"
+    >
+      <app-icon name="list" />
+    </button>
+  </div>
+
+  <button type="button" class="toolbar__filters" (click)="openFilters.emit()">
+    فلترة
+    @if (filterCount() > 0) {
+      <span class="toolbar__badge">{{ filterCount() }}</span>
+    }
+  </button>
+</div>

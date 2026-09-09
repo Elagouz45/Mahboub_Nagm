@@ -1,0 +1,32 @@
+@if (open()) {
+  <div class="drawer-root">
+    <button type="button" class="drawer-backdrop" aria-label="إغلاق الفلاتر" (click)="closed.emit()"></button>
+    <div
+      #panel
+      class="drawer"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="mobile-filters-title"
+    >
+      <header class="drawer__header">
+        <h2 id="mobile-filters-title">الفلاتر</h2>
+        <button type="button" class="drawer__close" aria-label="إغلاق الفلاتر" (click)="closed.emit()">
+          <app-icon name="close" />
+        </button>
+      </header>
+      <div class="drawer__body">
+        <app-product-filters
+          [filters]="filters()"
+          [available]="available()"
+          (filtersChange)="filtersChange.emit($event)"
+        />
+      </div>
+      <footer class="drawer__footer">
+        <button type="button" class="drawer__clear" (click)="clearDraft.emit()">مسح الكل</button>
+        <button type="button" class="drawer__apply" (click)="apply.emit()">
+          عرض النتائج ({{ resultCount() }})
+        </button>
+      </footer>
+    </div>
+  </div>
+}

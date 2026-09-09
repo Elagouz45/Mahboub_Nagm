@@ -1,0 +1,30 @@
+.wishlist-page {
+  display: grid;
+  gap: var(--space-4);
+  padding-block: var(--space-8);
+}
+
+.wishlist-page h1 {
+  margin: 0;
+}
+
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 1024px) {
+  .wishlist-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 360px) {
+  .wishlist-grid {
+    grid-template-columns: 1fr;
+  }
+}

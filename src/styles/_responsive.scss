@@ -1,0 +1,5 @@
+@media (max-width: 767px) {
+  .page-container {
+    width: min(100% - var(--space-4), var(--container-max-width));
+  }
+}

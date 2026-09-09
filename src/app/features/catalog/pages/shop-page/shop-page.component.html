@@ -1,0 +1,94 @@
+<section class="shop page-container">
+  <app-shop-banner [categorySlug]="store.query().category" (explore)="onExplore()" />
+
+  <app-shop-category-nav [selected]="store.query().category" (categoryChange)="onCategorySelect($event)" />
+
+  <app-products-toolbar
+    [search]="searchText()"
+    [sort]="appliedSort()"
+    [view]="viewMode()"
+    [filterCount]="store.activeFilterCount()"
+    [resultRange]="store.resultRange()"
+    (searchChange)="onSearch($event)"
+    (sortChange)="onSort($event)"
+    (viewChange)="onView($event)"
+    (openFilters)="openFilters()"
+  />
+
+  <app-active-filters
+    [chips]="store.activeChips()"
+    (remove)="onRemoveChip($event)"
+    (clear)="onClearFilters()"
+  />
+
+  <div class="shop__layout">
+    <aside
+      class="shop__filters"
+      aria-label="تصفية المنتجات"
+      [attr.inert]="desktopFilters() ? null : ''"
+    >
+      @if (store.loadingFilters()) {
+        <p class="shop__filters-loading">جاري تحميل الفلاتر...</p>
+      } @else {
+        <app-product-filters
+          [filters]="appliedFilters()"
+          [available]="store.availableFilters()"
+          (filtersChange)="onFiltersChange($event)"
+        />
+      }
+    </aside>
+
+    <div class="shop__results" id="results" #results>
+      @if (store.error() && store.products().length === 0 && !store.loading()) {
+        <app-error-state [message]="errorMessage" (retry)="retry()" />
+      } @else if (store.loading() && store.products().length === 0) {
+        <app-product-grid [loading]="true" [view]="viewMode()" />
+      } @else if (!store.loading() && store.products().length === 0) {
+        @if (store.query().q && !store.hasActiveFilters()) {
+          <app-empty-state
+            title="لا توجد نتائج لعبارة البحث الحالية"
+            actionLabel="عرض كل المنتجات"
+            (action)="onShowAll()"
+          />
+        } @else if (store.hasActiveFilters()) {
+          <app-empty-state
+            title="لم نجد منتجات مطابقة لاختياراتك"
+            description="يمكنك مسح الفلاتر أو عرض كل المنتجات"
+            actionLabel="مسح الفلاتر"
+            (action)="onClearFilters()"
+          />
+        } @else {
+          <app-empty-state title="لا توجد منتجات متاحة حاليًا" />
+        }
+      } @else {
+        @if (store.error()) {
+          <app-error-state [message]="errorMessage" (retry)="retry()" />
+        }
+        <app-product-grid
+          [products]="store.products()"
+          [view]="viewMode()"
+          [loading]="store.loading()"
+        />
+        <app-catalog-pagination
+          [page]="store.query().page"
+          [totalPages]="store.totalPages()"
+          [pageSize]="store.query().pageSize"
+          [disabled]="store.loading()"
+          (pageChange)="onPage($event)"
+          (pageSizeChange)="onPageSize($event)"
+        />
+      }
+    </div>
+  </div>
+</section>
+
+<app-mobile-filters-drawer
+  [open]="filtersOpen()"
+  [filters]="draftFilters()"
+  [available]="store.availableFilters()"
+  [resultCount]="store.total()"
+  (closed)="closeFilters()"
+  (apply)="applyDraft()"
+  (clearDraft)="clearDraft()"
+  (filtersChange)="onFiltersChange($event)"
+/>

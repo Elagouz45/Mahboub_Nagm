@@ -1,0 +1,131 @@
+<form class="filters" (submit)="$event.preventDefault()">
+  <app-filter-group legend="الأقسام">
+    @for (option of available().categories; track option.value) {
+      <label class="filters__option">
+        <input
+          type="checkbox"
+          [checked]="filters().category === option.value"
+          (change)="selectCategory(option.value)"
+        />
+        <span>{{ option.label }}</span>
+        <span class="filters__count">{{ option.count ?? 0 }}</span>
+      </label>
+    }
+  </app-filter-group>
+
+  <app-filter-group legend="الماركات">
+    @if (showBrandSearch()) {
+      <label class="filters__search">
+        <span class="visually-hidden">ابحث في الماركات</span>
+        <input
+          type="search"
+          [value]="brandQuery()"
+          (input)="brandQuery.set(inputValue($event))"
+          placeholder="ابحث عن ماركة"
+        />
+      </label>
+    }
+    @for (option of filteredBrands(); track option.value) {
+      <label class="filters__option">
+        <input
+          type="checkbox"
+          [checked]="filters().brands.includes(option.value)"
+          (change)="toggleBrand(option.value)"
+        />
+        <span>{{ option.label }}</span>
+        <span class="filters__count">{{ option.count ?? 0 }}</span>
+      </label>
+    }
+  </app-filter-group>
+
+  <app-filter-group legend="السعر">
+    <div class="filters__price">
+      <label>
+        من
+        <span class="filters__price-field">
+          <input
+            type="number"
+            min="0"
+            [value]="draftMin() || filters().minPrice || ''"
+            (input)="draftMin.set(inputValue($event))"
+            aria-label="السعر من بالجنيه"
+          />
+          <span>جنيه</span>
+        </span>
+      </label>
+      <label>
+        إلى
+        <span class="filters__price-field">
+          <input
+            type="number"
+            min="0"
+            [value]="draftMax() || filters().maxPrice || ''"
+            (input)="draftMax.set(inputValue($event))"
+            aria-label="السعر إلى بالجنيه"
+          />
+          <span>جنيه</span>
+        </span>
+      </label>
+    </div>
+    <p class="filters__currency-hint">الأسعار بالجنيه المصري</p>
+    <button type="button" class="filters__apply" (click)="applyPrice()">تطبيق السعر</button>
+  </app-filter-group>
+
+  <app-filter-group legend="التوفر">
+    @for (option of available().availability; track option.value) {
+      <label class="filters__option">
+        <input
+          type="checkbox"
+          [checked]="filters().availability === option.value"
+          (change)="selectAvailability(option.value)"
+        />
+        <span>{{ option.label }}</span>
+        <span class="filters__count">{{ option.count ?? 0 }}</span>
+      </label>
+    }
+  </app-filter-group>
+
+  <app-filter-group legend="العروض">
+    @for (option of available().offers; track option.value) {
+      <label class="filters__option">
+        <input
+          type="checkbox"
+          [checked]="filters().offer === option.value"
+          (change)="selectOffer(option.value)"
+        />
+        <span>{{ option.label }}</span>
+        <span class="filters__count">{{ option.count ?? 0 }}</span>
+      </label>
+    }
+  </app-filter-group>
+
+  <app-filter-group legend="التقييم">
+    @for (option of available().ratings; track option.value) {
+      <label class="filters__option">
+        <input
+          type="checkbox"
+          [checked]="isRatingSelected(option.value)"
+          (change)="selectRating(option.value)"
+        />
+        <span>{{ option.label }}</span>
+        <span class="filters__count">{{ option.count ?? 0 }}</span>
+      </label>
+    }
+  </app-filter-group>
+
+  @for (group of available().attributes; track group.key) {
+    <app-filter-group [legend]="group.label">
+      @for (option of group.options; track option.value) {
+        <label class="filters__option">
+          <input
+            type="checkbox"
+            [checked]="isAttributeSelected(group.key, option.value)"
+            (change)="toggleAttribute(group.key, option.value)"
+          />
+          <span>{{ option.label }}</span>
+          <span class="filters__count">{{ option.count ?? 0 }}</span>
+        </label>
+      }
+    </app-filter-group>
+  }
+</form>

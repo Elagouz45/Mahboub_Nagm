@@ -1,0 +1,65 @@
+<section class="after-sales page-container">
+  <section class="page-hero" aria-labelledby="after-sales-heading">
+    <div class="page-hero__copy">
+      <app-page-breadcrumb [items]="breadcrumb" />
+      <h1 id="after-sales-heading">راحتك مستمرة بعد الشراء</h1>
+      <p>معك في التركيب والصيانة والعناية بأجهزتك.</p>
+      <div class="page-hero__actions">
+        <a class="btn-primary" href="#after-sales-services">اطلب خدمة</a>
+        <a class="btn-secondary" routerLink="/contact" [queryParams]="{ type: 'order' }">تابع طلبك</a>
+      </div>
+    </div>
+    <div class="page-hero__media">
+      <app-site-image
+        [asset]="hero"
+        [fill]="true"
+        [priority]="true"
+        objectFit="cover"
+        sizes="(min-width: 768px) 42vw, 100vw"
+      />
+    </div>
+  </section>
+
+  <section class="services" id="after-sales-services" aria-labelledby="services-heading">
+    <h2 id="services-heading">كيف نقدر نساعدك؟</h2>
+    <ul>
+      @for (service of services; track service.id) {
+        <li>
+          <app-icon [name]="service.icon" />
+          <h3>{{ service.title }}</h3>
+          <p>{{ service.description }}</p>
+          <a [routerLink]="service.link" [queryParams]="service.query">{{ service.action }}</a>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <section class="steps" aria-labelledby="steps-heading">
+    <h2 id="steps-heading">خدمتك في ٣ خطوات</h2>
+    <ol>
+      @for (step of steps; track step.title; let index = $index) {
+        <li>
+          <span>{{ index + 1 }}</span>
+          <div>
+            <h3>{{ step.title }}</h3>
+            <p>{{ step.description }}</p>
+          </div>
+        </li>
+      }
+    </ol>
+  </section>
+
+  <section class="help-strip" aria-labelledby="help-heading">
+    <div>
+      <h2 id="help-heading">محتاج مساعدة؟</h2>
+      <p>فريقنا جاهز يوضح الخطوة التالية من خلال نموذج التواصل.</p>
+      @if (phone) {
+        <p>
+          <app-icon name="phone" />
+          <a [href]="'tel:' + phone">{{ phone }}</a>
+        </p>
+      }
+    </div>
+    <a class="btn-primary" routerLink="/contact">تواصل معنا</a>
+  </section>
+</section>

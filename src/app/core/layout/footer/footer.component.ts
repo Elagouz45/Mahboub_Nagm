@@ -1,0 +1,85 @@
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Component, DestroyRef, PLATFORM_ID, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { SITE_CONTACT, SITE_CONTACT_CONFIG } from '@core/config/site-contact.config';
+import {
+  APP_NAME,
+  APP_NAME_SHORT,
+  APP_SLOGAN,
+  FOOTER_LEGAL_LINKS,
+  FOOTER_QUICK_LINKS,
+  FOOTER_SERVICE_LINKS,
+  FOOTER_TRUST_POINTS,
+  NavLink,
+} from '@core/constants/app.constants';
+import { WHATSAPP_NUMBER } from '@core/tokens/api.tokens';
+import { WHATSAPP_HELP_MESSAGE, buildWhatsAppUrl } from '@core/utils/whatsapp.util';
+import { BrandLogoComponent } from '@shared/components/brand-logo/brand-logo.component';
+import { IconComponent } from '@shared/components/icon/icon.component';
+
+@Component({
+  selector: 'app-footer',
+  imports: [RouterLink, BrandLogoComponent, IconComponent],
+  templateUrl: './footer.component.html',
+  styleUrl: './footer.component.scss',
+})
+export class FooterComponent {
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly contact = inject(SITE_CONTACT_CONFIG, { optional: true }) ?? SITE_CONTACT;
+
+  readonly appName = APP_NAME;
+  readonly shortName = APP_NAME_SHORT;
+  readonly slogan = APP_SLOGAN;
+  readonly identityCopy =
+    'متجر متخصص في الأجهزة الكهربائية الأصلية مع ضمان معتمد وتوصيل سريع لجميع المحافظات.';
+  readonly year = new Date().getFullYear();
+  readonly quickLinks = FOOTER_QUICK_LINKS;
+  readonly serviceLinks = FOOTER_SERVICE_LINKS;
+  readonly legalLinks = FOOTER_LEGAL_LINKS;
+  readonly trustPoints = FOOTER_TRUST_POINTS;
+  readonly navColumns: readonly { id: string; label: string; links: readonly NavLink[] }[] = [
+    { id: 'footer-quick-links', label: 'روابط سريعة', links: this.quickLinks },
+    { id: 'footer-service-links', label: 'خدمة العملاء', links: this.serviceLinks },
+  ];
+  readonly whatsappUrl = buildWhatsAppUrl(inject(WHATSAPP_NUMBER), WHATSAPP_HELP_MESSAGE);
+  readonly phone = this.contact.phone.trim();
+  readonly email = this.contact.email.trim();
+  readonly workingHours = this.contact.workingHours.trim();
+  readonly socialLinks = this.contact.social.filter((link) => link.url.trim().length > 0);
+  readonly hasDirectContact = Boolean(this.phone || this.email || this.workingHours || this.whatsappUrl);
+  readonly compactFooter = signal(false);
+  readonly navOpen = signal<Record<string, boolean>>({
+    'footer-quick-links': false,
+    'footer-service-links': false,
+  });
+
+  constructor() {
+    const platformId = inject(PLATFORM_ID);
+    const view = inject(DOCUMENT).defaultView;
+    if (!isPlatformBrowser(platformId) || !view || typeof view.matchMedia !== 'function') {
+      return;
+    }
+
+    const media = view.matchMedia('(max-width: 767px)');
+    this.compactFooter.set(media.matches);
+    const onChange = () => {
+      this.compactFooter.set(media.matches);
+      if (!media.matches) {
+        this.navOpen.set({
+          'footer-quick-links': false,
+          'footer-service-links': false,
+        });
+      }
+    };
+    media.addEventListener('change', onChange);
+    this.destroyRef.onDestroy(() => media.removeEventListener('change', onChange));
+  }
+
+  isNavOpen(id: string): boolean {
+    return !this.compactFooter() || Boolean(this.navOpen()[id]);
+  }
+
+  toggleNav(id: string): void {
+    this.navOpen.update((open) => ({ ...open, [id]: !open[id] }));
+  }
+}

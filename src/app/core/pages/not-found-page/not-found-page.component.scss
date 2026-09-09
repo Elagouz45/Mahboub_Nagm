@@ -1,0 +1,17 @@
+.not-found {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: start;
+}
+
+.not-found h1,
+.not-found p {
+  margin: 0;
+}
+
+.not-found a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-min);
+  color: var(--color-accent);
+}

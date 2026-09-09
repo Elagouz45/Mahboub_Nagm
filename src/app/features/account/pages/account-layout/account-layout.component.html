@@ -1,0 +1,49 @@
+<section class="account-layout page-container">
+  <aside class="account-layout__nav" aria-label="أقسام الحساب">
+    <div class="account-chip">
+      <span class="account-chip__avatar" aria-hidden="true">{{ initial() }}</span>
+      <span>
+        <strong>{{ displayName() }}</strong>
+        <small>{{ user()?.email }}</small>
+      </span>
+    </div>
+    <nav class="account-links">
+      @for (link of links; track link.path) {
+        <a
+          [routerLink]="link.path"
+          routerLinkActive="is-active"
+          [routerLinkActiveOptions]="{ exact: link.exact }"
+        >
+          {{ link.label }}
+        </a>
+      }
+      <button type="button" (click)="logout()">تسجيل الخروج</button>
+    </nav>
+  </aside>
+
+  <div class="account-layout__mobile-nav">
+    <div class="account-chip">
+      <span class="account-chip__avatar" aria-hidden="true">{{ initial() }}</span>
+      <span>
+        <strong>{{ displayName() }}</strong>
+        <small>{{ user()?.email }}</small>
+      </span>
+    </div>
+    <div class="account-scroller" aria-label="أقسام الحساب">
+      @for (link of links; track link.path) {
+        <a
+          [routerLink]="link.path"
+          routerLinkActive="is-active"
+          [routerLinkActiveOptions]="{ exact: link.exact }"
+        >
+          {{ link.label }}
+        </a>
+      }
+      <button type="button" (click)="logout()">خروج</button>
+    </div>
+  </div>
+
+  <div class="account-layout__main">
+    <router-outlet />
+  </div>
+</section>

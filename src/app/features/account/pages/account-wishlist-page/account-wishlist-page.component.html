@@ -1,0 +1,15 @@
+<section class="wishlist" aria-labelledby="account-wishlist-heading">
+  <h1 id="account-wishlist-heading">المفضلة</h1>
+
+  @if (wishlist.items().length === 0) {
+    <app-empty-state title="قائمة المفضلة فارغة" actionLabel="تسوق الآن" (action)="goShop()" />
+  } @else {
+    <ul class="wishlist-grid">
+      @for (item of wishlist.items(); track item.id) {
+        <li>
+          <app-product-card [product]="item" />
+        </li>
+      }
+    </ul>
+  }
+</section>

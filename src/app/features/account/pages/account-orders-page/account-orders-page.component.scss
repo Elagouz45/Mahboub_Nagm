@@ -1,0 +1,43 @@
+.orders,
+.filters {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.orders h1 {
+  margin: 0;
+}
+
+.filters input,
+.filters select {
+  min-height: var(--touch-min);
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding-inline: var(--space-3);
+  background: var(--color-surface);
+}
+
+.orders ul {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.orders li a {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  color: inherit;
+}
+
+@media (min-width: 768px) {
+  .filters {
+    grid-template-columns: minmax(0, 1fr) 10rem 8rem;
+  }
+}

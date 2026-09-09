@@ -1,0 +1,33 @@
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.breadcrumb li:not(:last-child)::after {
+  content: '/';
+  margin-inline-start: var(--space-2);
+  color: var(--color-border);
+}
+
+.breadcrumb a {
+  color: var(--color-primary);
+}
+
+.breadcrumb [aria-current='page'] {
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+:host-context(.shop-banner) .breadcrumb ol {
+  color: var(--color-text-secondary);
+}
+
+:host-context(.shop-banner) .breadcrumb a {
+  color: var(--color-primary);
+}

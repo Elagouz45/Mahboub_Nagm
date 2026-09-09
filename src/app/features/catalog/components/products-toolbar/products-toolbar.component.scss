@@ -1,0 +1,88 @@
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.toolbar__search {
+  position: relative;
+  flex: 1 1 14rem;
+}
+
+.toolbar__search app-icon {
+  position: absolute;
+  inset-inline-start: var(--space-3);
+  inset-block-start: 50%;
+  translate: 0 -50%;
+  color: var(--color-text-secondary);
+}
+
+.toolbar__search input,
+.toolbar__sort select {
+  min-height: var(--touch-min);
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  padding-inline: var(--space-4);
+}
+
+.toolbar__search input {
+  padding-inline-start: 2.5rem;
+}
+
+.toolbar__count {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.toolbar__sort {
+  display: grid;
+  gap: var(--space-1);
+  font-size: 0.85rem;
+}
+
+.toolbar__views {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.toolbar__views button,
+.toolbar__filters {
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-primary);
+}
+
+.toolbar__views .is-active,
+.toolbar__filters {
+  background: var(--color-primary);
+  color: var(--color-surface);
+  border-color: var(--color-primary);
+}
+
+.toolbar__badge {
+  min-width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: var(--color-surface);
+  font-size: 0.75rem;
+  display: inline-grid;
+  place-items: center;
+}
+
+@media (min-width: 768px) {
+  .toolbar__filters {
+    display: none;
+  }
+}

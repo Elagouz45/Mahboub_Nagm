@@ -1,0 +1,22 @@
+<section class="requests" aria-labelledby="requests-heading">
+  <h1 id="requests-heading">طلبات الصيانة</h1>
+  <p>
+    لطلب صيانة جديدة استخدم نموذج التواصل.
+    <a routerLink="/contact" [queryParams]="{ type: 'maintenance' }">طلب صيانة</a>
+  </p>
+
+  @if (requests().length === 0) {
+    <app-empty-state title="لا توجد طلبات صيانة" />
+  } @else {
+    <ul>
+      @for (item of requests(); track item.id) {
+        <li>
+          <strong>{{ item.title }}</strong>
+          <p>{{ item.productTitle }}</p>
+          <p>{{ statusLabels[item.status] }} — {{ item.createdAt | date: 'd/M/yyyy' }}</p>
+          <p>{{ item.note }}</p>
+        </li>
+      }
+    </ul>
+  }
+</section>

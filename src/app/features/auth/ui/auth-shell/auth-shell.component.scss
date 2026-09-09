@@ -1,0 +1,49 @@
+:host {
+  display: block;
+}
+
+.auth-shell {
+  display: grid;
+  gap: var(--space-6);
+  padding-block: var(--space-6) var(--space-10);
+}
+
+.auth-shell__form {
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}
+
+.auth-shell__form h1 {
+  margin: 0;
+}
+
+.auth-shell__visual {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .auth-shell {
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.9fr);
+    align-items: stretch;
+    min-height: 32rem;
+  }
+
+  .auth-shell__visual {
+    display: block;
+    position: relative;
+    min-height: 100%;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+  }
+}
+
+@media (max-width: 767px) {
+  .auth-shell__form :is(input, select, textarea, button) {
+    font-size: 16px;
+  }
+}

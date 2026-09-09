@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-label="Vacuum cleaner">
+  <rect width="320" height="240" fill="#eef2f6"/>
+  <ellipse cx="168" cy="214" rx="78" ry="8" fill="#c5d0dc"/>
+  <rect x="58" y="118" width="128" height="72" rx="28" fill="#e2e8f0" stroke="#0b1f3a" stroke-width="3"/>
+  <circle cx="92" cy="190" r="16" fill="#0b1f3a"/>
+  <circle cx="152" cy="190" r="16" fill="#0b1f3a"/>
+  <circle cx="92" cy="190" r="6" fill="#94a3b8"/>
+  <circle cx="152" cy="190" r="6" fill="#94a3b8"/>
+  <rect x="78" y="132" width="44" height="28" rx="6" fill="#0b1f3a"/>
+  <rect x="88" y="140" width="24" height="12" rx="2" fill="#38bdf8"/>
+  <path d="M186 140c28-8 48-36 70-58" fill="none" stroke="#0b1f3a" stroke-width="8" stroke-linecap="round"/>
+  <path d="M256 82v-28" fill="none" stroke="#0b1f3a" stroke-width="8" stroke-linecap="round"/>
+  <rect x="236" y="42" width="40" height="16" rx="6" fill="#f97316"/>
+</svg>

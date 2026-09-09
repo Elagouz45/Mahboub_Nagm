@@ -1,0 +1,28 @@
+<section class="page-container cart-page" aria-labelledby="cart-heading">
+  <h1 id="cart-heading">سلة التسوق</h1>
+
+  @if (cart.items().length === 0) {
+    <app-empty-state
+      title="السلة فارغة"
+      description="أضيفي منتجات من الصفحة الرئيسية للبدء."
+      actionLabel="تسوق الآن"
+      (action)="goShop()"
+    />
+  } @else {
+    <ul>
+      @for (item of cart.items(); track item.product.id) {
+        <li>
+          <div>
+            <p>{{ item.product.brand }}</p>
+            <h2>
+              <a [routerLink]="['/products', item.product.slug]">{{ item.product.title }}</a>
+            </h2>
+            <p>الكمية: {{ item.quantity }}</p>
+            <app-price-display [price]="item.product.price * item.quantity" />
+          </div>
+          <button type="button" (click)="cart.remove(item.product.id)">حذف</button>
+        </li>
+      }
+    </ul>
+  }
+</section>

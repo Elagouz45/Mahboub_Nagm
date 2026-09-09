@@ -1,0 +1,116 @@
+.offers-page {
+  display: grid;
+  gap: var(--space-6);
+  padding-block: var(--space-5) var(--space-10);
+}
+
+.page-hero {
+  display: grid;
+  gap: var(--space-5);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.page-hero__copy {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  align-content: center;
+  justify-items: start;
+}
+
+.page-hero__copy h1,
+.page-hero__copy p {
+  margin: 0;
+  color: inherit;
+}
+
+.page-hero__kicker,
+.page-hero__badge {
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.page-hero__badge {
+  display: inline-flex;
+  min-height: var(--touch-min);
+  align-items: center;
+  padding-inline: var(--space-4);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-accent) 18%, transparent);
+}
+
+.page-hero__cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-min);
+  padding-inline: var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--color-accent);
+  color: var(--color-surface);
+  font-weight: 700;
+}
+
+.page-hero__cta:hover,
+.page-hero__cta:focus-visible {
+  background: var(--color-accent-hover);
+}
+
+.page-hero__media {
+  position: relative;
+  min-height: 12rem;
+}
+
+:host ::ng-deep .page-hero .page-breadcrumb,
+:host ::ng-deep .page-hero .page-breadcrumb a,
+:host ::ng-deep .page-hero .page-breadcrumb span {
+  color: rgb(255 255 255 / 0.82);
+}
+
+.offers-tabs,
+.offers-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.offers-tabs button,
+.offers-toolbar select {
+  min-height: var(--touch-min);
+  padding-inline: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+  font: inherit;
+  font-weight: 700;
+}
+
+.offers-tabs .is-active,
+.offers-tabs button:hover,
+.offers-tabs button:focus-visible {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.offers-toolbar select {
+  border-radius: var(--radius-md);
+}
+
+@media (min-width: 768px) {
+  .page-hero {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    min-height: 18rem;
+  }
+
+  .page-hero__media {
+    min-height: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-hero__cta {
+    transition: none;
+  }
+}

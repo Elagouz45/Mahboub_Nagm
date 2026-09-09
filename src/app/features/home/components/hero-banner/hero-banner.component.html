@@ -1,0 +1,33 @@
+<section class="hero">
+  <div class="hero__media">
+    <app-site-image
+      [asset]="heroImage"
+      [fill]="true"
+      [priority]="true"
+      objectFit="cover"
+      objectPosition="left center"
+      sizes="100vw"
+    />
+  </div>
+  <div class="hero__inner page-container">
+    <div class="hero__copy">
+      <h1>كل أجهزة بيتك في مكان واحد</h1>
+      <p class="hero__lead">أفضل الماركات بأقوى الأسعار</p>
+      <p>اختاري من أحدث الأجهزة الأصلية بضمان معتمد وتوصيل سريع</p>
+      <div class="hero__actions">
+        <a class="btn btn--shop" routerLink="/products">
+          <app-icon name="bag" />
+          تسوق الآن
+        </a>
+        @if (whatsappUrl) {
+          <a class="btn btn--wa" [href]="whatsappUrl" target="_blank" rel="noopener noreferrer">
+            <app-icon name="whatsapp" />
+            اطلب عبر واتساب
+          </a>
+        } @else {
+          <button type="button" class="btn btn--wa" disabled>اطلب عبر واتساب</button>
+        }
+      </div>
+    </div>
+  </div>
+</section>

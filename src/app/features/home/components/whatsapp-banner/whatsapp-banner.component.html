@@ -1,0 +1,19 @@
+<section class="wa-banner">
+  <div class="wa-banner__inner page-container">
+    <div class="wa-banner__media">
+      <app-site-image [asset]="supportImage" [fill]="true" objectFit="contain" />
+    </div>
+    <span class="wa-banner__mark" aria-hidden="true">
+      <app-icon name="whatsapp" />
+    </span>
+    <div>
+      <h2>محتاج مساعدة في اختيار جهازك؟</h2>
+      <p>فريقنا جاهز يساعدك تختار الجهاز الأنسب لاحتياجك وميزانيتك</p>
+    </div>
+    @if (whatsappUrl) {
+      <a [href]="whatsappUrl" target="_blank" rel="noopener noreferrer">كلمنا على واتساب</a>
+    } @else {
+      <button type="button" disabled>كلمنا على واتساب</button>
+    }
+  </div>
+</section>

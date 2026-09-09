@@ -1,0 +1,56 @@
+<section class="overview" aria-labelledby="overview-heading">
+  <h1 id="overview-heading">مرحبًا، {{ firstName() }}</h1>
+  <p>هذه نظرة سريعة على حسابك في محبوب نجم.</p>
+
+  @if (emptyShopper()) {
+    <app-empty-state
+      title="حسابك جاهز للتسوق"
+      description="ابدأ من المتجر لإضافة منتجات إلى طلباتك وعناوينك."
+      actionLabel="تسوق الآن"
+      (action)="goShop()"
+    />
+  } @else {
+    <ul class="stats">
+      <li>
+        <strong>{{ orders().length }}</strong>
+        <span>طلبات</span>
+      </li>
+      <li>
+        <strong>{{ addresses().length }}</strong>
+        <span>عناوين</span>
+      </li>
+    </ul>
+
+    <div class="cards">
+      <article>
+        <h2>آخر طلب</h2>
+        @if (lastOrder(); as order) {
+          <p>{{ order.number }} — {{ statusLabels[order.status] }}</p>
+          <p>{{ order.placedAt | date: 'd/M/yyyy' }}</p>
+          <p>{{ formatPrice(order.total) }}</p>
+          <a [routerLink]="['/account/orders', order.id]">عرض التفاصيل</a>
+        } @else {
+          <p>لا توجد طلبات بعد.</p>
+          <a routerLink="/products">تسوق الآن</a>
+        }
+      </article>
+      <article>
+        <h2>العنوان الافتراضي</h2>
+        @if (defaultAddress(); as address) {
+          <p>{{ address.city }} — {{ address.street }}</p>
+          <a routerLink="/account/addresses">إدارة العناوين</a>
+        } @else {
+          <p>لم تضف عنوانًا بعد.</p>
+          <a routerLink="/account/addresses">إضافة عنوان</a>
+        }
+      </article>
+    </div>
+  }
+
+  <nav class="shortcuts" aria-label="اختصارات الحساب">
+    <a routerLink="/account/orders">طلباتي</a>
+    <a routerLink="/account/wishlist">المفضلة</a>
+    <a routerLink="/account/service-requests">طلبات الصيانة</a>
+    <a routerLink="/products">المتجر</a>
+  </nav>
+</section>

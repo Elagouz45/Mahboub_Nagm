@@ -1,0 +1,14 @@
+.main-layout {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-layout__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.main-layout__content:focus {
+  outline: none;
+}

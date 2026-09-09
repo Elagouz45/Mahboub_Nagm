@@ -1,0 +1,66 @@
+<app-auth-shell title="تسجيل الدخول">
+  <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <p class="auth-form__lead">ادخل ببريدك أو رقم هاتفك المصري للمتابعة.</p>
+
+    @if (showDemo) {
+      <aside class="demo-box" aria-label="حساب تجريبي">
+        <p>حساب تجريبي للمعاينة</p>
+        <p>
+          <span>{{ demoEmail }}</span>
+          <span>{{ demoPassword }}</span>
+        </p>
+        <button type="button" (click)="fillDemo()">تعبئة البيانات</button>
+      </aside>
+    }
+
+    @if (formError()) {
+      <p class="auth-form__error" role="alert">{{ formError() }}</p>
+    }
+
+    <label>
+      <span>البريد أو رقم الهاتف</span>
+      <input
+        type="text"
+        formControlName="identifier"
+        autocomplete="username"
+        inputmode="email"
+        [attr.aria-invalid]="fieldInvalid('identifier')"
+      />
+      @if (fieldInvalid('identifier')) {
+        <small>أدخل بريدًا صحيحًا أو رقمًا مصريًا مثل 01012345678.</small>
+      }
+    </label>
+
+    <label>
+      <span>كلمة المرور</span>
+      <span class="password-field">
+        <input
+          [type]="showPassword() ? 'text' : 'password'"
+          formControlName="password"
+          autocomplete="current-password"
+          [attr.aria-invalid]="fieldInvalid('password')"
+        />
+        <button type="button" (click)="togglePassword()">
+          {{ showPassword() ? 'إخفاء' : 'إظهار' }}
+        </button>
+      </span>
+      @if (fieldInvalid('password')) {
+        <small>كلمة المرور مطلوبة.</small>
+      }
+    </label>
+
+    <label class="check-row">
+      <input type="checkbox" formControlName="rememberMe" />
+      <span>تذكرني على هذا الجهاز</span>
+    </label>
+
+    <button type="submit" class="auth-form__submit" [disabled]="submitting()">
+      {{ submitting() ? 'جارٍ الدخول...' : 'تسجيل الدخول' }}
+    </button>
+
+    <p class="auth-form__switch">
+      ليس لديك حساب؟
+      <a routerLink="/auth/register">إنشاء حساب</a>
+    </p>
+  </form>
+</app-auth-shell>

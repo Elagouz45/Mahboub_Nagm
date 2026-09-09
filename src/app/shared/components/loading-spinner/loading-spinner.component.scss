@@ -1,0 +1,29 @@
+.loading-spinner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--touch-min);
+  color: var(--color-text-secondary);
+}
+
+.loading-spinner__indicator {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--color-border);
+  border-block-start-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-spinner__indicator {
+    animation: none;
+    border-block-start-color: var(--color-accent);
+  }
+}

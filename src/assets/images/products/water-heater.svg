@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-label="Electric water heater">
+  <rect width="320" height="240" fill="#eef2f6"/>
+  <ellipse cx="160" cy="216" rx="58" ry="8" fill="#c5d0dc"/>
+  <rect x="118" y="28" width="84" height="168" rx="28" fill="#dbe4ee" stroke="#0b1f3a" stroke-width="3"/>
+  <rect x="130" y="48" width="60" height="18" rx="6" fill="#0b1f3a"/>
+  <circle cx="160" cy="57" r="5" fill="#f97316"/>
+  <rect x="136" y="82" width="48" height="70" rx="8" fill="#cbd5e1"/>
+  <path d="M148 96h24M148 110h24M148 124h24" stroke="#94a3b8" stroke-width="4" stroke-linecap="round"/>
+  <rect x="108" y="168" width="16" height="22" rx="3" fill="#64748b"/>
+  <rect x="196" y="168" width="16" height="22" rx="3" fill="#64748b"/>
+  <circle cx="116" cy="196" r="6" fill="#38bdf8"/>
+  <circle cx="204" cy="196" r="6" fill="#f97316"/>
+</svg>

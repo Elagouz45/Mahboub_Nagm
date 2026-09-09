@@ -1,0 +1,211 @@
+<section class="contact-page page-container">
+  <section class="page-hero" aria-labelledby="contact-heading">
+    <div class="page-hero__copy">
+      <app-page-breadcrumb [items]="breadcrumb" />
+      <p class="page-hero__kicker">ناس حقيقية، دعم واضح</p>
+      <h1 id="contact-heading">نحن قريبون منك دائمًا</h1>
+      <p>اختر سبب التواصل وسنساعدك من خلال النموذج. القنوات المباشرة تظهر فقط إن كانت متوفرة.</p>
+    </div>
+    <div class="page-hero__media">
+      <app-site-image
+        [asset]="hero"
+        [fill]="true"
+        [priority]="true"
+        objectFit="cover"
+        sizes="(min-width: 768px) 40vw, 100vw"
+      />
+    </div>
+  </section>
+
+  <div class="purpose-grid" role="radiogroup" aria-label="سبب التواصل">
+    @for (type of types; track type) {
+      <button
+        type="button"
+        class="purpose-card"
+        role="radio"
+        [attr.aria-checked]="selectedType() === type"
+        [class.is-active]="selectedType() === type"
+        (click)="onSelectType(type)"
+      >
+        <app-icon [name]="purposeIcons[type]" />
+        <span>{{ typeLabels[type] }}</span>
+      </button>
+    }
+  </div>
+
+  <div class="contact-layout">
+    <form class="contact-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <h2>كيف يمكننا مساعدتك؟</h2>
+      <p>أخبرنا بالتفاصيل وسنعاود التواصل عند توفر الخدمة.</p>
+
+      <label>
+        <span>الاسم الكامل</span>
+        <input type="text" formControlName="name" autocomplete="name" placeholder="مثال: أحمد محمد" />
+        @if (fieldInvalid('name')) {
+          <small>الاسم مطلوب.</small>
+        }
+      </label>
+
+      <label>
+        <span>رقم الهاتف</span>
+        <input type="tel" formControlName="phone" autocomplete="tel" inputmode="tel" placeholder="01012345678" />
+        @if (fieldInvalid('phone')) {
+          <small>أدخل رقمًا مصريًا صحيحًا مثل 01012345678 أو +201012345678.</small>
+        }
+      </label>
+
+      <label>
+        <span>البريد الإلكتروني</span>
+        <input type="email" formControlName="email" autocomplete="email" placeholder="example@domain.com" />
+        @if (fieldInvalid('email')) {
+          <small>أدخل بريدًا إلكترونيًا صحيحًا.</small>
+        }
+      </label>
+
+      <label>
+        <span>نوع الطلب</span>
+        <select formControlName="type" (change)="onSelectType(form.controls.type.value)">
+          @for (type of types; track type) {
+            <option [value]="type">{{ typeLabels[type] }}</option>
+          }
+        </select>
+      </label>
+
+      @if (selectedType() === 'product') {
+        <label>
+          <span>المنتج (اختياري)</span>
+          <input type="text" formControlName="productSlug" placeholder="معرّف المنتج إن توفر" />
+        </label>
+      }
+
+      @if (selectedType() === 'order') {
+        <label>
+          <span>رقم الطلب</span>
+          <input type="text" formControlName="orderNumber" placeholder="مثال: MN123456" />
+          @if (fieldInvalid('orderNumber')) {
+            <small>رقم الطلب مطلوب لمتابعة الطلب.</small>
+          }
+        </label>
+      }
+
+      @if (selectedType() === 'maintenance') {
+        <label>
+          <span>نوع الجهاز</span>
+          <input type="text" formControlName="deviceType" placeholder="ثلاجة، غسالة، تكييف..." />
+          @if (fieldInvalid('deviceType')) {
+            <small>حدد نوع الجهاز.</small>
+          }
+        </label>
+        <label>
+          <span>وصف العطل</span>
+          <textarea formControlName="issue" rows="3" placeholder="اكتب وصفًا مختصرًا للعطل"></textarea>
+          @if (fieldInvalid('issue')) {
+            <small>وصف العطل مطلوب.</small>
+          }
+        </label>
+      }
+
+      @if (selectedType() === 'complaint') {
+        <label>
+          <span>موضوع الشكوى أو الاقتراح</span>
+          <input type="text" formControlName="complaintSubject" placeholder="موضوع الرسالة" />
+          @if (fieldInvalid('complaintSubject')) {
+            <small>الموضوع مطلوب.</small>
+          }
+        </label>
+      }
+
+      <label>
+        <span>الرسالة</span>
+        <textarea formControlName="message" rows="5" maxlength="1000" placeholder="اكتب تفاصيل استفسارك هنا..."></textarea>
+        <small class="char-count">{{ messageLength() }}/1000</small>
+        @if (fieldInvalid('message')) {
+          <small>الرسالة مطلوبة وبحد أدنى 10 حروف.</small>
+        }
+      </label>
+
+      <label class="file-field">
+        <span>مرفقات اختيارية</span>
+        <input type="file" multiple accept="image/jpeg,image/png,image/webp,application/pdf" (change)="onFiles($event)" />
+        @if (fileError()) {
+          <small>{{ fileError() }}</small>
+        }
+      </label>
+      @if (files().length) {
+        <ul class="file-list">
+          @for (file of files(); track file.name) {
+            <li>
+              <span>{{ file.name }}</span>
+              <button type="button" (click)="removeFile(file.name)">حذف</button>
+            </li>
+          }
+        </ul>
+      }
+
+      <p class="form-note">
+        <app-icon name="lock" />
+        بياناتك تُستخدم للرد على طلبك فقط.
+      </p>
+
+      <button type="submit" [disabled]="submitting()">
+        <app-icon name="send" />
+        {{ submitting() ? 'جارٍ الإرسال...' : 'إرسال الرسالة' }}
+      </button>
+
+      <p class="form-status" aria-live="polite">{{ submitMessage() }}</p>
+    </form>
+
+    @if (hasDirectContact) {
+      <aside class="contact-aside" aria-label="تواصل مباشر">
+        <h2>تواصل مباشر</h2>
+        @if (phone) {
+          <p>
+            <app-icon name="phone" />
+            <a [href]="'tel:' + phone">{{ phone }}</a>
+          </p>
+        }
+        @if (whatsappUrl) {
+          <p>
+            <app-icon name="whatsapp" />
+            <a [href]="whatsappUrl" target="_blank" rel="noopener noreferrer">محادثة واتساب</a>
+          </p>
+        }
+        @if (email) {
+          <p>
+            <app-icon name="mail" />
+            <a [href]="'mailto:' + email">{{ email }}</a>
+          </p>
+        }
+        @if (workingHours) {
+          <p>{{ workingHours }}</p>
+        }
+      </aside>
+    }
+  </div>
+
+  <section class="contact-faq" id="contact-faq" aria-labelledby="faq-heading">
+    <div class="faq-head">
+      <h2 id="faq-heading">قد تجد إجابتك هنا</h2>
+      <a href="#contact-faq" (click)="showAllFaq($event)">عرض جميع الأسئلة</a>
+    </div>
+    <ul>
+      @for (item of faq; track item.id) {
+        <li>
+          <button
+            type="button"
+            [attr.aria-expanded]="openFaqId() === item.id"
+            [attr.aria-controls]="'faq-' + item.id"
+            (click)="toggleFaq(item.id)"
+          >
+            {{ item.question }}
+          </button>
+          @if (openFaqId() === item.id) {
+            <p [id]="'faq-' + item.id">{{ item.answer }}</p>
+          }
+        </li>
+      }
+    </ul>
+  </section>
+
+  <app-page-trust-strip [items]="trustItems" />
+</section>

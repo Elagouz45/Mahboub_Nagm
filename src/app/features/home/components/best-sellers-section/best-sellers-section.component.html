@@ -1,0 +1,40 @@
+<section class="best-sellers page-container" aria-labelledby="best-sellers-heading">
+  <app-section-header
+    title="الأكثر مبيعًا"
+    headingId="best-sellers-heading"
+    actionLabel="عرض المزيد"
+    actionLink="/products"
+    [actionQuery]="{ sort: 'bestselling' }"
+  />
+
+  @switch (state().status) {
+    @case ('loading') {
+      <div class="best-sellers__row">
+        @for (item of [1, 2, 3, 4, 5, 6]; track item) {
+          <div class="skeleton-card"></div>
+        }
+      </div>
+    }
+    @case ('empty') {
+      <app-empty-state title="لا توجد منتجات مميزة حالياً" />
+    }
+    @case ('error') {
+      <app-error-state [message]="state().error ?? ''" (retry)="retry.emit()" />
+    }
+    @default {
+      <div class="best-sellers__carousel">
+        <button type="button" class="nav-btn" aria-label="السابق" (click)="scroll(-1)">
+          <app-icon name="chevron-prev" />
+        </button>
+        <div class="best-sellers__row" #scroller>
+          @for (product of state().data; track product.id) {
+            <app-product-card [product]="product" [compact]="true" />
+          }
+        </div>
+        <button type="button" class="nav-btn" aria-label="التالي" (click)="scroll(1)">
+          <app-icon name="chevron-next" />
+        </button>
+      </div>
+    }
+  }
+</section>

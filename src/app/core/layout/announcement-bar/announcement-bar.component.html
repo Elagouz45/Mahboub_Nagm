@@ -1,0 +1,24 @@
+<div class="announcement-bar" role="region" aria-label="مزايا المتجر">
+  <div class="announcement-bar__viewport">
+    <ul class="announcement-bar__list">
+      @for (item of items; track item.id) {
+        <li>
+          <span class="announcement-bar__icon" aria-hidden="true">
+            <app-icon [name]="item.icon" />
+          </span>
+          <span class="announcement-bar__text">{{ item.label }}</span>
+        </li>
+      }
+    </ul>
+    <ul class="announcement-bar__list announcement-bar__list--clone" aria-hidden="true" inert>
+      @for (item of items; track item.id) {
+        <li>
+          <span class="announcement-bar__icon">
+            <app-icon [name]="item.icon" />
+          </span>
+          <span class="announcement-bar__text">{{ item.label }}</span>
+        </li>
+      }
+    </ul>
+  </div>
+</div>
