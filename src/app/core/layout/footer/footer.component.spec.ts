@@ -28,7 +28,6 @@ describe('FooterComponent', () => {
           { path: 'after-sales', component: FooterSpecHostComponent },
           { path: 'return-policy', component: FooterSpecHostComponent },
           { path: 'privacy-policy', component: FooterSpecHostComponent },
-          { path: 'service-centers', component: FooterSpecHostComponent },
         ]),
       ],
     }).compileComponents();
@@ -98,7 +97,6 @@ describe('FooterComponent', () => {
       '/contact?topic=shipping',
       '/return-policy',
       '/contact?topic=warranty',
-      '/service-centers',
     ]);
     expect(navHrefs(footer, 'روابط قانونية')).toEqual(['/privacy-policy', '/return-policy']);
     expect(footer.textContent).toContain('صنع في مصر لخدمة كل بيت');

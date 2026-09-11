@@ -7,7 +7,7 @@ import { USER_ERROR_MESSAGES } from '@core/constants/error-messages';
 import { ToastService } from '@core/services/toast.service';
 import { isEgyptianMobile } from '@core/utils/egyptian-phone.util';
 import { focusFirstInvalid } from '@core/utils/focus-invalid.util';
-import { EGYPT_GOVERNORATES } from '@features/service-centers/data-access/egypt-governorates';
+import { EGYPT_GOVERNORATES } from '@core/data/egypt-governorates';
 import { EmptyStateComponent } from '@shared/components/empty-state/empty-state.component';
 import { ErrorStateComponent } from '@shared/components/error-state/error-state.component';
 import { IconComponent } from '@shared/components/icon/icon.component';

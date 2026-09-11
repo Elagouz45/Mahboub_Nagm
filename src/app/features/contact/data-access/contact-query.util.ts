@@ -16,7 +16,7 @@ export function legacyContactRedirect(
     return { path: '/after-sales', queryParams: {} };
   }
   if (topic === 'maintenance') {
-    return { path: '/service-centers', queryParams: {} };
+    return { path: '/contact', queryParams: { type: 'maintenance' } };
   }
   if (topic === 'returns' && !params.get('type')) {
     return { path: '/return-policy', queryParams: {} };

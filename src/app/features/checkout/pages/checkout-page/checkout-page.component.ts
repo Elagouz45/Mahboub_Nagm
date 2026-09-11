@@ -7,7 +7,7 @@ import { AccountRepository } from '@core/auth/account.repository';
 import { AccountAddress } from '@core/auth/account.models';
 import { DEMO_SHIPPING, DemoCommerceService } from '@core/services/demo-commerce.service';
 import { isEgyptianMobile } from '@core/utils/egyptian-phone.util';
-import { EGYPT_GOVERNORATES } from '@features/service-centers/data-access/egypt-governorates';
+import { EGYPT_GOVERNORATES } from '@core/data/egypt-governorates';
 import { formatEgp } from '@shared/utils/format-price.util';
 @Component({
   selector: 'app-checkout-page',

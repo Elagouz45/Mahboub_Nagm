@@ -43,7 +43,6 @@ export const MAIN_NAV_LINKS: readonly NavLink[] = [
   { path: '/offers', label: 'العروض' },
   { path: '/brands', label: 'العلامات التجارية' },
   { path: '/after-sales', label: 'خدمات ما بعد البيع' },
-  { path: '/service-centers', label: 'مركز الصيانة' },
   { path: '/about', label: 'من نحن' },
   { path: '/contact', label: 'تواصل معنا', exact: true },
 ];
@@ -68,7 +67,6 @@ export const FOOTER_SERVICE_LINKS: readonly NavLink[] = [
   { path: '/contact', queryParams: { topic: 'shipping' }, label: 'الشحن والتوصيل' },
   { path: '/return-policy', label: 'الاستبدال والاسترجاع' },
   { path: '/contact', queryParams: { topic: 'warranty' }, label: 'الضمان' },
-  { path: '/service-centers', label: 'مراكز الصيانة' },
 ];
 
 export const FOOTER_TRUST_POINTS = [

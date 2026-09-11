@@ -69,13 +69,6 @@ export const routes: Routes = [
           import('./features/after-sales/after-sales.routes').then((routes) => routes.AFTER_SALES_ROUTES),
       },
       {
-        path: 'service-centers',
-        loadChildren: () =>
-          import('./features/service-centers/service-centers.routes').then(
-            (routes) => routes.SERVICE_CENTERS_ROUTES,
-          ),
-      },
-      {
         path: 'return-policy',
         loadChildren: () =>
           import('./features/policies/policies.routes').then((routes) => routes.RETURN_POLICY_ROUTES),

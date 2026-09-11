@@ -164,7 +164,8 @@ describe('app routes', () => {
     await router.navigateByUrl('/contact?topic=maintenance');
     await fixture.whenStable();
     fixture.detectChanges();
-    expect(router.url.startsWith('/service-centers')).toBe(true);
+    expect(router.url.startsWith('/contact')).toBe(true);
+    expect(router.url).toContain('type=maintenance');
 
     await router.navigateByUrl('/contact?topic=returns');
     await fixture.whenStable();

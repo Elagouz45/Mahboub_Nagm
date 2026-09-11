@@ -319,14 +319,6 @@ export const SITE_IMAGE_ASSETS = {
       'تركيب جهاز كهربائي في المنزل',
     ),
   },
-  serviceCenters: {
-    cta: img(
-      'services/authorized-warranty.webp',
-      1000,
-      1000,
-      'فني صيانة معتمد يفحص جهازًا كهربائيًا',
-    ),
-  },
   returnPolicy: {
     hero: img(
       'services/fast-delivery.webp',

@@ -15,8 +15,8 @@ function flattenAssets() {
 
 describe('SITE_IMAGE_ASSETS', () => {
   it('registers the website image set including page heroes', () => {
-    expect(countSiteImageAssets()).toBe(62);
-    expect(flattenAssets()).toHaveLength(62);
+    expect(countSiteImageAssets()).toBe(61);
+    expect(flattenAssets()).toHaveLength(61);
     expect(SITE_IMAGE_ASSETS.brand.logo.src).toContain('brand/store-logo.jpg');
     expect(SITE_IMAGE_ASSETS.brand.logo.width).toBe(SITE_IMAGE_ASSETS.brand.logo.height);
     expect(SITE_IMAGE_ASSETS.brands.hero.src).toContain('home-bundle-showcase.webp');
@@ -24,7 +24,6 @@ describe('SITE_IMAGE_ASSETS', () => {
     expect(SITE_IMAGE_ASSETS.about.hero.src).toContain('appliance-shopping-family.webp');
     expect(SITE_IMAGE_ASSETS.contact.hero.src).toContain('whatsapp-support.webp');
     expect(SITE_IMAGE_ASSETS.afterSales.hero.src).toContain('organized-laundry-room.webp');
-    expect(SITE_IMAGE_ASSETS.serviceCenters.cta.src).toContain('authorized-warranty.webp');
     expect(SITE_IMAGE_ASSETS.returnPolicy.hero.src).toContain('fast-delivery.webp');
   });
 

@@ -12,8 +12,8 @@ describe('contact-query.util', () => {
       queryParams: {},
     });
     expect(legacyContactRedirect(convertToParamMap({ topic: 'maintenance', q: '1' }))).toEqual({
-      path: '/service-centers',
-      queryParams: {},
+      path: '/contact',
+      queryParams: { type: 'maintenance' },
     });
     expect(legacyContactRedirect(convertToParamMap({ topic: 'returns' }))).toEqual({
       path: '/return-policy',

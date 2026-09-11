@@ -36,7 +36,6 @@ describe('HeaderComponent', () => {
           { path: 'offers', component: HeaderSpecHostComponent },
           { path: 'about', component: HeaderSpecHostComponent },
           { path: 'after-sales', component: HeaderSpecHostComponent },
-          { path: 'service-centers', component: HeaderSpecHostComponent },
           { path: 'account', component: HeaderSpecHostComponent },
           { path: 'auth/login', component: HeaderSpecHostComponent },
           { path: 'auth/register', component: HeaderSpecHostComponent },
@@ -90,7 +89,6 @@ describe('HeaderComponent', () => {
       'العروض',
       'العلامات التجارية',
       'خدمات ما بعد البيع',
-      'مركز الصيانة',
       'من نحن',
       'تواصل معنا',
     ]);
@@ -129,11 +127,7 @@ describe('HeaderComponent', () => {
     const afterSalesLink = [...compiled.querySelectorAll<HTMLAnchorElement>('.app-header__nav .nav-link')].find(
       (link) => link.textContent?.trim() === 'خدمات ما بعد البيع',
     );
-    const centersLink = [...compiled.querySelectorAll<HTMLAnchorElement>('.app-header__nav .nav-link')].find(
-      (link) => link.textContent?.trim() === 'مركز الصيانة',
-    );
     expect(afterSalesLink?.getAttribute('href')).toBe('/after-sales');
-    expect(centersLink?.getAttribute('href')).toBe('/service-centers');
   });
 
   it('marks المتجر active on the listing and product pages', async () => {
@@ -192,14 +186,6 @@ describe('HeaderComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     expect(navLink('خدمات ما بعد البيع').getAttribute('aria-current')).toBe('page');
-    expect(navLink('مركز الصيانة').getAttribute('aria-current')).toBeNull();
-
-    await router.navigateByUrl('/service-centers');
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    expect(navLink('مركز الصيانة').getAttribute('aria-current')).toBe('page');
-    expect(navLink('خدمات ما بعد البيع').getAttribute('aria-current')).toBeNull();
     expect(navLink('تواصل معنا').getAttribute('aria-current')).toBeNull();
   });
 

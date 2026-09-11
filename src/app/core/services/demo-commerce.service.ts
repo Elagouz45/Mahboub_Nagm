@@ -2,7 +2,7 @@ import { afterNextRender, computed, inject, Injectable, signal } from '@angular/
 import { AccountAddress, AccountServiceRequest } from '@core/auth/account.models';
 import { MOCK_CATALOG_PRODUCTS } from '@features/catalog/data-access/catalog-mock.service';
 import { ContactRequest } from '@features/contact/models/contact.model';
-import { EGYPT_GOVERNORATES } from '@features/service-centers/data-access/egypt-governorates';
+import { EGYPT_GOVERNORATES } from '@core/data/egypt-governorates';
 import { CartItem, ProductSummary } from '@shared/models/storefront.model';
 import { BrowserStorageService } from './browser-storage.service';
 
