@@ -16,7 +16,6 @@ import { AUTH_COPY } from '@core/auth/auth.constants';
 import { AuthStore } from '@core/auth/auth.store';
 import { ToastService } from '@core/services/toast.service';
 import {
-  APP_NAME,
   APP_NAME_SHORT,
   APP_SLOGAN,
   MAIN_NAV_LINKS,
@@ -61,7 +60,6 @@ export class HeaderComponent {
   private menuTrigger: HTMLElement | null = null;
   private accountTrigger: HTMLElement | null = null;
 
-  readonly appName = APP_NAME;
   readonly shortName = APP_NAME_SHORT;
   readonly slogan = APP_SLOGAN;
   readonly navLinks = MAIN_NAV_LINKS;

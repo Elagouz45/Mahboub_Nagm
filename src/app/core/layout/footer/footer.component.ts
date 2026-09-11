@@ -2,7 +2,6 @@ import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Component, DestroyRef, PLATFORM_ID, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
-  APP_NAME,
   APP_NAME_SHORT,
   APP_SLOGAN,
   FOOTER_LEGAL_LINKS,
@@ -28,7 +27,6 @@ export class FooterComponent {
   private readonly whatsappNumber = inject(WHATSAPP_NUMBER, { optional: true }) ?? '';
   private readonly contact = inject(SITE_CONTACT_CONFIG, { optional: true }) ?? SITE_CONTACT;
 
-  readonly appName = APP_NAME;
   readonly shortName = APP_NAME_SHORT;
   readonly slogan = APP_SLOGAN;
   readonly identityCopy =

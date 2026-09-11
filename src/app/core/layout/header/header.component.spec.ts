@@ -241,7 +241,7 @@ describe('HeaderComponent', () => {
     toggle?.click();
     fixture.detectChanges();
     expect(compiled.querySelector('#account-menu')?.textContent).toContain('تسجيل الدخول');
-    expect(compiled.querySelector('#account-menu')?.textContent).toContain('إنشاء حساب');
+    expect(compiled.querySelector('#account-menu')?.textContent).not.toContain('إنشاء حساب');
 
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     fixture.detectChanges();

@@ -58,7 +58,7 @@ describe('FooterComponent', () => {
     expect(brand?.querySelector('img')?.getAttribute('ng-src') ?? brand?.querySelector('img')?.getAttribute('src')).toContain(
       'brand/store-logo.jpg',
     );
-    expect(brand?.textContent).toContain('محبوب نجم');
+    expect(brand?.textContent).toContain('مؤسسة فتحي محبوب نجم');
     expect(brand?.textContent).toContain('بيتك يستاهل الأفضل');
   });
 
@@ -130,7 +130,7 @@ describe('FooterComponent', () => {
     const { fixture } = await setup();
     const year = new Date().getFullYear();
     expect(footerEl(fixture).querySelector('.app-footer__legal')?.textContent).toContain(
-      `© ${year} محبوب نجم. جميع الحقوق محفوظة.`,
+      `© ${year} مؤسسة فتحي محبوب نجم. جميع الحقوق محفوظة.`,
     );
   });
 

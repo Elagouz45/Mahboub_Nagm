@@ -1,5 +1,5 @@
-export const APP_NAME = 'محبوب نجم للأجهزة الكهربائية';
-export const APP_NAME_SHORT = 'محبوب نجم';
+export const APP_NAME = 'مؤسسة فتحي محبوب نجم للأجهزة الكهربائية';
+export const APP_NAME_SHORT = 'مؤسسة فتحي محبوب نجم';
 export const APP_NAME_SUBTITLE = 'للأجهزة الكهربائية';
 export const APP_SLOGAN = 'بيتك يستاهل الأفضل';
 

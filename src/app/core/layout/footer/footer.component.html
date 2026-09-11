@@ -1,11 +1,11 @@
 <footer class="app-footer" role="contentinfo">
   <div class="page-container app-footer__inner">
     <section class="app-footer__identity">
-      <a class="app-footer__brand" routerLink="/" [attr.aria-label]="appName">
+      <a class="app-footer__brand" routerLink="/" [attr.aria-label]="shortName">
         <app-brand-logo variant="footer" />
         <span class="app-footer__brand-text">
           <span class="app-footer__brand-name">{{ shortName }}</span>
-          <span class="app-footer__brand-slogan">{{ slogan }}</span>
+          <span class="app-footer__brand-slogan" aria-hidden="true">{{ slogan }}</span>
         </span>
       </a>
       <p>{{ identityCopy }}</p>
