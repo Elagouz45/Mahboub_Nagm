@@ -1,0 +1,20 @@
+<div class="brand-letters" role="group" aria-label="الفهرس الأبجدي">
+  <button
+    type="button"
+    [class.is-active]="!selected()"
+    [attr.aria-pressed]="!selected()"
+    (click)="letterChange.emit('')"
+  >
+    الكل
+  </button>
+  @for (letter of letters(); track letter) {
+    <button
+      type="button"
+      [class.is-active]="selected() === letter"
+      [attr.aria-pressed]="selected() === letter"
+      (click)="letterChange.emit(letter)"
+    >
+      {{ letter }}
+    </button>
+  }
+</div>

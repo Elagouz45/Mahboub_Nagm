@@ -5,6 +5,16 @@ import { isPlatformBrowser } from '@angular/common';
 export class BrowserStorageService {
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
+  writeLocalChecked(key: string, value: unknown): void {
+    if (!this.isBrowser) throw new Error('التخزين متاح في المتصفح فقط');
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  writeSessionChecked(key: string, value: unknown): void {
+    if (!this.isBrowser) throw new Error('التخزين متاح في المتصفح فقط');
+    sessionStorage.setItem(key, JSON.stringify(value));
+  }
+
   readJson<T>(key: string): T | null {
     return this.readFrom(this.sessionStore(), key);
   }
@@ -30,11 +40,19 @@ export class BrowserStorageService {
   }
 
   private sessionStore(): Storage | null {
-    return this.isBrowser ? sessionStorage : null;
+    try {
+      return this.isBrowser ? sessionStorage : null;
+    } catch {
+      return null;
+    }
   }
 
   private localStore(): Storage | null {
-    return this.isBrowser ? localStorage : null;
+    try {
+      return this.isBrowser ? localStorage : null;
+    } catch {
+      return null;
+    }
   }
 
   private readFrom<T>(store: Storage | null, key: string): T | null {

@@ -1,67 +1,94 @@
 <section class="offers-page page-container">
-  <section class="page-hero" aria-labelledby="offers-heading">
-    <div class="page-hero__copy">
-      <app-page-breadcrumb [items]="breadcrumb" />
-      <p class="page-hero__kicker">خصومات على أجهزة الكتالوج</p>
-      <h1 id="offers-heading">عروض حقيقية لبيتك</h1>
-      <p>اختر من المنتجات المخفضة المتوفرة الآن، وقارن السعر قبل وبعد الخصم ثم أضف للسلة أو المفضلة.</p>
-      @if (store.result().maxDiscountPercent > 0) {
-        <p class="page-hero__badge">حتى {{ store.result().maxDiscountPercent }}٪</p>
-      }
-      <a class="page-hero__cta" routerLink="/offers" fragment="offers-grid">تسوق العروض</a>
-    </div>
-    <div class="page-hero__media">
-      <app-site-image
-        [asset]="hero"
-        [fill]="true"
-        [priority]="true"
-        objectFit="cover"
-        sizes="(min-width: 768px) 46vw, 100vw"
-      />
-    </div>
-  </section>
+  <header class="offers-page__header">
+    <app-page-breadcrumb [items]="breadcrumb" />
+    <app-offers-page-header
+      [productCount]="store.result().total"
+      [maxDiscountPercent]="displayMaxDiscount()"
+      [loading]="store.loading()"
+      [empty]="store.empty()"
+    />
+  </header>
 
-  <div class="offers-tabs" role="tablist" aria-label="أنواع العروض">
-    @for (type of types; track type) {
-      <button
-        type="button"
-        role="tab"
-        [attr.aria-selected]="store.query().type === type"
-        [class.is-active]="store.query().type === type"
-        (click)="onType(type)"
-      >
-        {{ typeLabels[type] }}
-      </button>
-    }
-  </div>
+  <div class="offers-page__tools">
+    <div class="offers-toolbar">
+      <div class="offers-toolbar__title">
+        <h2>كل العروض</h2>
+        @if (store.loading()) {
+          <p class="offers-toolbar__count offers-toolbar__count--skeleton" aria-hidden="true">24 منتجًا</p>
+        } @else {
+          <p class="offers-toolbar__count">{{ toolbarCountLabel() }}</p>
+        }
+      </div>
 
-  <div class="offers-toolbar">
-    <label>
-      <span class="visually-hidden">التصنيف</span>
-      <select [value]="store.query().category" (change)="onCategory($event)">
-        <option value="">كل التصنيفات</option>
-        @for (category of categories; track category.slug) {
-          <option [value]="category.slug">{{ category.label }}</option>
-        }
-      </select>
-    </label>
-    <label>
-      <span class="visually-hidden">الماركة</span>
-      <select [value]="selectedBrand()" (change)="onBrand($event)">
-        <option value="">كل الماركات</option>
-        @for (brand of store.result().filters.brands; track brand.value) {
-          <option [value]="brand.value">{{ brand.label }}</option>
-        }
-      </select>
-    </label>
-    <label>
-      <span class="visually-hidden">الترتيب</span>
-      <select [value]="store.query().sort" (change)="onSort($event)">
-        @for (sort of sorts; track sort) {
-          <option [value]="sort">{{ sortLabels[sort] }}</option>
-        }
-      </select>
-    </label>
+      <div class="offers-toolbar__controls">
+        <label class="offers-toolbar__sort">
+          <span>ترتيب حسب</span>
+          <select [value]="store.query().sort" (change)="onSort($event)">
+            @for (sort of sorts; track sort) {
+              <option [value]="sort">{{ sortLabels[sort] }}</option>
+            }
+          </select>
+        </label>
+
+        <button
+          type="button"
+          class="offers-toolbar__filter"
+          [attr.aria-expanded]="filtersOpen()"
+          aria-controls="offers-filters"
+          (click)="toggleFilters()"
+        >
+          <app-icon name="sliders" />
+          تصفية
+          @if (activeFilterCount() > 0) {
+            <span class="visually-hidden">{{ activeFilterCount() }} عوامل تصفية نشطة</span>
+          }
+        </button>
+      </div>
+    </div>
+
+    <div
+      class="offers-filters"
+      id="offers-filters"
+      [hidden]="!filtersOpen()"
+      role="region"
+      aria-label="تصفية العروض"
+    >
+      <div class="offers-filters__group">
+        <p class="offers-filters__label" id="offers-type-label">نوع العرض</p>
+        <div class="offers-filters__types" role="group" aria-labelledby="offers-type-label">
+          @for (type of types; track type) {
+            <button
+              type="button"
+              [class.is-active]="store.query().type === type"
+              [attr.aria-pressed]="store.query().type === type"
+              (click)="onType(type)"
+            >
+              {{ typeLabels[type] }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <label class="offers-filters__field">
+        <span>التصنيف</span>
+        <select [value]="store.query().category" (change)="onCategory($event)">
+          <option value="">كل التصنيفات</option>
+          @for (category of categories; track category.slug) {
+            <option [value]="category.slug">{{ category.label }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="offers-filters__field">
+        <span>الماركة</span>
+        <select [value]="selectedBrand()" (change)="onBrand($event)">
+          <option value="">كل الماركات</option>
+          @for (brand of store.result().filters.brands; track brand.value) {
+            <option [value]="brand.value">{{ brand.label }}</option>
+          }
+        </select>
+      </label>
+    </div>
   </div>
 
   <div id="offers-grid">

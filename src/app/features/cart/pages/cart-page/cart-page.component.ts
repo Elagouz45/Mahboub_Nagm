@@ -1,20 +1,21 @@
 import { Component, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { CART_PORT } from '@core/tokens/commerce.tokens';
-import { EmptyStateComponent } from '@shared/components/empty-state/empty-state.component';
-import { PriceDisplayComponent } from '@shared/components/price-display/price-display.component';
+import { RouterLink } from '@angular/router';
+import { MAX_CART_QUANTITY } from '@core/config/demo-commerce.config';
+import { FOOTER_TRUST_POINTS } from '@core/constants/app.constants';
+import { IconComponent } from '@shared/components/icon/icon.component';
+import { SiteImageComponent } from '@shared/components/site-image/site-image.component';
+import { formatEgp } from '@shared/utils/format-price.util';
+import { CartStore } from '../../state/cart.store';
 
 @Component({
   selector: 'app-cart-page',
-  imports: [RouterLink, EmptyStateComponent, PriceDisplayComponent],
+  imports: [RouterLink, SiteImageComponent, IconComponent],
   templateUrl: './cart-page.component.html',
   styleUrl: './cart-page.component.scss',
 })
 export class CartPageComponent {
-  readonly cart = inject(CART_PORT);
-  private readonly router = inject(Router);
-
-  goShop(): void {
-    void this.router.navigate(['/products']);
-  }
+  readonly cart = inject(CartStore);
+  readonly price = formatEgp;
+  readonly maxQuantity = MAX_CART_QUANTITY;
+  readonly trustPoints = FOOTER_TRUST_POINTS;
 }

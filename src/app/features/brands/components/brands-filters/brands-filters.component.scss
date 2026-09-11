@@ -1,0 +1,113 @@
+:host {
+  display: block;
+}
+
+.brands-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #ffffff;
+  border: 1px solid #dce3eb;
+  border-radius: 14px;
+}
+
+.brands-filters__search,
+.brands-filters__select {
+  display: flex;
+  min-width: 0;
+  min-height: 44px;
+  align-items: center;
+  gap: 8px;
+}
+
+.brands-filters__search {
+  flex: 1 1 16rem;
+  padding-inline: 14px;
+  background: #ffffff;
+  border: 1px solid #dce3eb;
+  border-radius: 12px;
+  color: #73829a;
+}
+
+.brands-filters__search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: #0c2a4d;
+  font: inherit;
+}
+
+.brands-filters__search input::placeholder {
+  color: #73829a;
+}
+
+.brands-filters__search input:focus {
+  outline: none;
+}
+
+.brands-filters__search:focus-within {
+  border-color: #ff6b16;
+  outline: 2px solid #ff6b16;
+  outline-offset: 2px;
+}
+
+.brands-filters__select {
+  position: relative;
+  flex: 1 1 12rem;
+}
+
+.brands-filters__select select {
+  width: 100%;
+  min-height: 44px;
+  padding-inline: 14px 36px;
+  border: 1px solid #dce3eb;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #0c2a4d;
+  font: inherit;
+  appearance: none;
+}
+
+.brands-filters__select app-icon {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: 12px;
+  color: #73829a;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.brands-filters__select select:focus-visible {
+  outline: 2px solid #ff6b16;
+  outline-offset: 2px;
+  border-color: #ff6b16;
+}
+
+:host ::ng-deep .brand-letters {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+@media (max-width: 767px) {
+  .brands-filters {
+    display: grid;
+    gap: 10px;
+  }
+
+  .brands-filters__search,
+  .brands-filters__select,
+  :host ::ng-deep .brand-letters {
+    flex: none;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brands-filters__search,
+  .brands-filters__select select {
+    transition: none;
+  }
+}

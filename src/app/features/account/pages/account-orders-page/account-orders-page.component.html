@@ -1,46 +1,115 @@
 <section class="orders" aria-labelledby="orders-heading">
-  <h1 id="orders-heading">طلباتي</h1>
-
-  <div class="filters">
-    <label>
-      <span class="visually-hidden">بحث في الطلبات</span>
-      <input type="search" placeholder="رقم الطلب أو اسم المنتج" (input)="onSearch($event)" />
-    </label>
-    <label>
-      <span class="visually-hidden">حالة الطلب</span>
-      <select (change)="onStatus($event)">
-        <option value="all">كل الحالات</option>
-        @for (status of statuses; track status) {
-          <option [value]="status">{{ statusLabels[status] }}</option>
+  @if (loadError()) {
+    <app-error-state [message]="loadErrorMessage" (retry)="load()" />
+  } @else if (loading()) {
+    <div class="orders-skeleton" aria-busy="true">
+      <span class="visually-hidden">جارٍ تحميل الطلبات</span>
+      <div class="orders-skeleton__header">
+        <span class="orders-skeleton__avatar"></span>
+        <span class="orders-skeleton__lines">
+          <span></span>
+          <span></span>
+        </span>
+      </div>
+      <span class="orders-skeleton__toolbar"></span>
+      <div class="orders-card orders-card--skeleton">
+        @for (row of skeletonRows; track row) {
+          <span class="orders-skeleton__row"></span>
         }
-      </select>
-    </label>
-    <label>
-      <span class="visually-hidden">الترتيب</span>
-      <select (change)="onSort($event)">
-        <option value="newest">الأحدث</option>
-        <option value="oldest">الأقدم</option>
-      </select>
-    </label>
-  </div>
-
-  @if (orders().length === 0) {
-    <app-empty-state title="لا توجد طلبات بعد" actionLabel="تسوق الآن" (action)="goShop()" />
-  } @else if (filtered().length === 0) {
-    <app-empty-state title="لا توجد نتائج مطابقة" />
+      </div>
+    </div>
   } @else {
-    <ul>
-      @for (order of filtered(); track order.id) {
-        <li>
-          <a [routerLink]="['/account/orders', order.id]">
-            <strong>{{ order.number }}</strong>
-            <span>{{ statusLabels[order.status] }}</span>
-            <span>{{ order.placedAt | date: 'd/M/yyyy' }}</span>
-            <span>{{ formatPrice(order.total) }}</span>
-            <span>{{ order.lines[0]?.title }}</span>
-          </a>
-        </li>
+    <header class="orders-hero">
+      <span class="orders-hero__avatar" aria-hidden="true">{{ initials() }}</span>
+      <div>
+        <h1 id="orders-heading">طلباتي</h1>
+        <p>تابع حالة طلباتك وتفاصيل الشراء.</p>
+      </div>
+    </header>
+
+    <div class="orders-toolbar">
+      <div class="orders-chips" role="group" aria-label="تصفية الطلبات حسب الحالة">
+        @for (chip of filters; track chip.id) {
+          <button
+            type="button"
+            [class.is-active]="query().status === chip.id"
+            [attr.aria-pressed]="query().status === chip.id"
+            (click)="onStatus(chip.id)"
+          >
+            <span>{{ chip.label }}</span>
+            <span class="orders-chips__count">{{ filterCounts()[chip.id] }}</span>
+          </button>
+        }
+      </div>
+
+      <label class="orders-search">
+        <span class="visually-hidden">ابحث برقم الطلب</span>
+        <app-icon name="search" />
+        <input
+          type="search"
+          [value]="searchText()"
+          (input)="onSearch($event)"
+          placeholder="ابحث برقم الطلب"
+        />
+      </label>
+    </div>
+
+    <section class="orders-card" aria-labelledby="orders-list-heading">
+      <header class="orders-card__head">
+        <h2 id="orders-list-heading">الطلبات</h2>
+      </header>
+
+      @switch (emptyKind()) {
+        @case ('all') {
+          <app-empty-state
+            title="لا توجد طلبات بعد"
+            description="ابدأ من المتجر لإضافة أول طلب إلى حسابك."
+            actionLabel="تسوق الآن"
+            (action)="goShop()"
+          />
+        }
+        @case ('in-progress') {
+          <app-empty-state
+            title="لا توجد طلبات قيد التنفيذ"
+            description="عند وجود طلبات جارية ستظهر في هذه القائمة."
+          />
+        }
+        @case ('delivered') {
+          <app-empty-state
+            title="لا توجد طلبات مكتملة"
+            description="الطلبات التي تم تسليمها ستظهر هنا."
+          />
+        }
+        @case ('cancelled') {
+          <app-empty-state
+            title="لا توجد طلبات ملغاة"
+            description="لا يتوفر حاليًا طلبات ملغاة في حسابك."
+          />
+        }
+        @case ('search') {
+          <app-empty-state title="لا توجد نتائج مطابقة" description="جرّب رقم طلب آخر أو أزل البحث." />
+        }
+        @default {
+          <ul class="orders-list">
+            @for (order of pagedOrders(); track order.id) {
+              <li>
+                <app-account-order-row [order]="order" />
+              </li>
+            }
+          </ul>
+        }
       }
-    </ul>
+    </section>
+
+    @if (filtered().length > pageSize) {
+      <app-catalog-pagination
+        class="orders-pagination"
+        [page]="currentPage()"
+        [totalPages]="totalPages()"
+        [disabled]="loading()"
+        [showPageSize]="false"
+        (pageChange)="onPage($event)"
+      />
+    }
   }
 </section>

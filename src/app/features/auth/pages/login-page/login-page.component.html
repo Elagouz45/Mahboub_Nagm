@@ -1,10 +1,8 @@
-<app-auth-shell title="تسجيل الدخول">
+<app-auth-shell title="تسجيل الدخول" lead="ادخل بياناتك لمتابعة طلباتك وحسابك.">
   <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
-    <p class="auth-form__lead">ادخل ببريدك أو رقم هاتفك المصري للمتابعة.</p>
-
     @if (showDemo) {
       <aside class="demo-box" aria-label="حساب تجريبي">
-        <p>حساب تجريبي للمعاينة</p>
+        <p>حساب تجريبي للمعاينة المحلية فقط</p>
         <p>
           <span>{{ demoEmail }}</span>
           <span>{{ demoPassword }}</span>
@@ -14,45 +12,55 @@
     }
 
     @if (formError()) {
-      <p class="auth-form__error" role="alert">{{ formError() }}</p>
+      <p class="auth-form__error" role="alert" aria-live="assertive">{{ formError() }}</p>
+    }
+    @if (forgotNotice()) {
+      <p class="auth-form__notice" role="status" aria-live="polite">{{ forgotNotice() }}</p>
     }
 
-    <label>
-      <span>البريد أو رقم الهاتف</span>
+    <label [class.is-invalid]="fieldInvalid('identifier')">
+      <span>البريد الإلكتروني أو رقم الهاتف</span>
       <input
+        id="login-identifier"
         type="text"
         formControlName="identifier"
         autocomplete="username"
         inputmode="email"
         [attr.aria-invalid]="fieldInvalid('identifier')"
+        [attr.aria-describedby]="fieldInvalid('identifier') ? 'login-identifier-error' : null"
       />
       @if (fieldInvalid('identifier')) {
-        <small>أدخل بريدًا صحيحًا أو رقمًا مصريًا مثل 01012345678.</small>
+        <small id="login-identifier-error">أدخل بريدًا إلكترونيًا صحيحًا أو رقم هاتف مصريًا.</small>
       }
     </label>
 
-    <label>
+    <label [class.is-invalid]="fieldInvalid('password')">
       <span>كلمة المرور</span>
       <span class="password-field">
         <input
+          id="login-password"
           [type]="showPassword() ? 'text' : 'password'"
           formControlName="password"
           autocomplete="current-password"
           [attr.aria-invalid]="fieldInvalid('password')"
+          [attr.aria-describedby]="fieldInvalid('password') ? 'login-password-error' : null"
         />
-        <button type="button" (click)="togglePassword()">
-          {{ showPassword() ? 'إخفاء' : 'إظهار' }}
+        <button type="button" (click)="togglePassword()" [attr.aria-label]="showPassword() ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'">
+          <app-icon [name]="showPassword() ? 'eye-off' : 'eye'" />
         </button>
       </span>
       @if (fieldInvalid('password')) {
-        <small>كلمة المرور مطلوبة.</small>
+        <small id="login-password-error">كلمة المرور مطلوبة.</small>
       }
     </label>
 
-    <label class="check-row">
-      <input type="checkbox" formControlName="rememberMe" />
-      <span>تذكرني على هذا الجهاز</span>
-    </label>
+    <div class="auth-form__row">
+      <label class="check-row">
+        <input type="checkbox" formControlName="rememberMe" />
+        <span>تذكرني</span>
+      </label>
+      <button type="button" class="auth-form__link" (click)="onForgotPassword()">نسيت كلمة المرور؟</button>
+    </div>
 
     <button type="submit" class="auth-form__submit" [disabled]="submitting()">
       {{ submitting() ? 'جارٍ الدخول...' : 'تسجيل الدخول' }}
@@ -60,7 +68,9 @@
 
     <p class="auth-form__switch">
       ليس لديك حساب؟
-      <a routerLink="/auth/register">إنشاء حساب</a>
+      <a [routerLink]="registerPath" [queryParams]="{ returnUrl: route.snapshot.queryParamMap.get('returnUrl') }"
+        >أنشئ حسابًا</a
+      >
     </p>
   </form>
 </app-auth-shell>

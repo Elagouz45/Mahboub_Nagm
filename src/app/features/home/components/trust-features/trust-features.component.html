@@ -1,18 +1,19 @@
-<section class="trust page-container" aria-label="مزايا الشراء">
-  <ul>
-    @for (item of items; track item.title) {
-      <li>
-        <div class="trust__media">
-          <app-site-image
-            [asset]="item.image"
-            [decorative]="true"
-            [fill]="true"
-            objectFit="contain"
-          />
-        </div>
-        <h2>{{ item.title }}</h2>
-        <p>{{ item.text }}</p>
-      </li>
-    }
-  </ul>
+<section class="trust" aria-labelledby="trust-heading">
+  <div class="trust__inner page-container">
+    <header class="trust__header">
+      <p class="trust__eyebrow">ليه تختاري محبوب نجم؟</p>
+      <h2 id="trust-heading">كل اللي يطمنك في مكان واحد</h2>
+      <span class="trust__rule" aria-hidden="true"></span>
+    </header>
+
+    <ul class="trust__list">
+      @for (item of items; track item.title) {
+        <li class="trust__item">
+          <app-icon [name]="item.icon" />
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.text }}</p>
+        </li>
+      }
+    </ul>
+  </div>
 </section>

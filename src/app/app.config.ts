@@ -1,10 +1,6 @@
 import { IMAGE_CONFIG } from '@angular/common';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import {
-  ApplicationConfig,
-  provideBrowserGlobalErrorListeners,
-  provideZonelessChangeDetection,
-} from '@angular/core';
+import { ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 import {
   provideRouter,
   TitleStrategy,
@@ -22,6 +18,7 @@ import { CART_PORT, WISHLIST_PORT } from '@core/tokens/commerce.tokens';
 import { AppTitleStrategy } from '@core/utils/app-title.strategy';
 import { provideDocumentLanguage } from '@core/utils/document-lang';
 import { provideAuth } from '@core/auth/provide-auth';
+import { AuthStore } from '@core/auth/auth.store';
 import { CartStore } from '@features/cart/state/cart.store';
 import { WishlistStore } from '@features/wishlist/state/wishlist.store';
 import { routes } from './app.routes';
@@ -44,6 +41,7 @@ export const appConfig: ApplicationConfig = {
     { provide: CART_PORT, useExisting: CartStore },
     { provide: WISHLIST_PORT, useExisting: WishlistStore },
     ...provideAuth(),
+    provideAppInitializer(() => inject(AuthStore).restoreSession()),
     provideHttpClient(withFetch(), withInterceptors([apiBaseUrlInterceptor, apiErrorInterceptor])),
     provideClientHydration(withEventReplay()),
     {

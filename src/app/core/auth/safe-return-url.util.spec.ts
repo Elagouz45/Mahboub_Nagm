@@ -10,6 +10,8 @@ describe('sanitizeReturnUrl', () => {
     expect(sanitizeReturnUrl('https://evil.test')).toBeNull();
     expect(sanitizeReturnUrl('//evil.test')).toBeNull();
     expect(sanitizeReturnUrl('/auth/login')).toBeNull();
+    expect(sanitizeReturnUrl('/login')).toBeNull();
+    expect(sanitizeReturnUrl('/register')).toBeNull();
     expect(sanitizeReturnUrl('http://example.com')).toBeNull();
     expect(sanitizeReturnUrl('account')).toBeNull();
   });

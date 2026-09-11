@@ -1,103 +1,138 @@
-<app-auth-shell title="إنشاء حساب">
+<app-auth-shell title="إنشاء حساب جديد" lead="أنشئ حسابك لمتابعة طلباتك وحفظ منتجاتك المفضلة.">
   <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
-    <p class="auth-form__lead">بيانات بسيطة لإنشاء حسابك ومتابعة طلباتك.</p>
-
     @if (formError()) {
-      <p class="auth-form__error" role="alert">{{ formError() }}</p>
+      <p class="auth-form__error" role="alert" aria-live="assertive">{{ formError() }}</p>
     }
 
     <div class="names">
-      <label>
+      <label [class.is-invalid]="fieldInvalid('firstName')">
         <span>الاسم الأول</span>
-        <input type="text" formControlName="firstName" autocomplete="given-name" [attr.aria-invalid]="fieldInvalid('firstName')" />
+        <input
+          id="register-first-name"
+          type="text"
+          formControlName="firstName"
+          autocomplete="given-name"
+          [attr.aria-invalid]="fieldInvalid('firstName')"
+          [attr.aria-describedby]="fieldInvalid('firstName') ? 'register-first-name-error' : null"
+        />
         @if (fieldInvalid('firstName')) {
-          <small>الاسم الأول مطلوب.</small>
+          <small id="register-first-name-error">الاسم الأول مطلوب.</small>
         }
       </label>
-      <label>
+      <label [class.is-invalid]="fieldInvalid('lastName')">
         <span>اسم العائلة</span>
-        <input type="text" formControlName="lastName" autocomplete="family-name" [attr.aria-invalid]="fieldInvalid('lastName')" />
+        <input
+          id="register-last-name"
+          type="text"
+          formControlName="lastName"
+          autocomplete="family-name"
+          [attr.aria-invalid]="fieldInvalid('lastName')"
+          [attr.aria-describedby]="fieldInvalid('lastName') ? 'register-last-name-error' : null"
+        />
         @if (fieldInvalid('lastName')) {
-          <small>اسم العائلة مطلوب.</small>
+          <small id="register-last-name-error">اسم العائلة مطلوب.</small>
         }
       </label>
     </div>
 
-    <label>
+    <label [class.is-invalid]="fieldInvalid('phone')">
       <span>رقم الهاتف</span>
       <input
+        id="register-phone"
         type="tel"
         formControlName="phone"
         autocomplete="tel"
         inputmode="tel"
-        placeholder="01012345678"
         [attr.aria-invalid]="fieldInvalid('phone')"
+        [attr.aria-describedby]="fieldInvalid('phone') ? 'register-phone-error' : null"
       />
       @if (fieldInvalid('phone')) {
-        <small>
-          {{ form.controls.phone.hasError('duplicate') ? 'رقم الهاتف مسجّل بالفعل.' : 'أدخل رقمًا مصريًا صحيحًا مثل 01012345678.' }}
+        <small id="register-phone-error">
+          {{
+            form.controls.phone.hasError('duplicate')
+              ? 'يوجد حساب مسجل بهذه البيانات بالفعل.'
+              : 'أدخل رقمًا مصريًا صحيحًا.'
+          }}
         </small>
       }
     </label>
 
-    <label>
+    <label [class.is-invalid]="fieldInvalid('email')">
       <span>البريد الإلكتروني</span>
       <input
+        id="register-email"
         type="email"
         formControlName="email"
         autocomplete="email"
         inputmode="email"
         [attr.aria-invalid]="fieldInvalid('email')"
+        [attr.aria-describedby]="fieldInvalid('email') ? 'register-email-error' : null"
       />
       @if (fieldInvalid('email')) {
-        <small>
-          {{ form.controls.email.hasError('duplicate') ? 'هذا البريد الإلكتروني مسجّل بالفعل.' : 'أدخل بريدًا إلكترونيًا صحيحًا.' }}
+        <small id="register-email-error">
+          {{
+            form.controls.email.hasError('duplicate')
+              ? 'يوجد حساب مسجل بهذه البيانات بالفعل.'
+              : 'أدخل بريدًا إلكترونيًا صحيحًا.'
+          }}
         </small>
       }
     </label>
 
-    <label>
+    <label [class.is-invalid]="fieldInvalid('password')">
       <span>كلمة المرور</span>
       <span class="password-field">
         <input
+          id="register-password"
           [type]="showPassword() ? 'text' : 'password'"
           formControlName="password"
           autocomplete="new-password"
           [attr.aria-invalid]="fieldInvalid('password')"
+          [attr.aria-describedby]="fieldInvalid('password') ? 'register-password-error' : null"
         />
-        <button type="button" (click)="togglePassword()">
-          {{ showPassword() ? 'إخفاء' : 'إظهار' }}
+        <button
+          type="button"
+          (click)="togglePassword()"
+          [attr.aria-label]="showPassword() ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'"
+        >
+          <app-icon [name]="showPassword() ? 'eye-off' : 'eye'" />
         </button>
       </span>
       @if (fieldInvalid('password')) {
-        <small>ثماني أحرف على الأقل، حرف واحد ورقم واحد.</small>
+        <small id="register-password-error">ثماني أحرف على الأقل، حرف واحد ورقم واحد.</small>
       }
     </label>
 
-    <label>
+    <label [class.is-invalid]="fieldInvalid('confirmPassword')">
       <span>تأكيد كلمة المرور</span>
       <input
+        id="register-confirm-password"
         [type]="showPassword() ? 'text' : 'password'"
         formControlName="confirmPassword"
         autocomplete="new-password"
         [attr.aria-invalid]="fieldInvalid('confirmPassword')"
+        [attr.aria-describedby]="fieldInvalid('confirmPassword') ? 'register-confirm-error' : null"
       />
       @if (fieldInvalid('confirmPassword')) {
-        <small>كلمتا المرور غير متطابقتين.</small>
+        <small id="register-confirm-error">كلمتا المرور غير متطابقتين.</small>
       }
     </label>
 
-    <label class="check-row">
-      <input type="checkbox" formControlName="terms" />
+    <label class="check-row" [class.is-invalid]="fieldInvalid('terms')">
+      <input
+        id="register-terms"
+        type="checkbox"
+        formControlName="terms"
+        [attr.aria-invalid]="fieldInvalid('terms')"
+        [attr.aria-describedby]="fieldInvalid('terms') ? 'register-terms-error' : null"
+      />
       <span>
-        أوافق على
-        <a routerLink="/privacy-policy">سياسة الخصوصية</a>
-        و
-        <a routerLink="/return-policy">سياسة الاستبدال والاسترجاع</a>
+        أوافق على الشروط وسياسة الخصوصية
+        (<a routerLink="/privacy-policy">سياسة الخصوصية</a>)
       </span>
     </label>
     @if (fieldInvalid('terms')) {
-      <small class="auth-form__error">يجب الموافقة على السياسات للمتابعة.</small>
+      <small id="register-terms-error" class="auth-form__error">يجب الموافقة على الشروط وسياسة الخصوصية.</small>
     }
 
     <button type="submit" class="auth-form__submit" [disabled]="submitting()">
@@ -105,8 +140,12 @@
     </button>
 
     <p class="auth-form__switch">
-      لديك حساب؟
-      <a routerLink="/auth/login">تسجيل الدخول</a>
+      عندك حساب بالفعل؟
+      <a
+        [routerLink]="loginPath"
+        [queryParams]="{ returnUrl: route.snapshot.queryParamMap.get('returnUrl') }"
+        >سجل الدخول</a
+      >
     </p>
   </form>
 </app-auth-shell>

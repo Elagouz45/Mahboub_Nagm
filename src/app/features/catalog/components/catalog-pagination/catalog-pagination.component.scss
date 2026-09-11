@@ -29,9 +29,9 @@
 }
 
 .pagination .is-current {
-  background: var(--color-primary);
-  color: var(--color-surface);
-  border-color: var(--color-primary);
+  background: var(--pagination-current-bg, var(--color-primary));
+  color: var(--pagination-current-color, var(--color-surface));
+  border-color: var(--pagination-current-border, var(--color-primary));
 }
 
 .pagination button:disabled {

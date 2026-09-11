@@ -7,6 +7,10 @@ import { AuthRepository } from './auth.repository';
 import { LocalDemoAccountRepository } from './local-demo-account.repository';
 import { LocalDemoAuthRepository } from './local-demo-auth.repository';
 
+/**
+ * Local mock vs future API: flip `environment.useMockAuth`.
+ * Pages keep using AuthStore; only this adapter mapping changes.
+ */
 export function provideAuth(): Provider[] {
   if (environment.useMockAuth) {
     return [

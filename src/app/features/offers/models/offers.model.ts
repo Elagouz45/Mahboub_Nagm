@@ -42,7 +42,7 @@ export const OFFER_TYPE_LABELS: Readonly<Record<OfferType, string>> = {
 };
 
 export const OFFER_SORT_LABELS: Readonly<Record<OfferPageSort, string>> = {
-  'discount-desc': 'أكبر خصم',
+  'discount-desc': 'الأعلى خصمًا',
   'price-asc': 'السعر: من الأقل للأعلى',
   'price-desc': 'السعر: من الأعلى للأقل',
   newest: 'الأحدث',

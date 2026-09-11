@@ -1,19 +1,20 @@
 import { Component, ElementRef, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { AUTH_COPY, DEMO_EMAIL, DEMO_PASSWORD } from '@core/auth/auth.constants';
+import { AUTH_COPY, AUTH_REGISTER_PATH, DEMO_EMAIL, DEMO_PASSWORD } from '@core/auth/auth.constants';
 import { isAuthError } from '@core/auth/auth.models';
 import { AuthStore } from '@core/auth/auth.store';
 import { resolvePostAuthUrl } from '@core/auth/safe-return-url.util';
 import { ToastService } from '@core/services/toast.service';
 import { focusFirstInvalid } from '@core/utils/focus-invalid.util';
 import { environment } from '@environments/environment';
+import { IconComponent } from '@shared/components/icon/icon.component';
 import { AuthShellComponent } from '../../ui/auth-shell/auth-shell.component';
 import { identifierValidator } from '../../auth.validators';
 
 @Component({
   selector: 'app-login-page',
-  imports: [ReactiveFormsModule, RouterLink, AuthShellComponent],
+  imports: [ReactiveFormsModule, RouterLink, AuthShellComponent, IconComponent],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
 })
@@ -22,15 +23,17 @@ export class LoginPageComponent {
   private readonly auth = inject(AuthStore);
   private readonly toast = inject(ToastService);
   private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
+  readonly route = inject(ActivatedRoute);
   private readonly host = inject(ElementRef<HTMLElement>);
 
+  readonly registerPath = AUTH_REGISTER_PATH;
   readonly showDemo = environment.showDemoCredentials;
   readonly demoEmail = DEMO_EMAIL;
   readonly demoPassword = DEMO_PASSWORD;
   readonly showPassword = signal(false);
   readonly submitting = this.auth.loading;
   readonly formError = signal<string | null>(null);
+  readonly forgotNotice = signal<string | null>(null);
 
   readonly form = this.fb.nonNullable.group({
     identifier: ['', [Validators.required, identifierValidator]],
@@ -56,8 +59,13 @@ export class LoginPageComponent {
     this.showPassword.update((value) => !value);
   }
 
+  onForgotPassword(): void {
+    this.forgotNotice.set(AUTH_COPY.forgotPasswordUnavailable);
+  }
+
   async submit(): Promise<void> {
     this.formError.set(null);
+    this.forgotNotice.set(null);
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       focusFirstInvalid(this.host.nativeElement);
@@ -66,10 +74,14 @@ export class LoginPageComponent {
 
     const value = this.form.getRawValue();
     try {
-      await this.auth.login(value);
+      await this.auth.login({
+        identifier: value.identifier.trim(),
+        password: value.password,
+        rememberMe: value.rememberMe,
+      });
       this.toast.show(AUTH_COPY.loginSuccess);
       const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
-      await this.router.navigateByUrl(resolvePostAuthUrl(returnUrl));
+      await this.router.navigateByUrl(resolvePostAuthUrl(returnUrl), { replaceUrl: true });
     } catch (error) {
       this.formError.set(isAuthError(error) ? error.message : AUTH_COPY.invalidCredentials);
     }

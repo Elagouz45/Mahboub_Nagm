@@ -24,7 +24,7 @@ describe('LoginPageComponent', () => {
       providers: [
         ...authTestProviders(),
         provideRouter([
-          { path: 'auth/login', component: LoginPageComponent },
+          { path: 'login', component: LoginPageComponent },
           { path: 'account', component: LoginPageComponent },
           { path: 'products', component: LoginPageComponent },
         ]),
@@ -57,6 +57,6 @@ describe('LoginPageComponent', () => {
     component.form.setValue({ identifier: DEMO_EMAIL, password: 'Wrong12345', rememberMe: false });
     await component.submit();
     fixture.detectChanges();
-    expect(fixture.nativeElement.textContent).toContain('بيانات تسجيل الدخول غير صحيحة');
+    expect(fixture.nativeElement.textContent).toContain('البريد الإلكتروني أو رقم الهاتف أو كلمة المرور غير صحيحة.');
   });
 });

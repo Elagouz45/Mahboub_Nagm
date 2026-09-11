@@ -1,0 +1,24 @@
+<section class="brands-intro" aria-labelledby="brands-heading">
+  <div class="brands-intro__copy">
+    <p class="brands-intro__eyebrow">علامات أصلية لبيتك</p>
+    <h1 id="brands-heading">اختاري ماركتك المفضلة</h1>
+    <p class="brands-intro__desc">اكتشفي منتجات موثوقة من أشهر العلامات في مكان واحد.</p>
+  </div>
+
+  <div class="brands-intro__aside">
+    <article class="brands-intro__stat">
+      <p class="brands-intro__stat-value">20+</p>
+      <p class="brands-intro__stat-title">علامة تجارية موثوقة</p>
+      <p class="brands-intro__stat-hint">اختيارات تناسب كل بيت</p>
+    </article>
+
+    <ul class="brands-intro__chips">
+      @for (chip of chips; track chip.label) {
+        <li>
+          <app-icon [name]="chip.icon" />
+          <span>{{ chip.label }}</span>
+        </li>
+      }
+    </ul>
+  </div>
+</section>

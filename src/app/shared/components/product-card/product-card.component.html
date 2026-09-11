@@ -1,85 +1,104 @@
-<article class="product-card">
-  <a class="product-card__media" [routerLink]="['/products', product().slug]">
-    <div class="product-card__badges">
-      @if (product().discountPercent; as discount) {
-        <span class="product-card__badge product-card__badge--discount">خصم {{ discount }}٪</span>
-      }
-      @if (product().isTodaysOffer) {
-        <span class="product-card__badge product-card__badge--offer">عرض اليوم</span>
-      }
-      @if (product().isBestseller) {
-        <span class="product-card__badge product-card__badge--best">الأكثر مبيعًا</span>
-      }
+@if (skeleton()) {
+  <article class="product-card" aria-hidden="true">
+    <div class="product-card__media product-card__media--skeleton">
+      <div class="product-card__photo"></div>
     </div>
-    <app-site-image
-      [src]="product().imageSrc"
-      [alt]="product().imageAlt"
-      [fill]="true"
-      objectFit="contain"
-      [sizes]="layout() === 'list' ? '(max-width: 768px) 40vw, 18vw' : '(max-width: 640px) 50vw, 20vw'"
-    />
-  </a>
+    <div class="product-card__body">
+      <span class="product-card__pulse product-card__pulse--brand"></span>
+      <span class="product-card__pulse product-card__pulse--title"></span>
+      <span class="product-card__pulse product-card__pulse--spec"></span>
+      <span class="product-card__pulse product-card__pulse--price"></span>
+      <span class="product-card__pulse product-card__pulse--btn"></span>
+    </div>
+  </article>
+} @else if (item(); as product) {
+  <article class="product-card">
+    <a
+      class="product-card__media"
+      [routerLink]="['/products', product.slug]"
+      [attr.aria-label]="product.title"
+    >
+      @if (badges().length) {
+        <div class="product-card__badges">
+          @for (badge of badges(); track badge.label) {
+            <span
+              class="product-card__badge"
+              [class.product-card__badge--discount]="badge.kind === 'discount'"
+              [class.product-card__badge--offer]="badge.kind === 'offer'"
+              [class.product-card__badge--bestseller]="badge.kind === 'bestseller'"
+            >
+              {{ badge.label }}
+            </span>
+          }
+        </div>
+      }
+      <div class="product-card__photo">
+        <app-site-image
+          [src]="product.imageSrc"
+          [alt]="product.imageAlt"
+          [fill]="true"
+          objectFit="contain"
+          [priority]="priority()"
+          [sizes]="imageSizes()"
+        />
+      </div>
+    </a>
 
-  <button
-    type="button"
-    class="product-card__wish"
-    [class.is-active]="wishlisted()"
-    [attr.aria-label]="wishlisted() ? 'إزالة من المفضلة' : 'أضف إلى المفضلة'"
-    [attr.aria-pressed]="wishlisted()"
-    (click)="toggleWishlist($event)"
-  >
-    <app-icon name="heart" />
-  </button>
-
-  <div class="product-card__body">
-    <p class="product-card__brand">{{ product().brand }}</p>
-    <h3>
-      <a [routerLink]="['/products', product().slug]">{{ product().title }}</a>
-    </h3>
-    @if (!compact()) {
-      <p class="product-card__spec">{{ product().spec }}</p>
-    }
-    @if (layout() === 'list' && product().description) {
-      <p class="product-card__description">{{ product().description }}</p>
-    }
-    <app-rating-display [rating]="product().rating" [reviewCount]="product().reviewCount" />
-    <app-price-display [price]="product().price" [oldPrice]="product().oldPrice" />
-    @if (stockLabel(); as stock) {
-      <p class="product-card__stock" [class.is-unavailable]="!canPurchase()">{{ stock }}</p>
-    }
-  </div>
-
-  <div class="product-card__actions">
-    @if (whatsappHref(); as href) {
-      <a
-        class="btn btn--whatsapp"
-        [href]="href"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="استفسر عن هذا المنتج عبر واتساب"
-        (click)="stopCardNavigation($event)"
-      >
-        <app-icon name="whatsapp" />
-        <span class="visually-hidden">استفسر عن هذا المنتج عبر واتساب</span>
-      </a>
-    } @else {
-      <button
-        type="button"
-        class="btn btn--whatsapp"
-        disabled
-        aria-label="استفسر عن هذا المنتج عبر واتساب"
-      >
-        <app-icon name="whatsapp" />
-      </button>
-    }
     <button
       type="button"
-      class="btn btn--cart"
-      [disabled]="!canPurchase()"
-      (click)="addToCart($event)"
+      class="product-card__wish"
+      [class.is-active]="wishlisted()"
+      [class.is-busy]="wishing()"
+      [disabled]="wishing()"
+      [attr.aria-label]="wishLabel()"
+      [attr.aria-pressed]="wishlisted()"
+      [attr.aria-busy]="wishing() || null"
+      (click)="toggleWishlist($event)"
     >
-      <app-icon name="cart" />
-      <span>أضف للسلة</span>
+      <app-icon name="heart" [filled]="wishlisted()" />
     </button>
-  </div>
-</article>
+
+    <div class="product-card__body">
+      <p class="product-card__brand">{{ product.brand || '\u00a0' }}</p>
+      <h3>
+        <a [routerLink]="['/products', product.slug]">{{ product.title }}</a>
+      </h3>
+      <p class="product-card__spec">{{ product.spec || '\u00a0' }}</p>
+      <div class="product-card__rating">
+        @if (hasRating()) {
+          <app-rating-display [rating]="product.rating" [reviewCount]="product.reviewCount" />
+        }
+      </div>
+      <div class="product-card__meta">
+        <app-price-display [price]="product.price" [oldPrice]="product.oldPrice" />
+        @if (stockLabel(); as stock) {
+          <p class="product-card__stock" [attr.data-tone]="stockTone()">{{ stock }}</p>
+        }
+        @if (addFailed()) {
+          <p class="product-card__error" role="alert">تعذر إضافة المنتج إلى السلة</p>
+        }
+      </div>
+    </div>
+
+    <div class="product-card__actions">
+      <button
+        type="button"
+        class="btn btn--cart"
+        [class.is-added]="cartAdded() && !cartBusy() && canPurchase()"
+        [disabled]="!canPurchase() || cartBusy()"
+        [attr.aria-busy]="cartBusy() || null"
+        [attr.aria-label]="cartLabel()"
+        (click)="addToCart($event)"
+      >
+        @if (cartBusy()) {
+          <span class="product-card__spinner" aria-hidden="true"></span>
+        } @else if (cartAdded() && canPurchase()) {
+          <app-icon name="check" />
+        } @else {
+          <app-icon name="cart" />
+        }
+        <span>{{ cartText() }}</span>
+      </button>
+    </div>
+  </article>
+}

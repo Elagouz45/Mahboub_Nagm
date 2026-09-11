@@ -1,30 +1,36 @@
-export interface ContactFaqItem {
-  readonly id: string;
-  readonly question: string;
-  readonly answer: string;
-}
+export const CONTACT_COPY = {
+  kicker: 'إحنا قريبين منك',
+  title: 'يسعدنا نسمع منك',
+  lead: 'سيب لنا رسالتك وفريقنا هيتواصل معك في أقرب وقت.',
+  formTitle: 'ابعت لنا رسالة',
+  detailsTitle: 'تواصل مباشرة',
+  submitLabel: 'إرسال الرسالة',
+  submittingLabel: 'جارٍ الإرسال...',
+  success: 'تم إرسال رسالتك بنجاح، سنتواصل معك قريبًا.',
+  failure: 'تعذر إرسال الرسالة، حاول مرة أخرى.',
+  nameLabel: 'الاسم',
+  namePlaceholder: 'مثال: أحمد محمد',
+  phoneLabel: 'رقم الهاتف',
+  phonePlaceholder: '0123 456 7890',
+  typeLabel: 'سبب التواصل',
+  typePlaceholder: 'اختر السبب',
+  messageLabel: 'اكتب رسالتك...',
+  messagePlaceholder: 'اكتب رسالتك هنا...',
+  phoneRowLabel: 'الهاتف',
+  whatsappRowLabel: 'واتساب',
+  whatsappHint: 'متاح خلال ساعات العمل',
+  emailRowLabel: 'البريد الإلكتروني',
+  mapLinkLabel: 'عرض الموقع',
+  nameError: 'أدخل اسمًا من حرفين على الأقل.',
+  phoneError: 'أدخل رقمًا مصريًا صحيحًا.',
+  typeError: 'اختر سبب التواصل.',
+  messageError: 'اكتب رسالة من 10 أحرف على الأقل.',
+} as const;
 
-export const CONTACT_FAQ: readonly ContactFaqItem[] = [
-  {
-    id: 'shipping',
-    question: 'كم يستغرق التوصيل؟',
-    answer:
-      'مدة التوصيل تعتمد على المحافظة وتوفر المنتج عند إتمام الطلب. لا نعرض مواعيدًا ثابتة هنا حتى لا نعد بما لا يظهر في الطلب.',
-  },
-  {
-    id: 'installation',
-    question: 'هل يتوفر تركيب للأجهزة؟',
-    answer: 'يمكن طلب التركيب أو الاستفسار عنه من نموذج التواصل باختيار استفسار عن منتج أو طلب صيانة.',
-  },
-  {
-    id: 'maintenance',
-    question: 'كيف أطلب صيانة؟',
-    answer: 'اختر «طلب صيانة» في هذه الصفحة، واكتب نوع الجهاز ووصف العطل، وسنتابع الطلب عند توفر الخدمة.',
-  },
-  {
-    id: 'returns',
-    question: 'ما سياسة الاستبدال والاسترجاع؟',
-    answer:
-      'للاستبدال أو الاسترجاع أرسل الطلب من النموذج مع رقم الطلب إن وُجد، وسنوضح الخطوات المتاحة حسب حالة المنتج.',
-  },
-];
+export const CONTACT_DISPLAY = {
+  phone: '0123 456 7890',
+  email: 'support@store.com',
+  workingHours: 'السبت – الخميس، 10 ص – 8 م',
+  address: 'الإسماعيلية، مصر',
+  mapUrl: 'https://www.google.com/maps/search/?api=1&query=%D8%A7%D9%84%D8%A5%D8%B3%D9%85%D8%A7%D8%B9%D9%8A%D9%84%D9%8A%D8%A9%D8%8C+%D9%85%D8%B5%D8%B1',
+} as const;

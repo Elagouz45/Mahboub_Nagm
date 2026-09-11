@@ -1,99 +1,270 @@
 <section class="addresses" aria-labelledby="addresses-heading">
-  <header>
-    <h1 id="addresses-heading">العناوين</h1>
-    <button type="button" (click)="openCreate()">إضافة عنوان</button>
-  </header>
-
-  @if (addresses().length === 0 && !editorOpen()) {
-    <app-empty-state title="لا توجد عناوين بعد" actionLabel="إضافة عنوان" (action)="openCreate()" />
-  }
-
-  <ul>
-    @for (address of addresses(); track address.id) {
-      <li>
-        <p>
-          <strong>{{ labels[address.label] }}</strong>
-          @if (address.isDefault) {
-            <span>افتراضي</span>
-          }
-        </p>
-        <p>{{ address.recipientName }} — {{ address.phone }}</p>
-        <p>{{ governorateLabel(address.governorateSlug) }} — {{ address.city }}</p>
-        <p>{{ address.street }}</p>
-        @if (address.details) {
-          <p>{{ address.details }}</p>
-        }
-        <div>
-          <button type="button" (click)="openEdit(address)">تعديل</button>
-          <button type="button" (click)="remove(address)">حذف</button>
-        </div>
-      </li>
-    }
-  </ul>
-
-  @if (editorOpen()) {
-    <form [formGroup]="form" (ngSubmit)="save()" novalidate>
-      <h2>{{ editingId() ? 'تعديل العنوان' : 'عنوان جديد' }}</h2>
-      <label>
-        <span>النوع</span>
-        <select formControlName="label">
-          @for (option of labelOptions; track option) {
-            <option [value]="option">{{ labels[option] }}</option>
-          }
-        </select>
-      </label>
-      <label>
-        <span>اسم المستلم</span>
-        <input type="text" formControlName="recipientName" autocomplete="name" />
-        @if (fieldInvalid('recipientName')) {
-          <small>اسم المستلم مطلوب.</small>
-        }
-      </label>
-      <label>
-        <span>الهاتف</span>
-        <input type="tel" formControlName="phone" autocomplete="tel" inputmode="tel" />
-        @if (fieldInvalid('phone')) {
-          <small>أدخل رقمًا مصريًا صحيحًا.</small>
-        }
-      </label>
-      <label>
-        <span>المحافظة</span>
-        <select formControlName="governorateSlug">
-          <option value="">اختر المحافظة</option>
-          @for (item of governorates; track item.slug) {
-            <option [value]="item.slug">{{ item.label }}</option>
-          }
-        </select>
-        @if (fieldInvalid('governorateSlug')) {
-          <small>المحافظة مطلوبة.</small>
-        }
-      </label>
-      <label>
-        <span>المدينة</span>
-        <input type="text" formControlName="city" />
-        @if (fieldInvalid('city')) {
-          <small>المدينة مطلوبة.</small>
-        }
-      </label>
-      <label>
-        <span>الشارع</span>
-        <input type="text" formControlName="street" />
-        @if (fieldInvalid('street')) {
-          <small>الشارع مطلوب.</small>
-        }
-      </label>
-      <label>
-        <span>تفاصيل إضافية</span>
-        <input type="text" formControlName="details" />
-      </label>
-      <label class="check">
-        <input type="checkbox" formControlName="isDefault" />
-        <span>اجعله العنوان الافتراضي</span>
-      </label>
-      <div class="actions">
-        <button type="submit">حفظ</button>
-        <button type="button" (click)="closeEditor()">إلغاء</button>
+  @if (loadError()) {
+    <app-error-state title="تعذر تحميل العناوين" [message]="loadErrorMessage" (retry)="reload()" />
+  } @else if (loading()) {
+    <div class="addresses-skeleton" aria-busy="true">
+      <span class="visually-hidden">جارٍ تحميل العناوين</span>
+      <div class="addresses-skeleton__header">
+        <span class="addresses-skeleton__avatar"></span>
+        <span class="addresses-skeleton__lines">
+          <span></span>
+          <span></span>
+        </span>
+        <span class="addresses-skeleton__button"></span>
       </div>
-    </form>
+      <div class="addresses-grid">
+        @for (card of skeletonCards; track card) {
+          <span class="addresses-skeleton__card"></span>
+        }
+      </div>
+    </div>
+  } @else {
+    <header class="addresses-hero">
+      <div class="addresses-hero__user">
+        <span class="addresses-hero__avatar" aria-hidden="true">{{ initials() }}</span>
+        <div>
+          <h1 id="addresses-heading">العناوين</h1>
+          <p>احفظ عناوينك لتوصيل أسرع في الطلبات القادمة.</p>
+        </div>
+      </div>
+      <button class="addresses-add" type="button" (click)="openCreate()">
+        <app-icon name="plus" />
+        إضافة عنوان جديد
+      </button>
+    </header>
+
+    @if (sortedAddresses().length === 0) {
+      <app-empty-state
+        title="لا توجد عناوين بعد"
+        description="أضف عنوانًا لتسريع التوصيل في طلباتك القادمة."
+        actionLabel="إضافة عنوان جديد"
+        (action)="openCreate()"
+      />
+    } @else {
+      <ul class="addresses-grid">
+        @for (address of sortedAddresses(); track address.id) {
+          <li>
+            <article class="address-card" [class.is-default]="address.isDefault">
+              <header class="address-card__head">
+                <h2>
+                  <span class="address-card__icon" aria-hidden="true">
+                    <app-icon name="home" />
+                  </span>
+                  {{ labels[address.label] }}
+                </h2>
+                @if (address.isDefault) {
+                  <span class="address-card__badge">العنوان الافتراضي</span>
+                } @else {
+                  <span class="address-card__badge address-card__badge--muted">عنوان إضافي</span>
+                }
+              </header>
+
+              <p>
+                <app-icon name="user" />
+                <span>{{ address.recipientName }}</span>
+              </p>
+              <p>
+                <app-icon name="phone" />
+                <bdi dir="ltr">{{ address.phone }}</bdi>
+              </p>
+              <p class="address-card__line">
+                <app-icon name="map-pin" />
+                <span>{{ addressLine(address) }}</span>
+              </p>
+
+              <footer class="address-card__actions">
+                <button type="button" (click)="openEdit(address)">تعديل</button>
+                <button class="is-danger" type="button" (click)="requestDelete(address)">حذف</button>
+                @if (!address.isDefault) {
+                  <button
+                    class="is-outline"
+                    type="button"
+                    [disabled]="settingDefault() !== null"
+                    (click)="makeDefault(address)"
+                  >
+                    {{ settingDefault() === address.id ? 'جارٍ التعيين...' : 'تعيين كافتراضي' }}
+                  </button>
+                }
+              </footer>
+            </article>
+          </li>
+        }
+      </ul>
+
+      <p class="addresses-note">
+        <app-icon name="truck" />
+        سيتم استخدام العنوان الافتراضي تلقائيًا عند إتمام الطلب.
+      </p>
+    }
   }
 </section>
+
+@if (editorOpen()) {
+  <div class="addresses-overlay">
+    <button
+      type="button"
+      class="addresses-overlay__backdrop"
+      aria-label="إغلاق نافذة العنوان"
+      [disabled]="saving()"
+      (click)="closeEditor()"
+    ></button>
+    <form
+      class="addresses-dialog"
+      [formGroup]="form"
+      (ngSubmit)="save()"
+      novalidate
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="address-editor-title"
+    >
+      <header class="addresses-dialog__head">
+        <h2 id="address-editor-title">{{ editorTitle() }}</h2>
+        <button type="button" aria-label="إغلاق" [disabled]="saving()" (click)="closeEditor()">
+          <app-icon name="close" />
+        </button>
+      </header>
+
+      <div class="addresses-dialog__body">
+        <label>
+          <span>اسم العنوان</span>
+          <select formControlName="label">
+            @for (option of labelOptions; track option) {
+              <option [value]="option">{{ labels[option] }}</option>
+            }
+          </select>
+        </label>
+
+        <label [class.is-invalid]="fieldInvalid('recipientName')">
+          <span>اسم المستلم</span>
+          <input
+            type="text"
+            formControlName="recipientName"
+            autocomplete="name"
+            [attr.aria-invalid]="fieldInvalid('recipientName')"
+          />
+          @if (fieldInvalid('recipientName')) {
+            <small>اسم المستلم مطلوب.</small>
+          }
+        </label>
+
+        <label [class.is-invalid]="fieldInvalid('phone')">
+          <span>رقم الهاتف</span>
+          <input
+            type="tel"
+            formControlName="phone"
+            autocomplete="tel"
+            inputmode="tel"
+            dir="ltr"
+            [attr.aria-invalid]="fieldInvalid('phone')"
+          />
+          @if (fieldInvalid('phone')) {
+            <small>أدخل رقمًا مصريًا صحيحًا.</small>
+          }
+        </label>
+
+        <label [class.is-invalid]="fieldInvalid('governorateSlug')">
+          <span>المحافظة</span>
+          <select
+            formControlName="governorateSlug"
+            [attr.aria-invalid]="fieldInvalid('governorateSlug')"
+          >
+            <option value="">اختر المحافظة</option>
+            @for (item of governorates; track item.slug) {
+              <option [value]="item.slug">{{ item.label }}</option>
+            }
+          </select>
+          @if (fieldInvalid('governorateSlug')) {
+            <small>المحافظة مطلوبة.</small>
+          }
+        </label>
+
+        <label [class.is-invalid]="fieldInvalid('city')">
+          <span>المدينة أو المنطقة</span>
+          <input
+            type="text"
+            formControlName="city"
+            autocomplete="address-level2"
+            [attr.aria-invalid]="fieldInvalid('city')"
+          />
+          @if (fieldInvalid('city')) {
+            <small>المدينة أو المنطقة مطلوبة.</small>
+          }
+        </label>
+
+        <label [class.is-invalid]="fieldInvalid('street')">
+          <span>الشارع</span>
+          <input
+            type="text"
+            formControlName="street"
+            autocomplete="street-address"
+            [attr.aria-invalid]="fieldInvalid('street')"
+          />
+          @if (fieldInvalid('street')) {
+            <small>الشارع مطلوب.</small>
+          }
+        </label>
+
+        <label>
+          <span>رقم المبنى</span>
+          <input type="text" formControlName="building" autocomplete="off" />
+        </label>
+
+        <label>
+          <span>الدور والشقة</span>
+          <input type="text" formControlName="floor" autocomplete="off" />
+        </label>
+
+        <label class="addresses-dialog__wide">
+          <span>علامة مميزة</span>
+          <input type="text" formControlName="landmark" autocomplete="off" />
+        </label>
+
+        <label class="addresses-dialog__check">
+          <input type="checkbox" formControlName="isDefault" />
+          <span>تعيين كعنوان افتراضي</span>
+        </label>
+      </div>
+
+      <footer class="addresses-dialog__foot">
+        <button type="button" class="is-ghost" [disabled]="saving()" (click)="closeEditor()">إلغاء</button>
+        <button type="submit" class="is-primary" [disabled]="saving()">
+          {{ saving() ? 'جارٍ الحفظ...' : 'حفظ العنوان' }}
+        </button>
+      </footer>
+    </form>
+  </div>
+}
+
+@if (deleteTarget(); as target) {
+  <div class="addresses-overlay">
+    <button
+      type="button"
+      class="addresses-overlay__backdrop"
+      aria-label="إغلاق تأكيد الحذف"
+      [disabled]="deleting()"
+      (click)="cancelDelete()"
+    ></button>
+    <div
+      class="addresses-dialog addresses-dialog--confirm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="address-delete-title"
+    >
+      <header class="addresses-dialog__head">
+        <h2 id="address-delete-title">حذف العنوان</h2>
+        <button type="button" aria-label="إغلاق" [disabled]="deleting()" (click)="cancelDelete()">
+          <app-icon name="close" />
+        </button>
+      </header>
+      <p>
+        هل تريد حذف عنوان «{{ labels[target.label] }}»؟ لا يمكن التراجع عن هذا الإجراء.
+      </p>
+      <footer class="addresses-dialog__foot">
+        <button type="button" class="is-ghost" [disabled]="deleting()" (click)="cancelDelete()">إلغاء</button>
+        <button type="button" class="is-danger-fill" [disabled]="deleting()" (click)="confirmDelete()">
+          {{ deleting() ? 'جارٍ الحذف...' : 'حذف العنوان' }}
+        </button>
+      </footer>
+    </div>
+  </div>
+}

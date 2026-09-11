@@ -1,16 +1,15 @@
 import { Component } from '@angular/core';
-import { SITE_IMAGE_ASSETS, SiteImageAsset } from '@core/config/site-image-assets.config';
-import { SiteImageComponent } from '@shared/components/site-image/site-image.component';
+import { AppIconName, IconComponent } from '@shared/components/icon/icon.component';
 
 interface TrustFeature {
   readonly title: string;
   readonly text: string;
-  readonly image: SiteImageAsset;
+  readonly icon: AppIconName;
 }
 
 @Component({
   selector: 'app-trust-features',
-  imports: [SiteImageComponent],
+  imports: [IconComponent],
   templateUrl: './trust-features.component.html',
   styleUrl: './trust-features.component.scss',
 })
@@ -18,23 +17,23 @@ export class TrustFeaturesComponent {
   readonly items: readonly TrustFeature[] = [
     {
       title: 'منتجات أصلية',
-      text: 'جميع الأجهزة أصلية 100٪ من الماركات المعتمدة.',
-      image: SITE_IMAGE_ASSETS.services.originalProducts,
+      text: 'أجهزة أصلية من الماركات المعتمدة',
+      icon: 'shield',
     },
     {
       title: 'ضمان معتمد',
-      text: 'ضمان رسمي على كل منتج مع خدمة ما بعد البيع.',
-      image: SITE_IMAGE_ASSETS.services.authorizedWarranty,
+      text: 'ضمان رسمي وخدمة ما بعد البيع',
+      icon: 'certificate',
     },
     {
       title: 'توصيل سريع',
-      text: 'شحن منظم إلى جميع المحافظات بمتابعة واضحة.',
-      image: SITE_IMAGE_ASSETS.services.fastDelivery,
+      text: 'شحن منظم لكل المحافظات',
+      icon: 'truck-fast',
     },
     {
-      title: 'دعم عبر واتساب',
-      text: 'فريقنا يساعدك في اختيار الجهاز الأنسب لميزانيتك.',
-      image: SITE_IMAGE_ASSETS.services.whatsappSupport,
+      title: 'دعم واتساب',
+      text: 'نساعدك تختاري الجهاز الأنسب',
+      icon: 'headset-whatsapp',
     },
   ];
 }

@@ -1,4 +1,4 @@
-const AUTH_PREFIX = '/auth';
+const AUTH_PREFIXES = ['/auth', '/login', '/register'] as const;
 
 export function sanitizeReturnUrl(value: string | null | undefined): string | null {
   if (!value) {
@@ -20,7 +20,7 @@ export function sanitizeReturnUrl(value: string | null | undefined): string | nu
     return null;
   }
 
-  if (path === AUTH_PREFIX || path.startsWith(`${AUTH_PREFIX}/`)) {
+  if (AUTH_PREFIXES.some((prefix) => path === prefix || path.startsWith(`${prefix}/`))) {
     return null;
   }
 

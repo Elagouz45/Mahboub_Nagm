@@ -34,7 +34,7 @@ export class ShopCategoryNavComponent {
 
   readonly items = SHOP_CATEGORY_STRIP;
   readonly imageBySlug = CATALOG_CATEGORY_IMAGE_BY_SLUG;
-  readonly imageSizes = '(max-width: 767px) 22vw, 5rem';
+  readonly imageSizes = '(max-width: 767px) 20vw, 7vw';
   readonly canScroll = signal(false);
 
   constructor() {

@@ -9,3 +9,16 @@
   width: 1.25em;
   height: 1.25em;
 }
+
+.app-icon--filled {
+  fill: currentColor;
+}
+
+.app-icon__accent {
+  stroke: var(--icon-accent, currentColor);
+}
+
+.app-icon__whatsapp {
+  fill: var(--icon-whatsapp-fill, none);
+  stroke: var(--icon-whatsapp, currentColor);
+}

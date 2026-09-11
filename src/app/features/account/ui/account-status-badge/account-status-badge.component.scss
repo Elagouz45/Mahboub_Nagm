@@ -1,0 +1,35 @@
+:host {
+  display: inline-flex;
+}
+
+.status-badge {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.status-badge[data-tone='preparing'] {
+  background: #e8f1fb;
+  color: #3d6a99;
+}
+
+.status-badge[data-tone='shipping'] {
+  background: #fff3e9;
+  color: #c05612;
+}
+
+.status-badge[data-tone='delivered'] {
+  background: #eaf7ef;
+  color: #43865c;
+}
+
+.status-badge[data-tone='cancelled'] {
+  background: #fdecec;
+  color: #b42318;
+}

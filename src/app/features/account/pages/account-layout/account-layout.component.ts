@@ -1,36 +1,36 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Meta } from '@angular/platform-browser';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { AUTH_COPY } from '@core/auth/auth.constants';
-import { AuthStore } from '@core/auth/auth.store';
-import { ToastService } from '@core/services/toast.service';
-import { ACCOUNT_NAV_LINKS } from '../../account-nav';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { PageBreadcrumbComponent } from '@shared/components/page-breadcrumb/page-breadcrumb.component';
+import { filter } from 'rxjs';
+import { AccountBreadcrumbItem, accountSectionBreadcrumb } from '../../account-nav';
+import { AccountSidebarComponent } from '../../ui/account-sidebar/account-sidebar.component';
 
 @Component({
   selector: 'app-account-layout',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, PageBreadcrumbComponent, AccountSidebarComponent],
   templateUrl: './account-layout.component.html',
   styleUrl: './account-layout.component.scss',
 })
 export class AccountLayoutComponent {
-  private readonly auth = inject(AuthStore);
-  private readonly toast = inject(ToastService);
-  private readonly router = inject(Router);
   private readonly meta = inject(Meta);
+  private readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
 
-  readonly user = this.auth.user;
-  readonly displayName = this.auth.displayName;
-  readonly initial = this.auth.initial;
-  readonly links = ACCOUNT_NAV_LINKS;
+  breadcrumb: readonly AccountBreadcrumbItem[] = accountSectionBreadcrumb(this.router.url);
 
   constructor() {
     this.meta.updateTag({ name: 'robots', content: 'noindex, nofollow' });
     inject(DestroyRef).onDestroy(() => this.meta.removeTag('name="robots"'));
-  }
-
-  async logout(): Promise<void> {
-    await this.auth.logout();
-    this.toast.show(AUTH_COPY.logoutSuccess);
-    await this.router.navigateByUrl('/');
+    this.router.events
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        takeUntilDestroyed(),
+      )
+      .subscribe((event) => {
+        this.breadcrumb = accountSectionBreadcrumb(event.urlAfterRedirects);
+        this.cdr.markForCheck();
+      });
   }
 }

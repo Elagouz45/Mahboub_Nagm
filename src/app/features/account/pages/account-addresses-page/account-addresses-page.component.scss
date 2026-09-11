@@ -1,75 +1,483 @@
-.addresses,
-.addresses form,
-.addresses label {
-  display: grid;
-  gap: var(--space-3);
+:host {
+  --addresses-ink: var(--account-ink, #0c2a4d);
+  --addresses-muted: var(--account-muted, #7b8799);
+  --addresses-accent: var(--account-accent, #ff6b16);
+  --addresses-soft: var(--account-soft, #fff3e9);
+  --addresses-border: var(--account-border, #e4e9ef);
+  --addresses-surface: var(--account-surface, #ffffff);
+
+  display: block;
+  min-width: 0;
+  color: var(--addresses-ink);
 }
 
-.addresses header {
+.addresses,
+.addresses-skeleton,
+.addresses-hero,
+.addresses-hero__user,
+.addresses-grid,
+.address-card,
+.address-card__head,
+.address-card p,
+.address-card__actions,
+.addresses-note,
+.addresses-dialog,
+.addresses-dialog__head,
+.addresses-dialog__body,
+.addresses-dialog__foot {
+  display: grid;
+  gap: 12px;
+}
+
+.addresses {
+  gap: 20px;
+}
+
+.addresses-hero,
+.addresses-hero__user,
+.address-card__head,
+.address-card p,
+.address-card__actions,
+.addresses-note,
+.addresses-dialog__head,
+.addresses-dialog__foot,
+.addresses-dialog__check {
   display: flex;
-  justify-content: space-between;
-  gap: var(--space-3);
   align-items: center;
 }
 
-.addresses h1,
-.addresses h2,
-.addresses p {
-  margin: 0;
+.addresses-hero {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
-.addresses ul {
+.addresses-hero__user {
+  min-width: 0;
+  gap: 12px;
+}
+
+.addresses-hero__avatar {
   display: grid;
-  gap: var(--space-3);
+  flex: none;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  background: #dbe7f3;
+  color: var(--addresses-ink);
+  font-weight: 800;
+}
+
+.addresses-hero h1,
+.address-card h2,
+.addresses-dialog h2 {
+  margin: 0;
+  color: var(--addresses-ink);
+  font-weight: 800;
+}
+
+.addresses-hero h1 {
+  font-size: 1.35rem;
+}
+
+.addresses-hero p {
+  margin: 4px 0 0;
+  color: var(--addresses-muted);
+}
+
+.addresses-add,
+.addresses-dialog__foot button,
+.address-card__actions button {
+  min-height: 44px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.addresses-add,
+.addresses-dialog__foot .is-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--addresses-accent);
+  color: #fff;
+}
+
+.addresses-add:focus-visible,
+.address-card__actions button:focus-visible,
+.addresses-dialog__head button:focus-visible,
+.addresses-dialog__foot button:focus-visible {
+  outline: 2px solid var(--addresses-accent);
+  outline-offset: 2px;
+}
+
+.addresses-grid {
+  grid-template-columns: 1fr;
+  gap: 16px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.addresses li,
-.addresses form {
-  padding: var(--space-4);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+.address-card {
+  min-width: 0;
+  padding: 20px;
+  background: var(--addresses-surface);
+  border: 1px solid var(--addresses-border);
+  border-radius: 18px;
 }
 
-.addresses input,
-.addresses select {
-  min-height: var(--touch-min);
-  width: 100%;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding-inline: var(--space-3);
-  background: var(--color-background);
+.address-card.is-default {
+  border-inline-start: 2px solid var(--addresses-accent);
 }
 
-.addresses small {
-  color: var(--color-error);
+.address-card__head {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.addresses button,
-.actions button {
-  min-height: var(--touch-min);
-  padding-inline: var(--space-3);
-  border-radius: var(--radius-sm);
-  background: var(--color-primary);
-  color: var(--color-surface);
-}
-
-.check {
-  display: flex;
+.address-card h2 {
+  display: inline-flex;
+  min-width: 0;
   align-items: center;
-  gap: var(--space-2);
+  gap: 8px;
+  font-size: 1.05rem;
 }
 
-.actions {
-  display: flex;
-  gap: var(--space-2);
+.address-card__icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: var(--addresses-soft);
+  color: var(--addresses-accent);
+}
+
+.address-card__badge {
+  flex: none;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--addresses-soft);
+  color: var(--addresses-accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.address-card__badge--muted {
+  background: #f1f4f7;
+  color: var(--addresses-muted);
+}
+
+.address-card p {
+  margin: 0;
+  align-items: start;
+  gap: 8px;
+  color: var(--addresses-muted);
+}
+
+.address-card p app-icon {
+  flex: none;
+  margin-block-start: 2px;
+  color: var(--addresses-ink);
+}
+
+.address-card__line span {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.address-card__actions {
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block-start: 4px;
+}
+
+.address-card__actions button {
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  color: var(--addresses-ink);
+}
+
+.address-card__actions .is-danger {
+  color: var(--addresses-accent);
+}
+
+.address-card__actions .is-outline {
+  margin-inline-start: auto;
+  padding: 8px 14px;
+  border: 1px solid var(--addresses-border);
+  border-radius: 999px;
+  background: var(--addresses-surface);
+}
+
+.address-card__actions button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.addresses-note {
+  justify-content: start;
+  gap: 8px;
+  margin: 0;
+  color: var(--addresses-muted);
+}
+
+.addresses-skeleton__header,
+.addresses-skeleton__lines {
+  display: grid;
+  gap: 10px;
+}
+
+.addresses-skeleton__header {
+  grid-template-columns: 52px minmax(0, 1fr);
+  align-items: center;
+}
+
+.addresses-skeleton__avatar,
+.addresses-skeleton__lines span,
+.addresses-skeleton__button,
+.addresses-skeleton__card {
+  display: block;
+  background: #e8eef4;
+  border-radius: 12px;
+  animation: addressesPulse 1.2s ease-in-out infinite;
+}
+
+.addresses-skeleton__avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+}
+
+.addresses-skeleton__lines span {
+  height: 14px;
+  width: min(100%, 16rem);
+}
+
+.addresses-skeleton__lines span:last-child {
+  width: min(100%, 22rem);
+}
+
+.addresses-skeleton__button {
+  display: none;
+}
+
+.addresses-skeleton__card {
+  min-height: 220px;
+  border-radius: 18px;
+}
+
+.addresses-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--overlay-z);
+  display: grid;
+  place-items: end center;
+}
+
+.addresses-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: rgb(11 31 58 / 0.45);
+  cursor: pointer;
+}
+
+.addresses-overlay__backdrop:disabled {
+  cursor: wait;
+}
+
+.addresses-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(36rem, 100%);
+  max-height: 100%;
+  overflow: auto;
+  padding: 20px;
+  background: var(--addresses-surface);
+  border-radius: 18px 18px 0 0;
+}
+
+.addresses-dialog--confirm {
+  width: min(26rem, 100%);
+}
+
+.addresses-dialog__head {
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.addresses-dialog__head h2 {
+  font-size: 1.1rem;
+}
+
+.addresses-dialog__head button {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  place-items: center;
+  border: 0;
+  background: none;
+  color: var(--addresses-muted);
+  cursor: pointer;
+}
+
+.addresses-dialog__body {
+  grid-template-columns: 1fr;
+}
+
+.addresses-dialog__body label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.addresses-dialog__body span {
+  color: var(--addresses-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.addresses-dialog__body input,
+.addresses-dialog__body select {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid var(--addresses-border);
+  border-radius: 12px;
+  background: var(--addresses-surface);
+  color: var(--addresses-ink);
+  font: inherit;
+}
+
+.addresses-dialog__body label.is-invalid input,
+.addresses-dialog__body label.is-invalid select {
+  border-color: #c44848;
+}
+
+.addresses-dialog__body small {
+  color: #c44848;
+}
+
+.addresses-dialog__check {
+  gap: 8px;
+  min-height: 44px;
+}
+
+.addresses-dialog__check span {
+  color: var(--addresses-ink);
+  font-weight: 600;
+}
+
+.addresses-dialog p {
+  margin: 0;
+  color: var(--addresses-muted);
+}
+
+.addresses-dialog__foot {
+  justify-content: end;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block-start: 8px;
+}
+
+.addresses-dialog__foot .is-ghost {
+  padding: 8px 16px;
+  border: 1px solid var(--addresses-border);
+  border-radius: 999px;
+  background: var(--addresses-surface);
+  color: var(--addresses-ink);
+}
+
+.addresses-dialog__foot .is-danger-fill {
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--addresses-accent);
+  color: #fff;
+}
+
+.addresses-dialog__foot button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+:host ::ng-deep .addresses .empty-state {
+  padding: 36px 16px;
+  background: var(--addresses-surface);
+  border: 1px solid var(--addresses-border);
+  border-radius: 18px;
 }
 
 @media (min-width: 768px) {
-  .addresses ul {
+  .addresses-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .addresses-skeleton__header {
+    grid-template-columns: 52px minmax(0, 1fr) 10rem;
+  }
+
+  .addresses-skeleton__button {
+    display: block;
+    height: 44px;
+    border-radius: 999px;
+  }
+
+  .addresses-overlay {
+    place-items: center;
+    padding: 24px;
+  }
+
+  .addresses-dialog {
+    border-radius: 18px;
+  }
+
+  .addresses-dialog__body {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .addresses-dialog__wide,
+  .addresses-dialog__check {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 767px) {
+  .addresses-add,
+  .addresses-dialog__body input,
+  .addresses-dialog__body select,
+  .addresses-dialog__foot button {
+    font-size: 16px;
+  }
+}
+
+@keyframes addressesPulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .addresses-skeleton__avatar,
+  .addresses-skeleton__lines span,
+  .addresses-skeleton__button,
+  .addresses-skeleton__card {
+    animation: none;
   }
 }

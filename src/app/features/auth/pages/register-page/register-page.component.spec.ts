@@ -19,7 +19,7 @@ describe('RegisterPageComponent', () => {
       providers: [
         ...authTestProviders(),
         provideRouter([
-          { path: 'auth/register', component: RegisterPageComponent },
+          { path: 'register', component: RegisterPageComponent },
           { path: 'account', component: RegisterPageComponent },
         ]),
         { provide: WHATSAPP_NUMBER, useValue: '' },
@@ -69,6 +69,6 @@ describe('RegisterPageComponent', () => {
     });
     await second.componentInstance.submit();
     second.detectChanges();
-    expect(second.nativeElement.textContent).toContain(AUTH_COPY.duplicateEmail);
+    expect(second.nativeElement.textContent).toContain(AUTH_COPY.duplicateAccount);
   });
 });

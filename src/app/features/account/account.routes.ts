@@ -15,7 +15,7 @@ export const ACCOUNT_ROUTES: Routes = [
           import('./pages/account-overview-page/account-overview-page.component').then(
             (m) => m.AccountOverviewPageComponent,
           ),
-        title: 'حسابي',
+        title: 'نظرة عامة',
       },
       {
         path: 'profile',
@@ -24,7 +24,7 @@ export const ACCOUNT_ROUTES: Routes = [
           import('./pages/account-profile-page/account-profile-page.component').then(
             (m) => m.AccountProfilePageComponent,
           ),
-        title: 'الملف الشخصي',
+        title: 'بيانات الحساب',
       },
       {
         path: 'orders',
@@ -51,12 +51,17 @@ export const ACCOUNT_ROUTES: Routes = [
         title: 'العناوين',
       },
       {
-        path: 'wishlist',
+        path: 'favorites',
         loadComponent: () =>
           import('./pages/account-wishlist-page/account-wishlist-page.component').then(
             (m) => m.AccountWishlistPageComponent,
           ),
         title: 'المفضلة',
+      },
+      {
+        path: 'wishlist',
+        redirectTo: 'favorites',
+        pathMatch: 'full',
       },
       {
         path: 'service-requests',

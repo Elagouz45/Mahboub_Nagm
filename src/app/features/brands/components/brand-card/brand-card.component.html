@@ -1,0 +1,34 @@
+@if (skeleton()) {
+  <div class="brand-card brand-card--skeleton" aria-hidden="true"></div>
+} @else if (brand(); as item) {
+  <a
+    class="brand-card"
+    [routerLink]="['/products']"
+    [queryParams]="{ brand: item.slug }"
+    [style.--brand-accent]="accent()"
+    [attr.aria-label]="'منتجات ' + item.name"
+  >
+    <span class="brand-card__logo">
+      @if (showLogo()) {
+        <img
+          [src]="item.imageSrc"
+          [alt]="'شعار ' + item.name"
+          width="120"
+          height="48"
+          loading="lazy"
+          (error)="onImageError()"
+        />
+      } @else {
+        <span class="brand-card__mono" aria-hidden="true">{{ monogram() }}</span>
+      }
+    </span>
+    <span class="brand-card__body">
+      <strong class="brand-card__name" dir="ltr">{{ item.name }}</strong>
+      <span class="brand-card__category">{{ item.categoryLabel }}</span>
+      <span class="brand-card__count">{{ productLabel() }}</span>
+    </span>
+    <span class="brand-card__go" aria-hidden="true">
+      <app-icon name="chevron-next" />
+    </span>
+  </a>
+}

@@ -1,0 +1,122 @@
+:host {
+  display: block;
+}
+
+.brands-intro {
+  display: grid;
+  gap: 24px;
+  min-height: 250px;
+  padding: 28px 32px;
+  background: #eef2f6;
+  border: 1px solid #dce3eb;
+  border-radius: 20px;
+}
+
+.brands-intro__copy {
+  display: grid;
+  align-content: center;
+  gap: 12px;
+  min-width: 0;
+  text-align: start;
+}
+
+.brands-intro__eyebrow,
+.brands-intro__desc,
+.brands-intro h1,
+.brands-intro__stat-value,
+.brands-intro__stat-title,
+.brands-intro__stat-hint {
+  margin: 0;
+}
+
+.brands-intro__eyebrow {
+  color: #ff6b16;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.brands-intro h1 {
+  color: #0c2a4d;
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.35rem);
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.brands-intro__desc {
+  max-width: 36rem;
+  color: #73829a;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.brands-intro__aside {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.brands-intro__stat {
+  display: grid;
+  gap: 4px;
+  min-height: 128px;
+  padding: 20px 22px;
+  background: #ffffff;
+  border: 1px solid #dce3eb;
+  border-block-start: 3px solid #ff6b16;
+  border-radius: 16px;
+}
+
+.brands-intro__stat-value {
+  color: #ff6b16;
+  font-family: var(--font-heading);
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.brands-intro__stat-title {
+  color: #0c2a4d;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.brands-intro__stat-hint {
+  color: #73829a;
+  font-size: 0.875rem;
+}
+
+.brands-intro__chips {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.brands-intro__chips li {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #ffffff;
+  border: 1px solid #dce3eb;
+  border-radius: 14px;
+  color: #0c2a4d;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.brands-intro__chips app-icon {
+  color: #73829a;
+  font-size: 1.15rem;
+}
+
+@media (min-width: 900px) {
+  .brands-intro {
+    grid-template-columns: minmax(0, 1.15fr) minmax(16rem, 0.85fr);
+    align-items: center;
+    padding: 32px 36px;
+  }
+}

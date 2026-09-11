@@ -11,7 +11,9 @@
     <ul>
       @for (item of requests(); track item.id) {
         <li>
-          <strong>{{ item.title }}</strong>
+          <strong
+            ><a [routerLink]="['/contact/requests', item.id]">{{ item.title }}</a></strong
+          >
           <p>{{ item.productTitle }}</p>
           <p>{{ statusLabels[item.status] }} — {{ item.createdAt | date: 'd/M/yyyy' }}</p>
           <p>{{ item.note }}</p>

@@ -1,7 +1,6 @@
 import { Component, provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { SITE_CONTACT, SITE_CONTACT_CONFIG, SiteContactConfig } from '@core/config/site-contact.config';
 import { WHATSAPP_NUMBER } from '@core/tokens/api.tokens';
 import { FooterComponent } from './footer.component';
 
@@ -12,16 +11,12 @@ import { FooterComponent } from './footer.component';
 class FooterSpecHostComponent {}
 
 describe('FooterComponent', () => {
-  async function setup(
-    options: {
-      whatsapp?: string;
-      contact?: SiteContactConfig;
-    } = {},
-  ) {
+  async function setup() {
     await TestBed.configureTestingModule({
       imports: [FooterComponent],
       providers: [
         provideZonelessChangeDetection(),
+        { provide: WHATSAPP_NUMBER, useValue: '' },
         provideRouter([
           { path: '', component: FooterSpecHostComponent },
           { path: 'products', component: FooterSpecHostComponent },
@@ -35,8 +30,6 @@ describe('FooterComponent', () => {
           { path: 'privacy-policy', component: FooterSpecHostComponent },
           { path: 'service-centers', component: FooterSpecHostComponent },
         ]),
-        { provide: WHATSAPP_NUMBER, useValue: options.whatsapp ?? '' },
-        { provide: SITE_CONTACT_CONFIG, useValue: options.contact ?? SITE_CONTACT },
       ],
     }).compileComponents();
 
@@ -76,7 +69,17 @@ describe('FooterComponent', () => {
     expect(footer.textContent).not.toContain('اشترك في نشرتنا البريدية');
   });
 
-  it('renders the intended quick and service routes only', async () => {
+  it('does not render the retired contact block copy', async () => {
+    const { fixture } = await setup();
+    const footer = footerEl(fixture);
+    expect(footer.querySelector('.app-footer__contact')).toBeNull();
+    expect(footer.textContent).not.toContain('راسلنا من النموذج');
+    expect(footer.textContent).not.toContain(
+      'تُضاف بيانات الهاتف والعنوان عند توفرها من إدارة المتجر.',
+    );
+  });
+
+  it('renders the intended quick, service, and legal routes only', async () => {
     const { fixture } = await setup();
     const footer = footerEl(fixture);
 
@@ -86,7 +89,6 @@ describe('FooterComponent', () => {
       '/offers',
       '/brands',
       '/about',
-      '/after-sales',
       '/contact',
     ]);
     expect(footer.querySelector('nav[aria-label="تسوق"]')).toBeNull();
@@ -95,18 +97,24 @@ describe('FooterComponent', () => {
       '/contact?topic=faq',
       '/contact?topic=shipping',
       '/return-policy',
-      '/privacy-policy',
       '/contact?topic=warranty',
       '/service-centers',
     ]);
-    expect(navHrefs(footer, 'روابط قانونية')).toEqual(['/return-policy', '/privacy-policy']);
-    expect(footer.querySelector('.app-footer__contact-cta')?.getAttribute('href')).toBe('/contact');
+    expect(navHrefs(footer, 'روابط قانونية')).toEqual(['/privacy-policy', '/return-policy']);
     expect(footer.textContent).toContain('صنع في مصر لخدمة كل بيت');
     expect(footer.textContent).toContain('سياسة الخصوصية');
-    expect(footer.textContent).toContain('خدمات ما بعد البيع');
+    expect(footer.textContent).toContain('فريقنا جاهز لمساعدتك');
+    expect(footer.textContent).not.toContain('خدمات ما بعد البيع');
     expect(footer.textContent).not.toContain('متابعة الطلب');
     expect(footer.textContent).not.toContain('الشروط والأحكام');
     expect(footer.textContent).not.toContain('16642');
+  });
+
+  it('hides WhatsApp and social icons when no real URLs exist', async () => {
+    const { fixture } = await setup();
+    const footer = footerEl(fixture);
+    expect(footer.querySelector('.app-footer__whatsapp')).toBeNull();
+    expect(footer.querySelector('.app-footer__social')).toBeNull();
   });
 
   it('does not render placeholder hash links', async () => {
@@ -116,54 +124,6 @@ describe('FooterComponent', () => {
     );
     expect(hrefs.length).toBeGreaterThan(0);
     expect(hrefs.every((href) => href && href !== '#' && !href.startsWith('javascript:'))).toBe(true);
-    expect(footerEl(fixture).querySelector('.app-footer__social')).toBeNull();
-  });
-
-  it('hides phone, email, hours, WhatsApp, and social when contact data is empty', async () => {
-    const { fixture } = await setup();
-    const footer = footerEl(fixture);
-    expect(footer.querySelector('a[href^="tel:"]')).toBeNull();
-    expect(footer.querySelector('a[href^="mailto:"]')).toBeNull();
-    expect(footer.querySelector('.app-footer__whatsapp')).toBeNull();
-    expect(footer.querySelector('.app-footer__social')).toBeNull();
-    expect(footer.textContent).toContain('تُضاف بيانات الهاتف والعنوان عند توفرها من إدارة المتجر.');
-  });
-
-  it('shows WhatsApp when a number is provided', async () => {
-    const { fixture } = await setup({ whatsapp: '+20 100 123 4567' });
-    const link = footerEl(fixture).querySelector<HTMLAnchorElement>('.app-footer__whatsapp');
-    expect(link).not.toBeNull();
-    expect(link?.getAttribute('href')).toContain('https://wa.me/201001234567');
-    expect(footerEl(fixture).textContent).not.toContain(
-      'تُضاف بيانات الهاتف والعنوان عند توفرها من إدارة المتجر.',
-    );
-  });
-
-  it('shows phone, email, hours, and social only when configured', async () => {
-    const { fixture } = await setup({
-      contact: {
-        phone: '01001234567',
-        email: 'hello@example.test',
-        workingHours: 'يومياً من 10 صباحاً',
-        social: [
-          {
-            platform: 'facebook',
-            label: 'فيسبوك',
-            url: 'https://facebook.com/mahbub-najm',
-            icon: 'facebook',
-          },
-        ],
-      },
-    });
-    const footer = footerEl(fixture);
-    expect(footer.querySelector('a[href="tel:01001234567"]')?.textContent).toContain('01001234567');
-    expect(footer.querySelector('a[href="mailto:hello@example.test"]')?.textContent).toContain(
-      'hello@example.test',
-    );
-    expect(footer.textContent).toContain('يومياً من 10 صباحاً');
-    expect(footer.querySelector('.app-footer__social a')?.getAttribute('href')).toBe(
-      'https://facebook.com/mahbub-najm',
-    );
   });
 
   it('shows the current year in the copyright line', async () => {

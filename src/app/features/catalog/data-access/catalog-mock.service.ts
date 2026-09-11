@@ -131,6 +131,7 @@ export const MOCK_CATALOG_PRODUCTS: readonly CatalogProductRecord[] = [
     discountPercent: 20,
     isBestseller: true,
     isTodaysOffer: true,
+    stockQuantity: 2,
     createdAt: NOW - 3 * DAY,
     attributes: { capacity: 8, loadType: 'front', automatic: true, inverter: true, dryer: false, color: 'silver' },
   }),

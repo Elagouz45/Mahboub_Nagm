@@ -1,0 +1,40 @@
+<div class="account-sidebar">
+  <div class="account-sidebar__user">
+    <span class="account-sidebar__avatar" aria-hidden="true">{{ initial() }}</span>
+    <span class="account-sidebar__meta">
+      <strong>{{ displayName() }}</strong>
+      @if (phone()) {
+        <small><bdi dir="ltr">{{ phone() }}</bdi></small>
+      }
+    </span>
+  </div>
+
+  <nav class="account-sidebar__nav" aria-label="أقسام الحساب">
+    @for (link of links; track link.path) {
+      <a
+        [routerLink]="link.path"
+        routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: link.exact }"
+      >
+        <app-icon [name]="link.icon" />
+        <span>{{ link.label }}</span>
+        @switch (link.badge) {
+          @case ('orders') {
+            @if (openOrderCount(); as count) {
+              <span class="account-sidebar__badge">{{ count }}</span>
+            }
+          }
+          @case ('favorites') {
+            @if (favoritesCount(); as count) {
+              <span class="account-sidebar__badge">{{ count }}</span>
+            }
+          }
+        }
+      </a>
+    }
+    <button type="button" (click)="logout()">
+      <app-icon name="log-out" />
+      <span>تسجيل الخروج</span>
+    </button>
+  </nav>
+</div>

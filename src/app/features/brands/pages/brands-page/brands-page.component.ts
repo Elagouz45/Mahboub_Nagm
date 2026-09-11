@@ -1,17 +1,18 @@
-import { ChangeDetectorRef, Component, inject, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { SITE_IMAGE_ASSETS } from '@core/config/site-image-assets.config';
+import { ActivatedRoute, Router } from '@angular/router';
 import { USER_ERROR_MESSAGES } from '@core/constants/error-messages';
-import { CATEGORY_LABELS, CatalogPageSize, VALID_CATEGORY_SLUGS } from '@features/catalog/models/catalog.model';
+import { CatalogPageSize } from '@features/catalog/models/catalog.model';
 import { CatalogPaginationComponent } from '@features/catalog/components/catalog-pagination/catalog-pagination.component';
 import { EmptyStateComponent } from '@shared/components/empty-state/empty-state.component';
 import { ErrorStateComponent } from '@shared/components/error-state/error-state.component';
-import { IconComponent } from '@shared/components/icon/icon.component';
 import { PageBreadcrumbComponent } from '@shared/components/page-breadcrumb/page-breadcrumb.component';
-import { PageTrustStripComponent } from '@shared/components/page-trust-strip/page-trust-strip.component';
-import { SiteImageComponent } from '@shared/components/site-image/site-image.component';
 import { Subject, debounceTime, distinctUntilChanged, map } from 'rxjs';
+import { BrandCardComponent } from '../../components/brand-card/brand-card.component';
+import { BrandsFiltersComponent } from '../../components/brands-filters/brands-filters.component';
+import { BrandsPageHeaderComponent } from '../../components/brands-page-header/brands-page-header.component';
+import { BrandsTrustStripComponent } from '../../components/brands-trust-strip/brands-trust-strip.component';
+import { formatBrandsCount } from '../../data-access/brands-copy.util';
 import { brandsQueryToParams, parseBrandsQuery } from '../../data-access/brands-query.util';
 import { BrandsQuery, DEFAULT_BRANDS_QUERY } from '../../models/brands.model';
 import { BrandsStore } from '../../state/brands.store';
@@ -19,14 +20,14 @@ import { BrandsStore } from '../../state/brands.store';
 @Component({
   selector: 'app-brands-page',
   imports: [
-    RouterLink,
-    IconComponent,
-    SiteImageComponent,
     PageBreadcrumbComponent,
-    PageTrustStripComponent,
     EmptyStateComponent,
     ErrorStateComponent,
     CatalogPaginationComponent,
+    BrandsPageHeaderComponent,
+    BrandsFiltersComponent,
+    BrandCardComponent,
+    BrandsTrustStripComponent,
   ],
   providers: [BrandsStore],
   templateUrl: './brands-page.component.html',
@@ -39,22 +40,14 @@ export class BrandsPageComponent {
   private readonly searchInput$ = new Subject<string>();
 
   readonly store = inject(BrandsStore);
-  readonly hero = SITE_IMAGE_ASSETS.brands.hero;
   readonly errorMessage = USER_ERROR_MESSAGES.server;
+  readonly skeletons = [1, 2, 3, 4, 5, 6];
+  readonly searchText = signal('');
   readonly breadcrumb = [
     { label: 'الرئيسية', path: '/' },
     { label: 'العلامات التجارية' },
   ];
-  readonly trustItems = [
-    { label: 'ضمان معتمد', icon: 'shield' as const },
-    { label: 'منتجات أصلية', icon: 'badge-check' as const },
-    { label: 'صيانة موثوقة', icon: 'headset' as const },
-  ];
-  readonly categories = VALID_CATEGORY_SLUGS.map((slug) => ({
-    slug,
-    label: CATEGORY_LABELS[slug] ?? slug,
-  }));
-  readonly searchText = signal('');
+  readonly countLabel = computed(() => formatBrandsCount(this.store.result().total, 'badge'));
 
   constructor() {
     this.route.queryParamMap.pipe(takeUntilDestroyed()).subscribe((params) => {
@@ -79,29 +72,17 @@ export class BrandsPageComponent {
       });
   }
 
-  onSearchInput(event: Event): void {
-    const target = event.target;
-    if (target instanceof HTMLInputElement) {
-      this.onSearch(target.value);
-    }
-  }
-
   onSearch(value: string): void {
     this.searchText.set(value);
     this.searchInput$.next(value);
   }
 
-  onCategory(event: Event): void {
-    this.navigate({ category: (event.target as HTMLSelectElement).value }, true);
+  onCategory(value: string): void {
+    this.navigate({ category: value }, true);
   }
 
   onInitial(value: string): void {
-    this.navigate({ initial: this.store.query().initial === value ? '' : value }, true);
-  }
-
-  onSort(event: Event): void {
-    const value = (event.target as HTMLSelectElement).value;
-    this.navigate({ sort: value === 'relevance' ? 'relevance' : 'name' }, true);
+    this.navigate({ initial: value }, true);
   }
 
   onPage(page: number): void {
@@ -116,7 +97,8 @@ export class BrandsPageComponent {
     this.store.load(this.store.query());
   }
 
-  clearFilters(): void {
+  showAll(): void {
+    this.searchText.set('');
     this.navigate({ ...DEFAULT_BRANDS_QUERY, pageSize: this.store.query().pageSize }, true);
   }
 

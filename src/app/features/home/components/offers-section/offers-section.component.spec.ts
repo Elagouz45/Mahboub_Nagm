@@ -45,9 +45,19 @@ describe('OffersSectionComponent', () => {
     expect(timer.textContent).toContain('ساعة');
     expect(timer.textContent).toContain('دقيقة');
     expect(timer.textContent).toContain('ثانية');
+    expect(timer.textContent).not.toContain(':');
+    expect(timer.querySelector('.offers__timer-sep')?.textContent?.trim()).toBe('');
     expect(values[0]).toBe('12');
     expect(values[1]).toBe('18');
     expect(timer.getAttribute('aria-label')).toContain('ساعة');
+  });
+
+  it('links the section action to the offers page', async () => {
+    const fixture = await setup(new Date(Date.now() + 60_000));
+    const root = fixture.nativeElement as HTMLElement;
+    expect(root.querySelector('h2')?.textContent).toContain('عروض اليوم');
+    expect(root.textContent).toContain('خصومات لفترة محدودة');
+    expect(root.querySelector('a.offers__all')?.getAttribute('href')).toBe('/offers');
   });
 
   it('announces when the offer has ended', async () => {

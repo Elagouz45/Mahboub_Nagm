@@ -11,6 +11,8 @@ export interface SiteContactConfig {
   readonly phone: string;
   readonly email: string;
   readonly workingHours: string;
+  readonly address?: string;
+  readonly mapUrl?: string;
   readonly social: readonly SiteSocialLink[];
 }
 
@@ -18,6 +20,8 @@ export const SITE_CONTACT: SiteContactConfig = {
   phone: '',
   email: '',
   workingHours: '',
+  address: '',
+  mapUrl: '',
   social: [],
 };
 

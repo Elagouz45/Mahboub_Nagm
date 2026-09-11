@@ -1,7 +1,9 @@
 @if (loading()) {
   <ul class="product-grid" [class.product-grid--list]="view() === 'list'" aria-hidden="true">
     @for (item of skeletons(); track item) {
-      <li class="product-grid__skeleton"></li>
+      <li>
+        <app-product-card [skeleton]="true" [layout]="view()" />
+      </li>
     }
   </ul>
 } @else {

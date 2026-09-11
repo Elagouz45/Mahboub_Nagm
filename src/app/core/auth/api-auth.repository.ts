@@ -29,6 +29,10 @@ export class ApiAuthRepository extends AuthRepository {
     return Promise.reject(this.unavailable());
   }
 
+  changePassword(): Promise<never> {
+    return Promise.reject(this.unavailable());
+  }
+
   private unavailable(): AuthError {
     return new AuthError('unavailable', USER_ERROR_MESSAGES.server);
   }

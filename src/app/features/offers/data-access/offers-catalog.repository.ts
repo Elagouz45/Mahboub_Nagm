@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { forkJoin, map, Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { CatalogRepository } from '@features/catalog/data-access/catalog.repository';
 import {
   CatalogQuery,
@@ -7,6 +7,7 @@ import {
   ProductSort,
 } from '@features/catalog/models/catalog.model';
 import { OffersQuery, OffersSearchResult, OfferPageSort } from '../models/offers.model';
+import { maxOfferDiscountPercent } from './offers-discount.util';
 import { OffersRepository } from './offers.repository';
 
 const BIG_DISCOUNT_THRESHOLD = 20;
@@ -37,21 +38,12 @@ export class OffersCatalogRepository extends OffersRepository {
   private readonly catalog = inject(CatalogRepository);
 
   search(query: OffersQuery): Observable<OffersSearchResult> {
-    return forkJoin({
-      page: this.catalog.search(toCatalogQuery(query)),
-      headline: this.catalog.search({
-        ...DEFAULT_CATALOG_QUERY,
-        offer: 'discounted',
-        sort: 'discount',
-        page: 1,
-        pageSize: 36,
-      }),
-    }).pipe(
-      map(({ page, headline }) => ({
+    return this.catalog.search(toCatalogQuery(query)).pipe(
+      map((page) => ({
         items: page.items,
         total: page.total,
         filters: page.filters,
-        maxDiscountPercent: Math.max(0, ...headline.items.map((item) => item.discountPercent ?? 0)),
+        maxDiscountPercent: maxOfferDiscountPercent(page.items),
         endsAt: null,
       })),
     );

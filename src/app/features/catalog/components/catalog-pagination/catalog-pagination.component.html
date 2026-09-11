@@ -37,12 +37,14 @@
     <app-icon name="chevron-prev" />
   </button>
 
-  <label class="pagination__size">
-    <span>{{ sizeLabel() }}</span>
-    <select [value]="pageSize()" [disabled]="disabled()" (change)="onPageSize($event)">
-      @for (size of pageSizes; track size) {
-        <option [value]="size">{{ size }}</option>
-      }
-    </select>
-  </label>
+  @if (showPageSize()) {
+    <label class="pagination__size">
+      <span>{{ sizeLabel() }}</span>
+      <select [value]="pageSize()" [disabled]="disabled()" (change)="onPageSize($event)">
+        @for (size of pageSizes; track size) {
+          <option [value]="size">{{ size }}</option>
+        }
+      </select>
+    </label>
+  }
 </nav>

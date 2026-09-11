@@ -1,4 +1,4 @@
-export const CONTACT_TYPES = ['product', 'order', 'maintenance', 'complaint'] as const;
+export const CONTACT_TYPES = ['product', 'order', 'maintenance', 'complaint', 'other'] as const;
 export type ContactType = (typeof CONTACT_TYPES)[number];
 
 export interface ContactAttachmentMeta {
@@ -21,11 +21,12 @@ export interface ContactRequest {
   readonly attachments: readonly ContactAttachmentMeta[];
 }
 
-export type ContactSubmitResult = 'unavailable' | 'failed';
+export type ContactSubmitResult = 'unavailable' | 'failed' | { readonly reference: string };
 
 export const CONTACT_TYPE_LABELS: Readonly<Record<ContactType, string>> = {
   product: 'استفسار عن منتج',
   order: 'متابعة طلب',
-  maintenance: 'طلب صيانة',
-  complaint: 'شكوى أو اقتراح',
+  maintenance: 'خدمة ما بعد البيع',
+  complaint: 'اقتراح أو شكوى',
+  other: 'أخرى',
 };

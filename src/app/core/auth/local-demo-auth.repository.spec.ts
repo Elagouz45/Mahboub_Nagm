@@ -39,7 +39,10 @@ describe('LocalDemoAuthRepository', () => {
     const repo = TestBed.inject(AuthRepository);
     await expect(
       repo.login({ identifier: DEMO_EMAIL, password: 'Wrong12345', rememberMe: false }),
-    ).rejects.toMatchObject({ code: 'invalid-credentials', message: 'بيانات تسجيل الدخول غير صحيحة' });
+    ).rejects.toMatchObject({
+      code: 'invalid-credentials',
+      message: 'البريد الإلكتروني أو رقم الهاتف أو كلمة المرور غير صحيحة.',
+    });
   });
 
   it('registers a new user and rejects duplicate email or phone', async () => {
@@ -72,5 +75,40 @@ describe('LocalDemoAuthRepository', () => {
         password: 'Secret123',
       }),
     ).rejects.toMatchObject({ code: 'duplicate-phone' });
+  });
+
+  it('changes the password hash without storing the plaintext secret', async () => {
+    const repo = TestBed.inject(AuthRepository);
+    const created = await repo.register({
+      firstName: 'منى',
+      lastName: 'علي',
+      phone: '01112345678',
+      email: 'mona@test.example',
+      password: 'Secret123',
+    });
+
+    await expect(
+      repo.changePassword(created.id, {
+        currentPassword: 'Wrong12345',
+        newPassword: 'Secret1234',
+      }),
+    ).rejects.toMatchObject({ code: 'invalid-credentials' });
+
+    await repo.changePassword(created.id, {
+      currentPassword: 'Secret123',
+      newPassword: 'Secret1234',
+    });
+
+    const stored = localStorage.getItem('mahboub-nagm-mock-users-v1') ?? '';
+    expect(stored).not.toContain('Secret1234');
+    expect(created).not.toHaveProperty('password');
+
+    await repo.logout();
+    const signedIn = await repo.login({
+      identifier: 'mona@test.example',
+      password: 'Secret1234',
+      rememberMe: false,
+    });
+    expect(signedIn.id).toBe(created.id);
   });
 });

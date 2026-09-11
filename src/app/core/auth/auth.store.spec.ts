@@ -31,4 +31,21 @@ describe('AuthStore', () => {
     await restored.restoreSession();
     expect(restored.user()?.email).toBe(DEMO_EMAIL);
   });
+
+  it('changes the password through the store without exposing the secret on the user', async () => {
+    TestBed.configureTestingModule({ providers: authTestProviders() });
+    const store = TestBed.inject(AuthStore);
+    await store.login({ identifier: DEMO_EMAIL, password: DEMO_PASSWORD, rememberMe: true });
+
+    await expect(
+      store.changePassword({ currentPassword: 'Wrong12345', newPassword: 'Secret1234' }),
+    ).rejects.toMatchObject({ code: 'invalid-credentials' });
+
+    await store.changePassword({ currentPassword: DEMO_PASSWORD, newPassword: 'Secret1234' });
+    expect(store.user()).not.toHaveProperty('password');
+
+    await store.logout();
+    await store.login({ identifier: DEMO_EMAIL, password: 'Secret1234', rememberMe: false });
+    expect(store.user()?.email).toBe(DEMO_EMAIL);
+  });
 });

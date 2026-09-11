@@ -5,10 +5,12 @@ import { CartStore } from './cart.store';
 describe('CartStore', () => {
   beforeEach(() => {
     sessionStorage.clear();
+    localStorage.clear();
   });
 
   afterEach(() => {
     sessionStorage.clear();
+    localStorage.clear();
   });
 
   it('adds a product and increments quantity for duplicates', () => {

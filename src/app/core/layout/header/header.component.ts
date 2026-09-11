@@ -74,6 +74,7 @@ export class HeaderComponent {
   readonly user = this.auth.user;
   readonly firstName = this.auth.firstName;
   readonly initial = this.auth.initial;
+  readonly authInitialized = this.auth.authInitialized;
   readonly accountNav = ACCOUNT_NAV_LINKS;
   readonly accountMenuOpen = signal(false);
   readonly currentUrl = toSignal(
@@ -189,7 +190,7 @@ export class HeaderComponent {
     event.stopPropagation();
     if (this.compactNav()) {
       this.closeMenus();
-      void this.router.navigateByUrl(this.user() ? '/account' : '/auth/login');
+      void this.router.navigateByUrl(this.user() ? '/account' : '/login');
       return;
     }
     this.toggleAccountMenu();
@@ -226,7 +227,7 @@ export class HeaderComponent {
     this.closeMenus();
     await this.auth.logout();
     this.toast.show(AUTH_COPY.logoutSuccess);
-    await this.router.navigateByUrl('/');
+    await this.router.navigateByUrl('/', { replaceUrl: true });
   }
 
   onDocumentKeydown(event: KeyboardEvent): void {

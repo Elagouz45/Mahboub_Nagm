@@ -1,28 +1,146 @@
 <section class="page-container cart-page" aria-labelledby="cart-heading">
-  <h1 id="cart-heading">سلة التسوق</h1>
+  <header class="cart-page__header">
+    <p class="cart-page__kicker">اختياراتك لبيت أجمل</p>
+    <div class="cart-page__title-row">
+      <h1 id="cart-heading">سلة التسوق</h1>
+      <span class="cart-page__count" [attr.aria-label]="'عدد المنتجات ' + cart.count()">
+        {{ cart.count() }}
+      </span>
+    </div>
+    <p class="cart-page__demo">
+      نسخة تجريبية: تُحفظ السلة في هذا المتصفح فقط، ولا تُرسل طلبات حقيقية.
+    </p>
+  </header>
 
-  @if (cart.items().length === 0) {
-    <app-empty-state
-      title="السلة فارغة"
-      description="أضيفي منتجات من الصفحة الرئيسية للبدء."
-      actionLabel="تسوق الآن"
-      (action)="goShop()"
-    />
+  @if (cart.error()) {
+    <p class="cart-page__error" role="alert">{{ cart.error() }}</p>
+  }
+
+  @if (!cart.items().length) {
+    <div class="cart-empty" role="status">
+      <div class="cart-empty__mark" aria-hidden="true">
+        <app-icon name="cart" />
+      </div>
+      <h2>السلة في انتظار اختياراتك</h2>
+      <p>اكتشف الأجهزة المناسبة لبيتك وأضف ما يعجبك.</p>
+      <div class="cart-empty__actions">
+        <a class="cart-page__btn cart-page__btn--primary" routerLink="/products">
+          <app-icon name="bag" />
+          ابدأ التسوق
+        </a>
+        <a class="cart-page__btn cart-page__btn--ghost" routerLink="/offers">شاهدي العروض</a>
+      </div>
+      <ul class="cart-empty__trust">
+        @for (point of trustPoints; track point.id) {
+          <li>
+            <app-icon [name]="point.icon" />
+            <span>{{ point.label }}</span>
+          </li>
+        }
+      </ul>
+    </div>
   } @else {
-    <ul>
-      @for (item of cart.items(); track item.product.id) {
-        <li>
-          <div>
-            <p>{{ item.product.brand }}</p>
-            <h2>
-              <a [routerLink]="['/products', item.product.slug]">{{ item.product.title }}</a>
-            </h2>
-            <p>الكمية: {{ item.quantity }}</p>
-            <app-price-display [price]="item.product.price * item.quantity" />
-          </div>
-          <button type="button" (click)="cart.remove(item.product.id)">حذف</button>
-        </li>
-      }
-    </ul>
+    <div class="cart-layout">
+      <div class="cart-lines">
+        <ul class="cart-lines__list">
+          @for (item of cart.items(); track item.product.sku) {
+            <li>
+              <article class="cart-line">
+                <a
+                  class="cart-line__media"
+                  [routerLink]="['/products', item.product.slug]"
+                  [attr.aria-label]="item.product.title"
+                >
+                  <app-site-image
+                    [src]="item.product.imageSrc"
+                    [alt]="item.product.imageAlt"
+                    [fill]="true"
+                    objectFit="contain"
+                    sizes="(max-width: 480px) 28vw, 8rem"
+                  />
+                </a>
+
+                <div class="cart-line__body">
+                  <p class="cart-line__brand">{{ item.product.brand }}</p>
+                  <h2>
+                    <a [routerLink]="['/products', item.product.slug]">{{ item.product.title }}</a>
+                  </h2>
+                  @if (item.product.spec) {
+                    <p class="cart-line__spec">{{ item.product.spec }}</p>
+                  }
+                  <p class="cart-line__unit">{{ price(item.product.price) }} للوحدة</p>
+
+                  <div class="cart-line__controls">
+                    <div class="cart-qty" role="group" [attr.aria-label]="'كمية ' + item.product.title">
+                      <button
+                        type="button"
+                        [attr.aria-label]="'تقليل كمية ' + item.product.title"
+                        [disabled]="item.quantity <= 1"
+                        (click)="cart.setQuantity(item.product.id, item.quantity - 1)"
+                      >
+                        −
+                      </button>
+                      <output aria-live="polite">{{ item.quantity }}</output>
+                      <button
+                        type="button"
+                        [attr.aria-label]="'زيادة كمية ' + item.product.title"
+                        [disabled]="item.quantity >= maxQuantity"
+                        (click)="cart.setQuantity(item.product.id, item.quantity + 1)"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <button
+                      type="button"
+                      class="cart-line__remove"
+                      [attr.aria-label]="'حذف ' + item.product.title"
+                      (click)="cart.remove(item.product.id)"
+                    >
+                      <app-icon name="close" />
+                      حذف
+                    </button>
+                  </div>
+                </div>
+
+                <p class="cart-line__total">
+                  <span class="visually-hidden">إجمالي {{ item.product.title }}: </span>
+                  {{ price(item.product.price * item.quantity) }}
+                </p>
+              </article>
+            </li>
+          }
+        </ul>
+
+        <a class="cart-page__continue" routerLink="/products">
+          <app-icon name="bag" />
+          متابعة التسوق
+        </a>
+      </div>
+
+      <aside class="cart-summary" aria-label="ملخص السلة">
+        <h2>ملخص السلة</h2>
+        <div class="cart-summary__row">
+          <span>المنتجات ({{ cart.count() }})</span>
+          <strong>{{ price(cart.subtotal()) }}</strong>
+        </div>
+        <p class="cart-summary__note">يُحسب الشحن بعد اختيار المحافظة.</p>
+        <div class="cart-summary__row cart-summary__row--total">
+          <span>قبل الشحن</span>
+          <strong>{{ price(cart.subtotal()) }}</strong>
+        </div>
+        <a class="cart-page__btn cart-page__btn--primary cart-page__btn--wide" routerLink="/checkout">
+          متابعة لإتمام الطلب
+        </a>
+        <p class="cart-summary__pay">الدفع عند الاستلام · تجربة محلية</p>
+        <ul class="cart-summary__trust">
+          @for (point of trustPoints; track point.id) {
+            <li>
+              <app-icon [name]="point.icon" />
+              <span>{{ point.label }}</span>
+            </li>
+          }
+        </ul>
+      </aside>
+    </div>
   }
 </section>

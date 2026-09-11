@@ -1,39 +1,186 @@
 <section class="profile" aria-labelledby="profile-heading">
-  <h1 id="profile-heading">الملف الشخصي</h1>
-  <form [formGroup]="form" (ngSubmit)="save()" novalidate>
-    @if (formError()) {
-      <p class="error" role="alert">{{ formError() }}</p>
-    }
-    <label>
-      <span>الاسم الأول</span>
-      <input type="text" formControlName="firstName" autocomplete="given-name" [attr.aria-invalid]="fieldInvalid('firstName')" />
-      @if (fieldInvalid('firstName')) {
-        <small>الاسم الأول مطلوب.</small>
-      }
-    </label>
-    <label>
-      <span>اسم العائلة</span>
-      <input type="text" formControlName="lastName" autocomplete="family-name" [attr.aria-invalid]="fieldInvalid('lastName')" />
-      @if (fieldInvalid('lastName')) {
-        <small>اسم العائلة مطلوب.</small>
-      }
-    </label>
-    <label>
-      <span>رقم الهاتف</span>
-      <input type="tel" formControlName="phone" autocomplete="tel" inputmode="tel" [attr.aria-invalid]="fieldInvalid('phone')" />
-      @if (fieldInvalid('phone')) {
-        <small>{{ form.controls.phone.hasError('duplicate') ? 'رقم الهاتف مسجّل بالفعل.' : 'أدخل رقمًا مصريًا صحيحًا.' }}</small>
-      }
-    </label>
-    <label>
-      <span>البريد الإلكتروني</span>
-      <input type="email" formControlName="email" autocomplete="email" inputmode="email" [attr.aria-invalid]="fieldInvalid('email')" />
-      @if (fieldInvalid('email')) {
-        <small>{{ form.controls.email.hasError('duplicate') ? 'هذا البريد الإلكتروني مسجّل بالفعل.' : 'أدخل بريدًا إلكترونيًا صحيحًا.' }}</small>
-      }
-    </label>
-    <button type="submit" [disabled]="form.pristine || form.invalid || saving()">
-      {{ saving() ? 'جارٍ الحفظ...' : 'حفظ التغييرات' }}
-    </button>
-  </form>
+  <header class="profile-hero">
+    <span class="profile-hero__avatar" aria-hidden="true">{{ initials() }}</span>
+    <div>
+      <h1 id="profile-heading">بيانات الحساب</h1>
+      <p>حدّث بياناتك الشخصية ومعلومات تسجيل الدخول.</p>
+    </div>
+  </header>
+
+  <div class="profile-card">
+    <section class="profile-section" aria-labelledby="personal-heading">
+      <h2 id="personal-heading">البيانات الشخصية</h2>
+
+      <form class="profile-personal" [formGroup]="form" (ngSubmit)="saveProfile()" novalidate>
+        <span class="profile-photo" aria-hidden="true">{{ initials() }}</span>
+
+        <div class="profile-fields">
+          @if (profileError()) {
+            <p class="profile-alert" role="alert">{{ profileError() }}</p>
+          }
+
+          <label [class.is-invalid]="fieldInvalid('firstName')">
+            <span>الاسم الأول</span>
+            <input
+              type="text"
+              formControlName="firstName"
+              autocomplete="given-name"
+              [attr.aria-invalid]="fieldInvalid('firstName')"
+            />
+            @if (fieldInvalid('firstName')) {
+              <small>الاسم الأول مطلوب.</small>
+            }
+          </label>
+
+          <label [class.is-invalid]="fieldInvalid('lastName')">
+            <span>اسم العائلة</span>
+            <input
+              type="text"
+              formControlName="lastName"
+              autocomplete="family-name"
+              [attr.aria-invalid]="fieldInvalid('lastName')"
+            />
+            @if (fieldInvalid('lastName')) {
+              <small>اسم العائلة مطلوب.</small>
+            }
+          </label>
+
+          <label [class.is-invalid]="fieldInvalid('phone')">
+            <span>رقم الهاتف</span>
+            <input
+              type="tel"
+              formControlName="phone"
+              autocomplete="tel"
+              inputmode="tel"
+              dir="ltr"
+              [attr.aria-invalid]="fieldInvalid('phone')"
+            />
+            @if (fieldInvalid('phone')) {
+              <small>{{
+                form.controls.phone.hasError('duplicate')
+                  ? 'رقم الهاتف مسجّل بالفعل.'
+                  : 'أدخل رقمًا مصريًا صحيحًا.'
+              }}</small>
+            }
+          </label>
+
+          <label [class.is-invalid]="fieldInvalid('email')">
+            <span>البريد الإلكتروني</span>
+            <input
+              type="email"
+              formControlName="email"
+              autocomplete="email"
+              inputmode="email"
+              dir="ltr"
+              [attr.aria-invalid]="fieldInvalid('email')"
+            />
+            @if (fieldInvalid('email')) {
+              <small>{{
+                form.controls.email.hasError('duplicate')
+                  ? 'هذا البريد الإلكتروني مسجّل بالفعل.'
+                  : 'أدخل بريدًا إلكترونيًا صحيحًا.'
+              }}</small>
+            }
+          </label>
+        </div>
+
+        <button
+          class="profile-save"
+          type="submit"
+          [disabled]="form.pristine || form.invalid || savingProfile()"
+        >
+          {{ savingProfile() ? 'جارٍ الحفظ...' : 'حفظ التعديلات' }}
+        </button>
+      </form>
+    </section>
+
+    <section class="profile-section profile-section--password" aria-labelledby="password-heading">
+      <h2 id="password-heading">تغيير كلمة المرور</h2>
+
+      <form class="profile-password" [formGroup]="passwordForm" (ngSubmit)="savePassword()" novalidate>
+        @if (passwordError()) {
+          <p class="profile-alert" role="alert">{{ passwordError() }}</p>
+        }
+
+        <label [class.is-invalid]="passwordInvalid('currentPassword')">
+          <span>كلمة المرور الحالية</span>
+          <span class="password-field">
+            <input
+              [type]="showCurrent() ? 'text' : 'password'"
+              formControlName="currentPassword"
+              autocomplete="current-password"
+              [attr.aria-invalid]="passwordInvalid('currentPassword')"
+            />
+            <button
+              type="button"
+              [attr.aria-label]="showCurrent() ? 'إخفاء كلمة المرور الحالية' : 'إظهار كلمة المرور الحالية'"
+              (click)="toggleVisibility('current')"
+            >
+              <app-icon [name]="showCurrent() ? 'eye-off' : 'eye'" />
+            </button>
+          </span>
+          @if (passwordInvalid('currentPassword')) {
+            <small>{{
+              passwordForm.controls.currentPassword.hasError('current')
+                ? 'كلمة المرور الحالية غير صحيحة.'
+                : 'كلمة المرور الحالية مطلوبة.'
+            }}</small>
+          }
+        </label>
+
+        <label [class.is-invalid]="passwordInvalid('newPassword')">
+          <span>كلمة المرور الجديدة</span>
+          <span class="password-field">
+            <input
+              [type]="showNew() ? 'text' : 'password'"
+              formControlName="newPassword"
+              autocomplete="new-password"
+              [attr.aria-invalid]="passwordInvalid('newPassword')"
+            />
+            <button
+              type="button"
+              [attr.aria-label]="showNew() ? 'إخفاء كلمة المرور الجديدة' : 'إظهار كلمة المرور الجديدة'"
+              (click)="toggleVisibility('next')"
+            >
+              <app-icon [name]="showNew() ? 'eye-off' : 'eye'" />
+            </button>
+          </span>
+          <small class="profile-hint">استخدم 8 أحرف على الأقل.</small>
+          @if (passwordInvalid('newPassword')) {
+            <small>ثماني أحرف على الأقل، حرف واحد ورقم واحد.</small>
+          }
+        </label>
+
+        <label [class.is-invalid]="passwordInvalid('confirmPassword')">
+          <span>تأكيد كلمة المرور</span>
+          <span class="password-field">
+            <input
+              [type]="showConfirm() ? 'text' : 'password'"
+              formControlName="confirmPassword"
+              autocomplete="new-password"
+              [attr.aria-invalid]="passwordInvalid('confirmPassword')"
+            />
+            <button
+              type="button"
+              [attr.aria-label]="showConfirm() ? 'إخفاء تأكيد كلمة المرور' : 'إظهار تأكيد كلمة المرور'"
+              (click)="toggleVisibility('confirm')"
+            >
+              <app-icon [name]="showConfirm() ? 'eye-off' : 'eye'" />
+            </button>
+          </span>
+          @if (passwordInvalid('confirmPassword')) {
+            <small>كلمتا المرور غير متطابقتين.</small>
+          }
+        </label>
+
+        <button
+          class="profile-password-save"
+          type="submit"
+          [disabled]="passwordForm.pristine || passwordForm.invalid || savingPassword()"
+        >
+          {{ savingPassword() ? 'جارٍ التحديث...' : 'تحديث كلمة المرور' }}
+        </button>
+      </form>
+    </section>
+  </div>
 </section>

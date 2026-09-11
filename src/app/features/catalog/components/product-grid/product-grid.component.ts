@@ -8,11 +8,15 @@ import { ProductViewMode } from '../../models/catalog.model';
   imports: [ProductCardComponent],
   templateUrl: './product-grid.component.html',
   styleUrl: './product-grid.component.scss',
+  host: {
+    '[class.product-grid-host--max-3]': 'maxColumns() === 3',
+  },
 })
 export class ProductGridComponent {
   readonly products = input<readonly ProductSummary[]>([]);
   readonly view = input<ProductViewMode>('grid');
   readonly loading = input(false);
   readonly skeletonCount = input(12);
+  readonly maxColumns = input<3 | 4>(4);
   readonly skeletons = computed(() => Array.from({ length: this.skeletonCount() }, (_, index) => index));
 }

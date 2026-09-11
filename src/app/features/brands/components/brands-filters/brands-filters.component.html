@@ -1,0 +1,29 @@
+<div class="brands-filters">
+  <label class="brands-filters__search">
+    <span class="visually-hidden">ابحث باسم الماركة</span>
+    <app-icon name="search" />
+    <input
+      type="search"
+      [value]="search()"
+      placeholder="ابحث باسم الماركة..."
+      autocomplete="off"
+      (input)="onSearch($event)"
+    />
+  </label>
+
+  <label class="brands-filters__select">
+    <span class="visually-hidden">التصنيف</span>
+    <select [value]="category()" (change)="onCategory($event)">
+      @for (option of categories; track option.value) {
+        <option [value]="option.value" [selected]="category() === option.value">{{ option.label }}</option>
+      }
+    </select>
+    <app-icon name="chevron-down" />
+  </label>
+
+  <app-brand-alphabet-filter
+    [letters]="letters()"
+    [selected]="selectedLetter()"
+    (letterChange)="letterChange.emit($event)"
+  />
+</div>

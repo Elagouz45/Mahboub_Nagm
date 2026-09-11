@@ -1,34 +1,19 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
-import { BrowserStorageService } from '@core/services/browser-storage.service';
+import { computed, inject, Injectable } from '@angular/core';
+import { DemoCommerceService } from '@core/services/demo-commerce.service';
+import { ToastService } from '@core/services/toast.service';
 import { ProductSummary } from '@shared/models/storefront.model';
-
-const STORAGE_KEY = 'mahbub-najm.wishlist';
-
 @Injectable({ providedIn: 'root' })
 export class WishlistStore {
-  private readonly storage = inject(BrowserStorageService);
-  private readonly state = signal<readonly ProductSummary[]>(
-    this.storage.readJson<ProductSummary[]>(STORAGE_KEY) ?? [],
-  );
-
-  readonly items = computed(() => this.state());
-  readonly count = computed(() => this.state().length);
-  readonly ids = computed(() => new Set(this.state().map((item) => item.id)));
-
+  private readonly commerce = inject(DemoCommerceService);
+  private readonly toast = inject(ToastService);
+  readonly items = this.commerce.wishlist;
+  readonly count = computed(() => this.items().length);
+  readonly ids = computed(() => new Set(this.items().map((item) => item.id)));
   toggle(product: ProductSummary): void {
-    this.state.update((items) => {
-      const exists = items.some((item) => item.id === product.id);
-      return exists ? items.filter((item) => item.id !== product.id) : [...items, product];
-    });
-    this.persist();
+    if (!this.commerce.toggleWishlist(product)) this.toast.show(this.commerce.error());
   }
-
-  remove(productId: string): void {
-    this.state.update((items) => items.filter((item) => item.id !== productId));
-    this.persist();
-  }
-
-  private persist(): void {
-    this.storage.writeJson(STORAGE_KEY, this.state());
+  remove(id: string): void {
+    this.commerce.removeWish(id);
+    if (this.commerce.error()) this.toast.show(this.commerce.error());
   }
 }

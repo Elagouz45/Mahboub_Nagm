@@ -1,56 +1,151 @@
 <section class="overview" aria-labelledby="overview-heading">
-  <h1 id="overview-heading">مرحبًا، {{ firstName() }}</h1>
-  <p>هذه نظرة سريعة على حسابك في محبوب نجم.</p>
-
-  @if (emptyShopper()) {
-    <app-empty-state
-      title="حسابك جاهز للتسوق"
-      description="ابدأ من المتجر لإضافة منتجات إلى طلباتك وعناوينك."
-      actionLabel="تسوق الآن"
-      (action)="goShop()"
-    />
+  @if (loadError()) {
+    <app-error-state [message]="loadErrorMessage" (retry)="load()" />
+  } @else if (loading()) {
+    <div class="overview-skeleton" aria-busy="true">
+      <span class="visually-hidden">جارٍ تحميل ملخص الحساب</span>
+      <div class="overview-skeleton__header">
+        <span class="overview-skeleton__avatar"></span>
+        <span class="overview-skeleton__lines">
+          <span></span>
+          <span></span>
+        </span>
+      </div>
+      <div class="overview-stats">
+        <span class="overview-skeleton__card"></span>
+        <span class="overview-skeleton__card"></span>
+        <span class="overview-skeleton__card"></span>
+      </div>
+      <span class="overview-skeleton__panel"></span>
+      <div class="overview-panels">
+        <span class="overview-skeleton__panel"></span>
+        <span class="overview-skeleton__panel"></span>
+      </div>
+    </div>
   } @else {
-    <ul class="stats">
+    <header class="overview-hero">
+      <div class="overview-hero__user">
+        <span class="overview-hero__avatar" aria-hidden="true">{{ initials() }}</span>
+        <div>
+          <p class="overview-hero__hello">أهلاً، {{ firstName() }}</p>
+          <p class="overview-hero__lead">تابع طلباتك وحدّث بياناتك من مكان واحد.</p>
+        </div>
+      </div>
+      <button class="overview-hero__logout" type="button" (click)="logout()">
+        تسجيل الخروج
+        <app-icon name="log-out" />
+      </button>
+    </header>
+
+    <div class="overview-title">
+      <h1 id="overview-heading">نظرة عامة</h1>
+      <p>ملخص حسابك وآخر نشاطك.</p>
+    </div>
+
+    <ul class="overview-stats">
       <li>
-        <strong>{{ orders().length }}</strong>
-        <span>طلبات</span>
+        <span class="overview-stats__icon" aria-hidden="true">
+          <app-icon name="package" />
+        </span>
+        <strong>{{ openOrderCount() }}</strong>
+        <span>طلبات جارية</span>
       </li>
       <li>
-        <strong>{{ addresses().length }}</strong>
-        <span>عناوين</span>
+        <span class="overview-stats__icon" aria-hidden="true">
+          <app-icon name="check" />
+        </span>
+        <strong>{{ completedOrderCount() }}</strong>
+        <span>طلبات مكتملة</span>
+      </li>
+      <li>
+        <span class="overview-stats__icon" aria-hidden="true">
+          <app-icon name="heart" />
+        </span>
+        <strong>{{ favoritesCount() }}</strong>
+        <span>منتجات مفضلة</span>
       </li>
     </ul>
 
-    <div class="cards">
-      <article>
-        <h2>آخر طلب</h2>
-        @if (lastOrder(); as order) {
-          <p>{{ order.number }} — {{ statusLabels[order.status] }}</p>
-          <p>{{ order.placedAt | date: 'd/M/yyyy' }}</p>
-          <p>{{ formatPrice(order.total) }}</p>
-          <a [routerLink]="['/account/orders', order.id]">عرض التفاصيل</a>
-        } @else {
-          <p>لا توجد طلبات بعد.</p>
-          <a routerLink="/products">تسوق الآن</a>
-        }
-      </article>
-      <article>
-        <h2>العنوان الافتراضي</h2>
-        @if (defaultAddress(); as address) {
-          <p>{{ address.city }} — {{ address.street }}</p>
-          <a routerLink="/account/addresses">إدارة العناوين</a>
-        } @else {
-          <p>لم تضف عنوانًا بعد.</p>
-          <a routerLink="/account/addresses">إضافة عنوان</a>
-        }
-      </article>
-    </div>
-  }
+    <section class="overview-card" aria-labelledby="recent-orders-heading">
+      <header class="overview-card__head">
+        <h2 id="recent-orders-heading">آخر الطلبات</h2>
+        <a routerLink="/account/orders">
+          عرض كل الطلبات
+          <app-icon name="chevron-next" />
+        </a>
+      </header>
+      @if (recentOrders().length === 0) {
+        <app-empty-state
+          title="لا توجد طلبات بعد"
+          description="ابدأ من المتجر لإضافة أول طلب إلى حسابك."
+          actionLabel="ابدأ التسوق"
+          (action)="goShop()"
+        />
+      } @else {
+        <ul class="overview-orders">
+          @for (order of recentOrders(); track order.id) {
+            <li>
+              <app-account-order-row [order]="order" />
+            </li>
+          }
+        </ul>
+      }
+    </section>
 
-  <nav class="shortcuts" aria-label="اختصارات الحساب">
-    <a routerLink="/account/orders">طلباتي</a>
-    <a routerLink="/account/wishlist">المفضلة</a>
-    <a routerLink="/account/service-requests">طلبات الصيانة</a>
-    <a routerLink="/products">المتجر</a>
-  </nav>
+    <div class="overview-panels">
+      <section class="overview-card" aria-labelledby="profile-summary-heading">
+        <h2 id="profile-summary-heading">
+          <app-icon name="user" />
+          بيانات الحساب
+        </h2>
+        <dl class="overview-dl">
+          <div>
+            <dt>الاسم:</dt>
+            <dd>{{ displayName() }}</dd>
+          </div>
+          <div>
+            <dt>رقم الهاتف:</dt>
+            <dd><bdi dir="ltr">{{ phone() }}</bdi></dd>
+          </div>
+          <div>
+            <dt>البريد الإلكتروني:</dt>
+            <dd>{{ email() }}</dd>
+          </div>
+        </dl>
+        <a class="overview-card__link" routerLink="/account/profile">
+          تعديل البيانات
+          <app-icon name="chevron-next" />
+        </a>
+      </section>
+
+      <section class="overview-card" aria-labelledby="address-summary-heading">
+        <h2 id="address-summary-heading">
+          <app-icon name="map-pin" />
+          العنوان الافتراضي
+        </h2>
+        @if (defaultAddress(); as address) {
+          <p class="overview-address__label">{{ addressLabels[address.label] }}</p>
+          <p class="overview-address__line">
+            {{ governorateLabel(address.governorateSlug) }}، {{ address.city }}، {{ address.street }}
+          </p>
+          <p class="overview-address__phone"><bdi dir="ltr">{{ address.phone }}</bdi></p>
+        } @else {
+          <p class="overview-address__empty">لم تضف عنوانًا بعد.</p>
+        }
+        <a class="overview-card__link" routerLink="/account/addresses">
+          إدارة العناوين
+          <app-icon name="chevron-next" />
+        </a>
+      </section>
+    </div>
+
+    <p class="overview-help">
+      <app-icon name="headset" />
+      <span>محتاج مساعدة في طلب؟ تواصل مع خدمة العملاء</span>
+      <a routerLink="/contact">
+        تواصل معنا
+        <app-icon name="chevron-next" />
+      </a>
+    </p>
+  }
 </section>

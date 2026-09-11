@@ -1,40 +1,49 @@
 <section class="offers page-container" aria-labelledby="offers-heading">
-  <div class="offers__head">
-    <app-section-header title="عروض اليوم" headingId="offers-heading">
+  <div class="offers__title">
+    <h2 id="offers-heading">
       <app-icon name="bolt" />
-    </app-section-header>
-    @if (showTimer()) {
-      <p class="offers__timer" aria-live="polite" [attr.aria-label]="timerLabel()">
-        @if (remaining().expired) {
-          <span class="offers__timer-ended">انتهى العرض</span>
-        } @else {
-          <span class="offers__timer-copy">ينتهي العرض خلال</span>
-          <span class="offers__timer-units">
-            <span class="offers__timer-unit">
-              <span class="offers__timer-value">{{ remaining().hours }}</span>
-              <span class="offers__timer-unit-name">ساعة</span>
-            </span>
-            <span class="offers__timer-sep" aria-hidden="true">:</span>
-            <span class="offers__timer-unit">
-              <span class="offers__timer-value">{{ remaining().minutes }}</span>
-              <span class="offers__timer-unit-name">دقيقة</span>
-            </span>
-            <span class="offers__timer-sep" aria-hidden="true">:</span>
-            <span class="offers__timer-unit">
-              <span class="offers__timer-value">{{ remaining().seconds }}</span>
-              <span class="offers__timer-unit-name">ثانية</span>
-            </span>
-          </span>
-        }
-      </p>
-    }
+      عروض اليوم
+    </h2>
+    <p>خصومات لفترة محدودة</p>
   </div>
+
+  @if (showTimer()) {
+    <p class="offers__timer" aria-live="polite" [attr.aria-label]="timerLabel()">
+      @if (remaining().expired) {
+        <span class="offers__timer-ended">انتهى العرض</span>
+      } @else {
+        <app-icon name="clock" />
+        <span class="offers__timer-copy">ينتهي العرض خلال</span>
+        <span class="offers__timer-units">
+          <span class="offers__timer-unit">
+            <span class="offers__timer-value">{{ remaining().hours }}</span>
+            <span class="offers__timer-unit-name">ساعة</span>
+          </span>
+          <span class="offers__timer-sep" aria-hidden="true"></span>
+          <span class="offers__timer-unit">
+            <span class="offers__timer-value">{{ remaining().minutes }}</span>
+            <span class="offers__timer-unit-name">دقيقة</span>
+          </span>
+          <span class="offers__timer-sep" aria-hidden="true"></span>
+          <span class="offers__timer-unit">
+            <span class="offers__timer-value">{{ remaining().seconds }}</span>
+            <span class="offers__timer-unit-name">ثانية</span>
+          </span>
+        </span>
+      }
+    </p>
+  }
+
+  <a class="offers__all" routerLink="/offers">
+    عرض كل العروض
+    <app-icon name="chevron-next" />
+  </a>
 
   @switch (state().status) {
     @case ('loading') {
       <div class="offers__grid">
         @for (item of [1, 2, 3, 4]; track item) {
-          <div class="skeleton-card"></div>
+          <app-product-card [skeleton]="true" />
         }
       </div>
     }

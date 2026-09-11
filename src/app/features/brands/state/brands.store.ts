@@ -8,8 +8,10 @@ import { BrandsRepository } from '../data-access/brands.repository';
 const EMPTY_RESULT: BrandsSearchResult = {
   items: [],
   total: 0,
+  catalogTotal: 0,
   initials: [],
   featured: null,
+  wall: [],
 };
 
 @Injectable()

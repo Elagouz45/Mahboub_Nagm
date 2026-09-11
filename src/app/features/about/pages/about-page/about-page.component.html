@@ -1,52 +1,75 @@
-<section class="about-page page-container">
-  <section class="page-hero" aria-labelledby="about-heading">
-    <div class="page-hero__copy">
-      <app-page-breadcrumb [items]="breadcrumb" />
-      <app-brand-logo variant="page" [priority]="true" />
-      <p class="page-hero__kicker">{{ story.kicker }}</p>
+<section class="about-page">
+  <app-page-breadcrumb [items]="breadcrumb" />
+
+  <section class="about-hero" aria-labelledby="about-heading">
+    <div class="about-hero__copy">
+      <p class="about-hero__kicker">{{ story.kicker }}</p>
       <h1 id="about-heading">{{ story.title }}</h1>
-      <p>{{ story.lead }}</p>
+      <p class="about-hero__lead">{{ story.lead }}</p>
+      <p class="about-hero__trust">
+        @for (point of story.trustPoints; track point; let last = $last) {
+          <span>{{ point }}</span>
+          @if (!last) {
+            <span class="about-hero__dot" aria-hidden="true"></span>
+          }
+        }
+      </p>
+      <div class="about-hero__actions">
+        <a class="about-btn" routerLink="/products">{{ story.shopLabel }}</a>
+        <a class="about-text-link" routerLink="/after-sales">
+          {{ story.servicesLabel }}
+          <app-icon name="chevron-next" />
+        </a>
+      </div>
     </div>
-    <div class="page-hero__media">
+    <div class="about-hero__media">
       <app-site-image
         [asset]="hero"
         [fill]="true"
         [priority]="true"
         objectFit="cover"
-        sizes="(min-width: 768px) 46vw, 100vw"
+        objectPosition="center 30%"
+        sizes="(min-width: 768px) 42vw, 100vw"
       />
     </div>
   </section>
 
-  <section class="about-story" aria-labelledby="about-story-heading">
-    <div>
-      <h2 id="about-story-heading">قصتنا</h2>
-      <p>{{ story.body }}</p>
-    </div>
-    <div class="about-story__media">
-      <app-site-image [asset]="serviceImage" [fill]="true" objectFit="cover" sizes="(min-width: 768px) 40vw, 100vw" />
-    </div>
+  <section class="about-stats" aria-label="أرقام الثقة">
+    <ul>
+      @for (stat of stats; track stat.label) {
+        <li>
+          <strong>{{ stat.value }}</strong>
+          <span>{{ stat.label }}</span>
+        </li>
+      }
+    </ul>
   </section>
 
-  @if (stats.length) {
-    <section class="about-stats" aria-label="أرقام مهمة">
-      <ul>
-        @for (stat of stats; track stat.label) {
-          <li>
-            <strong>{{ stat.value }}</strong>
-            <span>{{ stat.label }}</span>
-          </li>
-        }
-      </ul>
-    </section>
-  }
+  <section class="about-story" aria-labelledby="about-story-heading">
+    <div class="about-story__copy">
+      <h2 id="about-story-heading">{{ story.storyTitle }}</h2>
+      @for (paragraph of story.paragraphs; track paragraph) {
+        <p>{{ paragraph }}</p>
+      }
+    </div>
+    <ol class="about-timeline">
+      @for (item of timeline; track item.title) {
+        <li>
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+        </li>
+      }
+    </ol>
+  </section>
 
   <section class="about-values" aria-labelledby="about-values-heading">
-    <h2 id="about-values-heading">قيم نلتزم بها</h2>
+    <h2 id="about-values-heading">{{ story.valuesTitle }}</h2>
     <ul>
       @for (value of values; track value.title) {
         <li>
-          <app-icon [name]="value.icon" />
+          <span class="about-values__icon">
+            <app-icon [name]="value.icon" />
+          </span>
           <h3>{{ value.title }}</h3>
           <p>{{ value.description }}</p>
         </li>
@@ -54,54 +77,48 @@
     </ul>
   </section>
 
-  <article class="about-trust">
-    <h2>{{ trust.title }}</h2>
-    <p>{{ trust.description }}</p>
-  </article>
+  <section class="about-why" aria-labelledby="about-why-heading">
+    <div>
+      <h2 id="about-why-heading">{{ why.title }}</h2>
+      <ul>
+        @for (reason of why.reasons; track reason) {
+          <li>
+            <span class="about-why__check" aria-hidden="true">
+              <app-icon name="check" />
+            </span>
+            <span>{{ reason }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+    <blockquote>
+      <h2>{{ why.promiseTitle }}</h2>
+      <p>{{ why.promise }}</p>
+      <footer>{{ why.signature }}</footer>
+    </blockquote>
+  </section>
 
   <section class="about-journey" aria-labelledby="about-journey-heading">
-    <h2 id="about-journey-heading">رحلة العميل</h2>
+    <h2 id="about-journey-heading">{{ story.journeyTitle }}</h2>
     <ol>
-      @for (step of journey; track step.title; let index = $index) {
-        <li>
+      @for (step of journey; track step.title; let index = $index; let last = $last) {
+        <li [class.is-last]="last">
           <span>{{ index + 1 }}</span>
-          <div>
-            <h3>{{ step.title }}</h3>
-            <p>{{ step.description }}</p>
-          </div>
+          <h3>{{ step.title }}</h3>
+          <p>{{ step.description }}</p>
         </li>
       }
     </ol>
   </section>
 
-  @if (timeline.length) {
-    <section class="about-timeline" aria-labelledby="about-timeline-heading">
-      <h2 id="about-timeline-heading">مسيرتنا</h2>
-      <ol>
-        @for (item of timeline; track item.year) {
-          <li>
-            <strong>{{ item.year }}</strong>
-            <h3>{{ item.title }}</h3>
-            <p>{{ item.description }}</p>
-          </li>
-        }
-      </ol>
-    </section>
-  }
-
   <section class="about-cta" aria-labelledby="about-cta-heading">
     <div>
       <h2 id="about-cta-heading">{{ cta.title }}</h2>
       <p>{{ cta.description }}</p>
-      <div class="about-cta__actions">
-        <a routerLink="/products">{{ cta.shopLabel }}</a>
-        <a class="about-cta__ghost" routerLink="/contact">{{ cta.contactLabel }}</a>
-      </div>
     </div>
-    <div class="about-cta__media">
-      <app-site-image [asset]="ctaImage" [fill]="true" objectFit="cover" sizes="(min-width: 768px) 40vw, 100vw" />
+    <div class="about-cta__actions">
+      <a class="about-btn" routerLink="/products">{{ cta.shopLabel }}</a>
+      <a class="about-text-link" routerLink="/contact">{{ cta.contactLabel }}</a>
     </div>
   </section>
-
-  <app-page-trust-strip [items]="trustItems" />
 </section>

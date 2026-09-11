@@ -16,11 +16,11 @@ import { IconComponent } from '@shared/components/icon/icon.component';
       display: inline-flex;
       align-items: center;
       gap: 0.25rem;
-      color: var(--color-accent);
-      font-size: 0.85rem;
+      color: var(--rating-color, var(--color-accent));
+      font-size: var(--rating-size, 0.85rem);
     }
     span span {
-      color: var(--color-text-secondary);
+      color: var(--rating-count-color, var(--color-text-secondary));
     }
   `,
 })

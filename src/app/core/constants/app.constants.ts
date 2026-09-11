@@ -54,13 +54,12 @@ export const FOOTER_QUICK_LINKS: readonly NavLink[] = [
   { path: '/offers', label: 'العروض' },
   { path: '/brands', label: 'العلامات التجارية' },
   { path: '/about', label: 'من نحن' },
-  { path: '/after-sales', label: 'خدمات ما بعد البيع' },
   { path: '/contact', label: 'تواصل معنا', exact: true },
 ];
 
 export const FOOTER_LEGAL_LINKS: readonly NavLink[] = [
-  { path: '/return-policy', label: 'الاستبدال والاسترجاع' },
   { path: '/privacy-policy', label: 'سياسة الخصوصية' },
+  { path: '/return-policy', label: 'الاستبدال والاسترجاع' },
 ];
 
 export const FOOTER_SERVICE_LINKS: readonly NavLink[] = [
@@ -68,7 +67,6 @@ export const FOOTER_SERVICE_LINKS: readonly NavLink[] = [
   { path: '/contact', queryParams: { topic: 'faq' }, label: 'الأسئلة الشائعة' },
   { path: '/contact', queryParams: { topic: 'shipping' }, label: 'الشحن والتوصيل' },
   { path: '/return-policy', label: 'الاستبدال والاسترجاع' },
-  { path: '/privacy-policy', label: 'سياسة الخصوصية' },
   { path: '/contact', queryParams: { topic: 'warranty' }, label: 'الضمان' },
   { path: '/service-centers', label: 'مراكز الصيانة' },
 ];

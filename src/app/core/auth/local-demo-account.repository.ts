@@ -1,22 +1,22 @@
 import { inject, Injectable } from '@angular/core';
 import { BrowserStorageService } from '@core/services/browser-storage.service';
+import { DemoCommerceService } from '@core/services/demo-commerce.service';
 import { AccountAddress, AccountOrder, AccountServiceRequest } from './account.models';
 import { AccountRepository } from './account.repository';
 import { AUTH_STORAGE_KEYS } from './auth.constants';
 import { AuthRepository } from './auth.repository';
 import { writeVersionedList } from './auth-storage.util';
-import { readDemoAddresses, readDemoOrders, readDemoServiceRequests } from './local-demo-auth.repository';
+import { readDemoAddresses } from './local-demo-auth.repository';
 
 @Injectable()
 export class LocalDemoAccountRepository extends AccountRepository {
+  private readonly commerce = inject(DemoCommerceService);
   private readonly storage = inject(BrowserStorageService);
   private readonly auth = inject(AuthRepository);
 
   async listOrders(userId: string): Promise<readonly AccountOrder[]> {
     await this.auth.ensureReady();
-    return readDemoOrders(this.storage)
-      .filter((item) => item.userId === userId)
-      .sort((a, b) => b.placedAt - a.placedAt);
+    return this.commerce.orders(userId);
   }
 
   async getOrder(userId: string, orderId: string): Promise<AccountOrder | null> {
@@ -37,7 +37,7 @@ export class LocalDemoAccountRepository extends AccountRepository {
     const all = readDemoAddresses(this.storage);
     const id = address.id ?? `address-${globalThis.crypto.randomUUID()}`;
     const next: AccountAddress = { ...address, id, userId };
-    const withoutCurrent = all.filter((item) => item.id !== id);
+    const withoutCurrent = all.filter((item) => item.id !== id || item.userId !== userId);
     const othersForUser = withoutCurrent.filter((item) => item.userId === userId);
     const shouldBeDefault = next.isDefault || othersForUser.length === 0;
     const saved: AccountAddress = { ...next, isDefault: shouldBeDefault };
@@ -60,7 +60,11 @@ export class LocalDemoAccountRepository extends AccountRepository {
     }
     const remaining = all.filter((item) => item.id !== addressId);
     const userRemaining = remaining.filter((item) => item.userId === userId);
-    if (target.isDefault && userRemaining.length > 0 && !userRemaining.some((item) => item.isDefault)) {
+    if (
+      target.isDefault &&
+      userRemaining.length > 0 &&
+      !userRemaining.some((item) => item.isDefault)
+    ) {
       const first = userRemaining[0];
       const promoted: AccountAddress[] = remaining.map((item) =>
         item.id === first.id ? { ...item, isDefault: true } : item,
@@ -73,8 +77,6 @@ export class LocalDemoAccountRepository extends AccountRepository {
 
   async listServiceRequests(userId: string): Promise<readonly AccountServiceRequest[]> {
     await this.auth.ensureReady();
-    return readDemoServiceRequests(this.storage)
-      .filter((item) => item.userId === userId)
-      .sort((a, b) => b.createdAt - a.createdAt);
+    return this.commerce.serviceRequests(userId);
   }
 }

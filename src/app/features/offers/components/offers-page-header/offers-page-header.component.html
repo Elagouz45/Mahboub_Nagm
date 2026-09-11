@@ -1,0 +1,31 @@
+<section class="coupon" [class.coupon--loading]="loading()" aria-labelledby="offers-heading">
+  @if (loading()) {
+    <span class="visually-hidden">جاري تحميل العروض</span>
+  }
+
+  <div class="coupon__main">
+    <p class="coupon__kicker">عروض مختارة</p>
+    <h1 id="offers-heading">العروض</h1>
+    <p class="coupon__desc">{{ description() }}</p>
+    @if (loading()) {
+      <p class="coupon__count coupon__skeleton" aria-hidden="true">24 منتجًا متاحًا</p>
+    } @else {
+      <p class="coupon__count">{{ countLabel() }}</p>
+    }
+  </div>
+
+  <div class="coupon__stub">
+    <span class="coupon__dash" aria-hidden="true"></span>
+    @if (loading()) {
+      <p class="coupon__stub-label">خصم يصل إلى</p>
+      <p class="coupon__stub-value coupon__skeleton" aria-hidden="true">22%</p>
+      <p class="coupon__stub-note">لفترة محدودة</p>
+    } @else if (hasDiscount()) {
+      <p class="coupon__stub-label">خصم يصل إلى</p>
+      <p class="coupon__stub-value">{{ maxDiscountPercent() }}%</p>
+      <p class="coupon__stub-note">لفترة محدودة</p>
+    } @else {
+      <p class="coupon__stub-fallback">عروض مميزة</p>
+    }
+  </div>
+</section>

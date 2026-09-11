@@ -1,9 +1,9 @@
 <section class="auth-shell page-container">
-  <div class="auth-shell__form">
+  <div class="auth-shell__card">
     <h1>{{ title() }}</h1>
+    @if (lead()) {
+      <p class="auth-shell__lead">{{ lead() }}</p>
+    }
     <ng-content />
-  </div>
-  <div class="auth-shell__visual" aria-hidden="true">
-    <app-site-image [asset]="image" [fill]="true" objectFit="cover" sizes="50vw" />
   </div>
 </section>

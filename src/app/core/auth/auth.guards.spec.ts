@@ -18,7 +18,7 @@ describe('auth guards', () => {
         provideRouter([
           { path: '', component: GuardHostComponent },
           { path: 'account', canActivate: [authGuard], component: GuardHostComponent },
-          { path: 'auth/login', canActivate: [guestGuard], component: GuardHostComponent },
+          { path: 'login', canActivate: [guestGuard], component: GuardHostComponent },
         ]),
       ],
     });
@@ -33,12 +33,12 @@ describe('auth guards', () => {
     const auth = TestBed.inject(AuthStore);
 
     await router.navigateByUrl('/account');
-    expect(router.url.startsWith('/auth/login')).toBe(true);
+    expect(router.url.startsWith('/login')).toBe(true);
     expect(router.url).toContain('returnUrl');
 
     await auth.login({ identifier: DEMO_EMAIL, password: DEMO_PASSWORD, rememberMe: true });
     await router.navigateByUrl('/');
-    await router.navigateByUrl('/auth/login');
+    await router.navigateByUrl('/login');
     expect(router.url.startsWith('/account')).toBe(true);
   });
 });

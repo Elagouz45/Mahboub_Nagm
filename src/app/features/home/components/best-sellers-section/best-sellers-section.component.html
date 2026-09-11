@@ -1,40 +1,77 @@
-<section class="best-sellers page-container" aria-labelledby="best-sellers-heading">
-  <app-section-header
-    title="الأكثر مبيعًا"
-    headingId="best-sellers-heading"
-    actionLabel="عرض المزيد"
-    actionLink="/products"
-    [actionQuery]="{ sort: 'bestselling' }"
-  />
+<section class="best-sellers" aria-labelledby="best-sellers-heading">
+  <div class="best-sellers__inner page-container">
+    <header class="best-sellers__header">
+      <div class="best-sellers__title">
+        <span class="best-sellers__mark" aria-hidden="true">
+          <app-icon name="flame" />
+        </span>
+        <div>
+          <h2 id="best-sellers-heading">الأكثر مبيعًا</h2>
+          <p>اختيارات العملاء الأكثر طلبًا</p>
+        </div>
+      </div>
 
-  @switch (state().status) {
-    @case ('loading') {
-      <div class="best-sellers__row">
-        @for (item of [1, 2, 3, 4, 5, 6]; track item) {
-          <div class="skeleton-card"></div>
+      <div class="best-sellers__tools">
+        <a
+          class="best-sellers__all"
+          routerLink="/products"
+          [queryParams]="{ sort: 'bestselling' }"
+        >
+          عرض كل المنتجات
+          <app-icon name="chevron-next" />
+        </a>
+        @if (showControls()) {
+          <div class="best-sellers__navs">
+            <button
+              type="button"
+              class="best-sellers__nav"
+              aria-label="السابق"
+              [disabled]="!canPrev()"
+              (click)="scroll(-1)"
+            >
+              <app-icon name="chevron-prev" />
+            </button>
+            <button
+              type="button"
+              class="best-sellers__nav"
+              aria-label="التالي"
+              [disabled]="!canNext()"
+              (click)="scroll(1)"
+            >
+              <app-icon name="chevron-next" />
+            </button>
+          </div>
         }
       </div>
-    }
-    @case ('empty') {
-      <app-empty-state title="لا توجد منتجات مميزة حالياً" />
-    }
-    @case ('error') {
-      <app-error-state [message]="state().error ?? ''" (retry)="retry.emit()" />
-    }
-    @default {
-      <div class="best-sellers__carousel">
-        <button type="button" class="nav-btn" aria-label="السابق" (click)="scroll(-1)">
-          <app-icon name="chevron-prev" />
-        </button>
-        <div class="best-sellers__row" #scroller>
-          @for (product of state().data; track product.id) {
-            <app-product-card [product]="product" [compact]="true" />
+    </header>
+
+    @switch (state().status) {
+      @case ('loading') {
+        <div class="best-sellers__row" aria-hidden="true">
+          @for (item of [1, 2, 3, 4]; track item) {
+            <app-product-card [skeleton]="true" />
           }
         </div>
-        <button type="button" class="nav-btn" aria-label="التالي" (click)="scroll(1)">
-          <app-icon name="chevron-next" />
-        </button>
-      </div>
+      }
+      @case ('empty') {
+        <app-empty-state title="لا توجد منتجات متاحة حاليًا" />
+      }
+      @case ('error') {
+        <app-error-state [message]="state().error ?? ''" (retry)="retry.emit()" />
+      }
+      @default {
+        <div
+          class="best-sellers__row"
+          #scroller
+          tabindex="0"
+          aria-label="منتجات الأكثر مبيعًا"
+          (keydown)="onKeydown($event)"
+        >
+          @for (product of state().data; track product.id; let i = $index) {
+            <app-product-card [product]="product" [priority]="i < 2" />
+          }
+        </div>
+      }
     }
-  }
+  </div>
 </section>

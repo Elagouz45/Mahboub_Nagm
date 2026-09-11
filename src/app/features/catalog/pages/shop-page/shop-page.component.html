@@ -42,7 +42,7 @@
       @if (store.error() && store.products().length === 0 && !store.loading()) {
         <app-error-state [message]="errorMessage" (retry)="retry()" />
       } @else if (store.loading() && store.products().length === 0) {
-        <app-product-grid [loading]="true" [view]="viewMode()" />
+        <app-product-grid [loading]="true" [view]="viewMode()" [maxColumns]="3" />
       } @else if (!store.loading() && store.products().length === 0) {
         @if (store.query().q && !store.hasActiveFilters()) {
           <app-empty-state
@@ -68,6 +68,7 @@
           [products]="store.products()"
           [view]="viewMode()"
           [loading]="store.loading()"
+          [maxColumns]="3"
         />
         <app-catalog-pagination
           [page]="store.query().page"

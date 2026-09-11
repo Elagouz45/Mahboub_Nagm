@@ -5,10 +5,12 @@ import { WishlistStore } from './wishlist.store';
 describe('WishlistStore', () => {
   beforeEach(() => {
     sessionStorage.clear();
+    localStorage.clear();
   });
 
   afterEach(() => {
     sessionStorage.clear();
+    localStorage.clear();
   });
 
   it('toggles wishlist membership', () => {

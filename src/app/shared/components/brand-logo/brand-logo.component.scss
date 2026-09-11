@@ -16,8 +16,12 @@
   box-shadow: 0 0 0 1px rgb(255 255 255 / 0.14);
 }
 
+.brand-logo--header {
+  --brand-logo-size: 3rem;
+}
+
 .brand-logo--footer {
-  --brand-logo-size: 3.75rem;
+  --brand-logo-size: 3.625rem;
 }
 
 .brand-logo--page {
@@ -27,16 +31,16 @@
 
 @media (min-width: 768px) {
   .brand-logo--header {
-    --brand-logo-size: 3.25rem;
+    --brand-logo-size: 3.5rem;
   }
 
   .brand-logo--footer {
-    --brand-logo-size: 4.25rem;
+    --brand-logo-size: 3.875rem;
   }
 }
 
 @media (min-width: 1024px) {
   .brand-logo--header {
-    --brand-logo-size: 3.5rem;
+    --brand-logo-size: 3.75rem;
   }
 }

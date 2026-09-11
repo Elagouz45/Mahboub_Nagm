@@ -23,6 +23,8 @@ export interface StoredAuthUser extends AuthUser {
 export interface AuthSession {
   readonly schemaVersion: number;
   readonly userId: string;
+  readonly token: string;
+  readonly createdAt: number;
 }
 
 export interface LoginRequest {
@@ -44,6 +46,11 @@ export interface UpdateProfileRequest {
   readonly lastName: string;
   readonly phone: string;
   readonly email: string;
+}
+
+export interface ChangePasswordRequest {
+  readonly currentPassword: string;
+  readonly newPassword: string;
 }
 
 export type AuthErrorCode =

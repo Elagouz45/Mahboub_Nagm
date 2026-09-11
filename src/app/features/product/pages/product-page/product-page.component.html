@@ -1,7 +1,98 @@
-<section class="page-container" aria-labelledby="product-heading">
-  <h1 id="product-heading">تفاصيل المنتج</h1>
-  <p>سيتم تنفيذ صفحة المنتج لاحقاً.</p>
-  @if (slug()) {
-    <p>المعرّف: {{ slug() }}</p>
+<section class="page-container commerce-page">
+  <app-page-breadcrumb [items]="breadcrumb()" />
+  @if (product(); as item) {
+    <div class="product-layout">
+      <div class="panel product-media">
+        <app-site-image
+          [src]="item.imageSrc"
+          [alt]="item.imageAlt"
+          [priority]="true"
+          sizes="(min-width: 800px) 45vw, 90vw"
+        />
+      </div>
+      <div class="product-copy">
+        <p class="eyebrow">{{ item.brand }} · {{ item.sku }}</p>
+        <h1>{{ item.title }}</h1>
+        <p class="muted">{{ item.spec }}</p>
+        <div class="product-price">
+          <app-price-display [price]="item.price" [oldPrice]="item.oldPrice" />
+        </div>
+        <p class="availability">
+          {{
+            canBuy()
+              ? item.stockStatus === 'available-to-order'
+                ? 'متاح للطلب'
+                : 'متوفر للطلب'
+              : 'غير متاح للشراء حاليًا'
+          }}
+        </p>
+        <p>{{ item.description }}</p>
+        <div class="actions">
+          <div class="quantity" role="group" aria-label="كمية المنتج">
+            <button
+              type="button"
+              aria-label="تقليل الكمية"
+              [disabled]="quantity() <= 1"
+              (click)="quantity.set(quantity() - 1)"
+            >
+              −
+            </button>
+            <output aria-live="polite">{{ quantity() }}</output>
+            <button
+              type="button"
+              aria-label="زيادة الكمية"
+              [disabled]="quantity() >= 10"
+              (click)="quantity.set(quantity() + 1)"
+            >
+              +
+            </button>
+          </div>
+          <button type="button" class="primary" [disabled]="!canBuy()" (click)="add()">
+            أضف إلى السلة
+          </button>
+          <button
+            type="button"
+            class="secondary"
+            [attr.aria-pressed]="wishlist.ids().has(item.id)"
+            (click)="wishlist.toggle(item)"
+          >
+            {{ wishlist.ids().has(item.id) ? 'إزالة من المفضلة' : 'أضف للمفضلة' }}
+          </button>
+        </div>
+        @if (cart.error()) {
+          <p class="error" role="alert">{{ cart.error() }}</p>
+        }
+        <p class="demo-note">تجربة تسوق محلية · الدفع عند الاستلام تجريبي، ولن يُرسل طلب للمتجر.</p>
+        <a [routerLink]="['/cart']">عرض سلة التسوق ←</a>
+      </div>
+    </div>
+    <section class="panel specs">
+      <h2>تفاصيل تساعدك تختار</h2>
+      <p>{{ item.description || item.spec }}</p>
+      <dl>
+        @for (attribute of attributes(); track attribute.label) {
+          <div>
+            <dt>{{ attribute.label }}</dt>
+            <dd>{{ attribute.value }}</dd>
+          </div>
+        }
+      </dl>
+    </section>
+    @if (related().length) {
+      <section class="related">
+        <h2>اختيارات مشابهة لبيتك</h2>
+        <div class="related-grid">
+          @for (p of related(); track p.id) {
+            <app-product-card [product]="p" />
+          }
+        </div>
+      </section>
+    }
+  } @else {
+    <div class="panel empty">
+      <h1>المنتج غير موجود</h1>
+      <p>قد يكون الرابط غير صحيح. اكتشف المنتجات المتاحة في المتجر.</p>
+      <a class="primary" [routerLink]="['/products']">العودة للمتجر</a>
+    </div>
   }
 </section>

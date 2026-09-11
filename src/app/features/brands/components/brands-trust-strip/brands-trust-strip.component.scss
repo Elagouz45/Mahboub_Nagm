@@ -1,0 +1,64 @@
+:host {
+  display: block;
+}
+
+.brands-trust {
+  padding: 8px 8px;
+  background: #f8f4ef;
+  border: 1px solid #dce3eb;
+  border-radius: 18px;
+}
+
+.brands-trust ul {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.brands-trust li {
+  display: flex;
+  min-height: 72px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  color: #0c2a4d;
+  text-align: start;
+}
+
+.brands-trust li + li {
+  border-block-start: 1px solid #dce3eb;
+}
+
+.brands-trust span {
+  display: grid;
+  gap: 2px;
+}
+
+.brands-trust strong {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.brands-trust small {
+  color: #73829a;
+  font-size: 0.8125rem;
+}
+
+.brands-trust app-icon {
+  color: #0c2a4d;
+  font-size: 1.35rem;
+}
+
+@media (min-width: 768px) {
+  .brands-trust ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .brands-trust li + li {
+    border-block-start: 0;
+    border-inline-start: 1px solid #dce3eb;
+  }
+}

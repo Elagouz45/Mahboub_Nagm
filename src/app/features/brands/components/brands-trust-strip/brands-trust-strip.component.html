@@ -1,0 +1,13 @@
+<section class="brands-trust" aria-label="مزايا المتجر">
+  <ul>
+    @for (item of items; track item.title) {
+      <li>
+        <app-icon [name]="item.icon" />
+        <span>
+          <strong>{{ item.title }}</strong>
+          <small>{{ item.detail }}</small>
+        </span>
+      </li>
+    }
+  </ul>
+</section>

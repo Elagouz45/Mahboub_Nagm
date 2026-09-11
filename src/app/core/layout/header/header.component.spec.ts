@@ -104,6 +104,10 @@ describe('HeaderComponent', () => {
     );
     expect(storeLink?.getAttribute('href')).toBe('/products');
     expect(compiled.querySelector('.brand')?.getAttribute('href')).toBe('/');
+    expect(compiled.querySelector('#site-search')?.getAttribute('placeholder')).toBe(
+      'ابحثي عن منتج أو ماركة...',
+    );
+    expect(compiled.querySelector('.brand__rule')).not.toBeNull();
     const brandLogo = compiled.querySelector('.brand img') as HTMLImageElement | null;
     expect(brandLogo?.getAttribute('ng-src') ?? brandLogo?.getAttribute('src')).toContain(
       'brand/store-logo.jpg',
@@ -249,7 +253,7 @@ describe('HeaderComponent', () => {
     const auth = TestBed.inject(AuthStore);
     await auth.login({ identifier: DEMO_EMAIL, password: DEMO_PASSWORD, rememberMe: true });
     fixture.detectChanges();
-    expect(fixture.nativeElement.textContent).toContain('مرحبًا، أحمد');
+    expect(fixture.nativeElement.textContent).toContain('مرحبًا، محبوب');
 
     await auth.updateProfile({
       firstName: 'حامد',

@@ -1,5 +1,6 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { provideAuth } from './provide-auth';
+import { MOCK_AUTH_LATENCY_MS } from './auth.tokens';
 
 export function clearAuthStorage(): void {
   localStorage.clear();
@@ -7,5 +8,9 @@ export function clearAuthStorage(): void {
 }
 
 export function authTestProviders() {
-  return [provideZonelessChangeDetection(), ...provideAuth()];
+  return [
+    provideZonelessChangeDetection(),
+    ...provideAuth(),
+    { provide: MOCK_AUTH_LATENCY_MS, useValue: 0 },
+  ];
 }

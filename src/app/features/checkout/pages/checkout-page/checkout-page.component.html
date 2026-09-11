@@ -1,4 +1,204 @@
-<section class="page-container" aria-labelledby="checkout-heading">
-  <h1 id="checkout-heading">إتمام الطلب</h1>
-  <p>سيتم تنفيذ صفحة الدفع لاحقاً.</p>
+<section class="page-container commerce-page">
+  <p class="eyebrow">خطوات بسيطة لاختيارك الجديد</p>
+  <h1>إتمام الطلب</h1>
+  <p class="demo-note">هذه تجربة محلية فقط. لن يتم إرسال الطلب أو خصم أموال أو توصيل منتجات.</p>
+  @if (!ready()) {
+    <p role="status">جارٍ تجهيز بيانات الطلب...</p>
+  } @else if (!commerce.cart().length) {
+    <div class="panel empty">
+      <h2>لا توجد منتجات لإتمام الطلب</h2>
+      <a class="primary" [routerLink]="['/products']">اكتشف المتجر</a>
+    </div>
+  } @else {
+    <ol class="steps" aria-label="خطوات إتمام الطلب">
+      @for (
+        label of ['بيانات التوصيل', 'الشحن والدفع', 'مراجعة الطلب'];
+        track label;
+        let i = $index
+      ) {
+        <li
+          [class.active]="step() === i + 1"
+          [attr.aria-current]="step() === i + 1 ? 'step' : null"
+        >
+          {{ i + 1 }}. {{ label }}
+        </li>
+      }
+    </ol>
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+    <div class="commerce-grid">
+      <form
+        class="panel"
+        [formGroup]="form"
+        (ngSubmit)="step() < 3 ? next() : confirm()"
+        novalidate
+      >
+        @if (step() === 1) {
+          <h2 id="checkout-step-heading" tabindex="-1">أين نُوصل اختياراتك؟</h2>
+          @if (!auth.isAuthenticated()) {
+            <p class="muted">
+              أكمل كضيف، أو
+              <a [routerLink]="['/login']" [queryParams]="{ returnUrl: '/checkout' }"
+                >سجّل الدخول</a
+              >
+              لاستخدام عناوينك ومتابعة الطلب بحسابك.
+            </p>
+          }
+          @if (addresses().length) {
+            <label class="field"
+              >عنوان محفوظ<select
+                aria-label="عنوان محفوظ"
+                #saved
+                (change)="useAddress(saved.value)"
+              >
+                <option value="">إدخال عنوان جديد</option>
+                @for (address of addresses(); track address.id) {
+                  <option [value]="address.id" [selected]="address.isDefault">
+                    {{ address.recipientName }} — {{ address.city }}، {{ address.street }}
+                  </option>
+                }
+              </select></label
+            >
+          }
+          <div class="field-grid">
+            <label class="field"
+              >الاسم الكامل<input
+                formControlName="recipientName"
+                autocomplete="name"
+                [attr.aria-invalid]="invalid('recipientName')"
+              />
+              @if (invalid('recipientName')) {
+                <small>أدخل اسمًا من 3 حروف على الأقل.</small>
+              }
+            </label>
+            <label class="field"
+              >رقم الهاتف<input
+                formControlName="phone"
+                type="tel"
+                autocomplete="tel"
+                dir="ltr"
+                [attr.aria-invalid]="invalid('phone')"
+              />
+              @if (invalid('phone')) {
+                <small>أدخل رقم هاتف مصري صحيحًا.</small>
+              }
+            </label>
+            <label class="field"
+              >المحافظة<select
+                aria-label="المحافظة"
+                formControlName="governorateSlug"
+                (change)="selectedGovernorate.set(form.controls.governorateSlug.value)"
+                [attr.aria-invalid]="invalid('governorateSlug')"
+              >
+                <option value="">اختر المحافظة</option>
+                @for (g of governorates; track g.slug) {
+                  <option [value]="g.slug">{{ g.label }}</option>
+                }
+              </select>
+              @if (invalid('governorateSlug')) {
+                <small>اختر المحافظة.</small>
+              }
+            </label>
+            <label class="field"
+              >المدينة / المنطقة<input
+                formControlName="city"
+                autocomplete="address-level2"
+                [attr.aria-invalid]="invalid('city')"
+              />
+              @if (invalid('city')) {
+                <small>أدخل المدينة.</small>
+              }
+            </label>
+          </div>
+          <label class="field"
+            >الشارع ورقم المبنى<input
+              formControlName="street"
+              autocomplete="street-address"
+              [attr.aria-invalid]="invalid('street')"
+            />
+            @if (invalid('street')) {
+              <small>أدخل عنوانًا واضحًا.</small>
+            }
+          </label>
+          <label class="field"
+            >تفاصيل إضافية (اختياري)<textarea
+              formControlName="details"
+              rows="2"
+              placeholder="الدور، الشقة أو علامة مميزة"
+            ></textarea>
+          </label>
+          @if (auth.isAuthenticated()) {
+            <label
+              ><input type="checkbox" formControlName="saveAddress" /> حفظ هذا العنوان بحسابي</label
+            >
+          }
+        } @else if (step() === 2) {
+          <h2 id="checkout-step-heading" tabindex="-1">الشحن وطريقة الدفع</h2>
+          <div class="delivery-card">
+            <h3>توصيل إلى عنوانك</h3>
+            <p>رسوم شحن تجريبية ثابتة لجميع المحافظات المدرجة.</p>
+            <strong>{{ price(shipping()) }}</strong>
+          </div>
+          <div class="delivery-card">
+            <h3>الدفع عند الاستلام</h3>
+            <p>طريقة الدفع الوحيدة في هذه النسخة. لا تحتاج لإدخال بيانات بطاقة.</p>
+          </div>
+          <p class="demo-note">لا يوجد حجز توصيل أو تحصيل نقدي فعلي في النسخة التجريبية.</p>
+        } @else {
+          <h2 id="checkout-step-heading" tabindex="-1">راجع طلبك قبل التأكيد</h2>
+          <h3>بيانات المستلم</h3>
+          <p>{{ form.controls.recipientName.value }} · {{ form.controls.phone.value }}</p>
+          <p>
+            {{ form.controls.city.value }}، {{ form.controls.street.value }}
+            {{ form.controls.details.value }}
+          </p>
+          <button type="button" class="text-button" (click)="changeStep(1)">
+            تعديل بيانات التوصيل
+          </button>
+          @for (item of commerce.cart(); track item.product.sku) {
+            <div class="summary-row">
+              <span>{{ item.product.title }} × {{ item.quantity }}</span
+              ><strong>{{ price(item.product.price * item.quantity) }}</strong>
+            </div>
+          }
+          <p>الدفع عند الاستلام · الطلب سيظهر قيد المراجعة كتجربة محلية.</p>
+        }
+        <div class="actions">
+          @if (step() > 1) {
+            <button
+              type="button"
+              class="secondary"
+              [disabled]="submitting()"
+              (click)="changeStep(step() - 1)"
+            >
+              السابق
+            </button>
+          } @else {
+            <a class="secondary" [routerLink]="['/cart']">العودة للسلة</a>
+          }
+          <button type="submit" class="primary" [disabled]="submitting()">
+            {{
+              step() === 3 ? (submitting() ? 'جارٍ الحفظ...' : 'تأكيد الطلب التجريبي') : 'متابعة'
+            }}
+          </button>
+        </div>
+      </form>
+      <aside class="panel summary" aria-label="ملخص الطلب">
+        <h2>ملخص طلبك</h2>
+        <div class="summary-row">
+          <span>المنتجات</span><strong>{{ price(commerce.subtotal()) }}</strong>
+        </div>
+        <div class="summary-row">
+          <span>الشحن التجريبي</span
+          ><strong>{{ selectedGovernorate() ? price(shipping()) : 'اختر المحافظة' }}</strong>
+        </div>
+        <div class="summary-row total">
+          <span>{{ selectedGovernorate() ? 'الإجمالي' : 'قبل الشحن' }}</span
+          ><strong>{{ price(total()) }}</strong>
+        </div>
+        <p class="muted">البيانات محفوظة في هذا المتصفح، ولا تتم مزامنتها مع أجهزة أخرى.</p>
+      </aside>
+    </div>
+  }
 </section>

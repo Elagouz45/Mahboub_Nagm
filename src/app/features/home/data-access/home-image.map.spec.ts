@@ -1,3 +1,4 @@
+import { MOCK_CATALOG_PRODUCTS } from '@features/catalog/data-access/catalog-mock.service';
 import { SITE_IMAGE_ASSETS, SITE_IMAGE_FALLBACK } from '@core/config/site-image-assets.config';
 import { MOCK_CATEGORIES, MOCK_BEST_SELLERS, MOCK_OFFERS } from './home.mock';
 import {
@@ -53,7 +54,7 @@ describe('home image mapping', () => {
     }
 
     for (const item of [...MOCK_OFFERS, ...MOCK_BEST_SELLERS]) {
-      expect(item.imageSrc).toBe(localProductImage(item.slug).src);
+      expect(item).toEqual(MOCK_CATALOG_PRODUCTS.find((product) => product.sku === item.sku));
     }
   });
 });

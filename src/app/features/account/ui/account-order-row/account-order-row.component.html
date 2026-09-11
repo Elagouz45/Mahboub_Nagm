@@ -1,0 +1,20 @@
+<article class="order-row">
+  <div class="order-row__identity">
+    <p class="order-row__number">طلب #{{ order().number }}</p>
+    <time class="order-row__date" [attr.datetime]="placedAtIso()">{{ placedOn() }}</time>
+    <app-account-status-badge [status]="order().status" />
+  </div>
+
+  <div class="order-row__thumbs" aria-hidden="true">
+    @for (line of thumbs(); track line.productId) {
+      <img [src]="line.imageSrc" [alt]="" width="48" height="48" />
+    }
+  </div>
+
+  <div class="order-row__totals">
+    <strong>{{ totalLabel() }}</strong>
+    <span>{{ itemCount() }} {{ itemCountLabel() }}</span>
+  </div>
+
+  <a class="order-row__details" [routerLink]="['/account/orders', order().id]">تفاصيل الطلب</a>
+</article>

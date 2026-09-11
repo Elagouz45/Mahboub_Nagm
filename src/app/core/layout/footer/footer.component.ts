@@ -1,7 +1,6 @@
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { Component, DestroyRef, PLATFORM_ID, inject, signal } from '@angular/core';
+import { Component, DestroyRef, PLATFORM_ID, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { SITE_CONTACT, SITE_CONTACT_CONFIG } from '@core/config/site-contact.config';
 import {
   APP_NAME,
   APP_NAME_SHORT,
@@ -12,6 +11,7 @@ import {
   FOOTER_TRUST_POINTS,
   NavLink,
 } from '@core/constants/app.constants';
+import { SITE_CONTACT, SITE_CONTACT_CONFIG } from '@core/config/site-contact.config';
 import { WHATSAPP_NUMBER } from '@core/tokens/api.tokens';
 import { WHATSAPP_HELP_MESSAGE, buildWhatsAppUrl } from '@core/utils/whatsapp.util';
 import { BrandLogoComponent } from '@shared/components/brand-logo/brand-logo.component';
@@ -25,6 +25,7 @@ import { IconComponent } from '@shared/components/icon/icon.component';
 })
 export class FooterComponent {
   private readonly destroyRef = inject(DestroyRef);
+  private readonly whatsappNumber = inject(WHATSAPP_NUMBER, { optional: true }) ?? '';
   private readonly contact = inject(SITE_CONTACT_CONFIG, { optional: true }) ?? SITE_CONTACT;
 
   readonly appName = APP_NAME;
@@ -41,17 +42,17 @@ export class FooterComponent {
     { id: 'footer-quick-links', label: 'روابط سريعة', links: this.quickLinks },
     { id: 'footer-service-links', label: 'خدمة العملاء', links: this.serviceLinks },
   ];
-  readonly whatsappUrl = buildWhatsAppUrl(inject(WHATSAPP_NUMBER), WHATSAPP_HELP_MESSAGE);
-  readonly phone = this.contact.phone.trim();
-  readonly email = this.contact.email.trim();
-  readonly workingHours = this.contact.workingHours.trim();
-  readonly socialLinks = this.contact.social.filter((link) => link.url.trim().length > 0);
-  readonly hasDirectContact = Boolean(this.phone || this.email || this.workingHours || this.whatsappUrl);
   readonly compactFooter = signal(false);
   readonly navOpen = signal<Record<string, boolean>>({
     'footer-quick-links': false,
     'footer-service-links': false,
   });
+  readonly whatsappUrl = computed(() =>
+    buildWhatsAppUrl(this.whatsappNumber, WHATSAPP_HELP_MESSAGE),
+  );
+  readonly socialLinks = computed(() =>
+    this.contact.social.filter((item) => item.url.trim().length > 0),
+  );
 
   constructor() {
     const platformId = inject(PLATFORM_ID);

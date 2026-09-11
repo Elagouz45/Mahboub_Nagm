@@ -14,6 +14,7 @@ export class CatalogPaginationComponent {
   readonly totalPages = input(1);
   readonly pageSize = input<CatalogPageSize>(12);
   readonly disabled = input(false);
+  readonly showPageSize = input(true);
   readonly sizeLabel = input('عدد المنتجات');
   readonly pageSizes = PAGE_SIZES;
 

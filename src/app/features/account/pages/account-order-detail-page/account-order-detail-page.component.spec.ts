@@ -1,9 +1,12 @@
+import { DemoCommerceService } from '@core/services/demo-commerce.service';
+import { MOCK_CATALOG_PRODUCTS } from '@features/catalog/data-access/catalog-mock.service';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { AccountRepository } from '@core/auth/account.repository';
 import { AuthStore } from '@core/auth/auth.store';
 import { authTestProviders, clearAuthStorage } from '@core/auth/auth-testing';
+import { DEMO_EMAIL, DEMO_PASSWORD } from '@core/auth/auth.constants';
 import { AccountOrderDetailPageComponent } from './account-order-detail-page.component';
 
 @Component({
@@ -26,17 +29,36 @@ describe('AccountOrderDetailPageComponent', () => {
 
     const auth = TestBed.inject(AuthStore);
     await auth.login({
-      identifier: 'demo@mahboubtnagm.test',
-      password: 'Demo@12345',
+      identifier: DEMO_EMAIL,
+      password: DEMO_PASSWORD,
       rememberMe: true,
     });
 
+    const commerce = TestBed.inject(DemoCommerceService);
+    commerce.add(MOCK_CATALOG_PRODUCTS[0]);
+    const order = commerce.placeOrder(
+      {
+        id: 'address',
+        userId: auth.user()!.id,
+        label: 'home',
+        recipientName: 'أحمد محمد',
+        phone: '01012345678',
+        governorateSlug: 'cairo',
+        city: 'القاهرة',
+        street: 'شارع النصر',
+        details: '',
+        isDefault: false,
+      },
+      'test-order',
+    )!;
     const fixture = TestBed.createComponent(HostComponent);
+    fixture.componentInstance.orderId = order.id;
     fixture.detectChanges();
-    const page = fixture.debugElement.children[0].componentInstance as AccountOrderDetailPageComponent;
+    const page = fixture.debugElement.children[0]
+      .componentInstance as AccountOrderDetailPageComponent;
     await page.load();
     fixture.detectChanges();
-    expect(fixture.nativeElement.textContent).toContain('MN-24018');
+    expect(fixture.nativeElement.textContent).toContain(order.number);
 
     fixture.componentInstance.orderId = 'someone-else-order';
     fixture.detectChanges();

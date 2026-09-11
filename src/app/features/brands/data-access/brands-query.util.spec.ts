@@ -25,10 +25,21 @@ describe('brands-query.util', () => {
     });
   });
 
+  it('parses supported sort values', () => {
+    expect(parseBrandsQuery(convertToParamMap({ sort: 'name-desc' })).sort).toBe('name-desc');
+    expect(parseBrandsQuery(convertToParamMap({ sort: 'products-desc' })).sort).toBe('products-desc');
+    expect(parseBrandsQuery(convertToParamMap({ sort: 'popular' })).sort).toBe('name');
+  });
+
   it('omits default params when serializing', () => {
     expect(brandsQueryToParams(DEFAULT_BRANDS_QUERY)).toEqual({});
     expect(brandsQueryToParams({ ...DEFAULT_BRANDS_QUERY, q: 'samsung', page: 2 })['q']).toBe(
       'samsung',
     );
+  });
+
+  it('accepts the brands home category and ignores unknown values', () => {
+    expect(parseBrandsQuery(convertToParamMap({ category: 'home' })).category).toBe('home');
+    expect(parseBrandsQuery(convertToParamMap({ category: 'unknown' })).category).toBe('');
   });
 });

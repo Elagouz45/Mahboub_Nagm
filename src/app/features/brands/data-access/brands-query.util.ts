@@ -1,22 +1,28 @@
 import { ParamMap, Params } from '@angular/router';
-import { CatalogPageSize, PAGE_SIZES, VALID_CATEGORY_SLUGS } from '@features/catalog/models/catalog.model';
-import { BrandsQuery, DEFAULT_BRANDS_QUERY } from '../models/brands.model';
+import { CatalogPageSize, PAGE_SIZES } from '@features/catalog/models/catalog.model';
+import { BRAND_PAGE_SORTS, BrandPageSort, BrandsQuery, DEFAULT_BRANDS_QUERY } from '../models/brands.model';
+import { isBrandsCategoryFilter } from './brands-directory.util';
 
 function isPageSize(value: number): value is CatalogPageSize {
   return (PAGE_SIZES as readonly number[]).includes(value);
+}
+
+function isSort(value: string | null): value is BrandPageSort {
+  return !!value && (BRAND_PAGE_SORTS as readonly string[]).includes(value);
 }
 
 export function parseBrandsQuery(params: ParamMap): BrandsQuery {
   const category = params.get('category') ?? '';
   const page = Number(params.get('page') ?? DEFAULT_BRANDS_QUERY.page);
   const pageSize = Number(params.get('pageSize') ?? DEFAULT_BRANDS_QUERY.pageSize);
+  const sortParam = params.get('sort');
   return {
     q: (params.get('q') ?? '').trim(),
-    category: VALID_CATEGORY_SLUGS.includes(category) ? category : '',
+    category: isBrandsCategoryFilter(category) ? category : '',
     initial: (params.get('initial') ?? '').trim().toUpperCase(),
     page: Number.isFinite(page) && page > 0 ? Math.floor(page) : 1,
     pageSize: isPageSize(pageSize) ? pageSize : DEFAULT_BRANDS_QUERY.pageSize,
-    sort: params.get('sort') === 'relevance' ? 'relevance' : 'name',
+    sort: isSort(sortParam) ? sortParam : DEFAULT_BRANDS_QUERY.sort,
   };
 }
 

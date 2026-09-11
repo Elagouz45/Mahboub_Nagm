@@ -1,5 +1,11 @@
 import { BrowserStorageService } from '@core/services/browser-storage.service';
-import { AUTH_SCHEMA_VERSION, AuthSession, AuthUser, StoredAuthUser, VersionedList } from './auth.models';
+import {
+  AUTH_SCHEMA_VERSION,
+  AuthSession,
+  AuthUser,
+  StoredAuthUser,
+  VersionedList,
+} from './auth.models';
 
 export function readVersionedList<T>(
   storage: BrowserStorageService,
@@ -23,7 +29,7 @@ export function writeVersionedList<T>(
 ): void {
   const payload: VersionedList<T> = { schemaVersion: AUTH_SCHEMA_VERSION, items };
   if (local) {
-    storage.writeLocalJson(key, payload);
+    storage.writeLocalChecked(key, payload);
     return;
   }
   storage.writeJson(key, payload);
@@ -47,14 +53,19 @@ export function writeSession(
   userId: string,
   rememberMe: boolean,
 ): void {
-  const session: AuthSession = { schemaVersion: AUTH_SCHEMA_VERSION, userId };
+  const session: AuthSession = {
+    schemaVersion: AUTH_SCHEMA_VERSION,
+    userId,
+    token: globalThis.crypto.randomUUID(),
+    createdAt: Date.now(),
+  };
   storage.removeLocal(key);
   storage.removeJson(key);
   if (rememberMe) {
-    storage.writeLocalJson(key, session);
+    storage.writeLocalChecked(key, session);
     return;
   }
-  storage.writeJson(key, session);
+  storage.writeSessionChecked(key, session);
 }
 
 export function clearSession(storage: BrowserStorageService, key: string): void {
@@ -74,7 +85,13 @@ export function publicUser(user: StoredAuthUser): AuthUser {
 }
 
 function asSession(value: AuthSession | null): AuthSession | null {
-  if (!value || value.schemaVersion !== AUTH_SCHEMA_VERSION || typeof value.userId !== 'string') {
+  if (
+    !value ||
+    value.schemaVersion !== AUTH_SCHEMA_VERSION ||
+    typeof value.userId !== 'string' ||
+    typeof value.token !== 'string' ||
+    typeof value.createdAt !== 'number'
+  ) {
     return null;
   }
   return value;
@@ -82,6 +99,7 @@ function asSession(value: AuthSession | null): AuthSession | null {
 
 function isStoredUser(value: StoredAuthUser): boolean {
   return (
+    !!value &&
     typeof value.id === 'string' &&
     typeof value.email === 'string' &&
     typeof value.phone === 'string' &&

@@ -16,6 +16,7 @@ export interface ProductSummary {
   readonly discountPercent?: number;
   readonly categorySlug?: string;
   readonly stockStatus?: StockStatus;
+  readonly stockQuantity?: number;
   readonly description?: string;
   readonly isBestseller?: boolean;
   readonly isTodaysOffer?: boolean;

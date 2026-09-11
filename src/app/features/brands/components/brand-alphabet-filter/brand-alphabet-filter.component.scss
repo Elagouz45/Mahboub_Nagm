@@ -1,0 +1,60 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.brand-letters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.brand-letters::-webkit-scrollbar {
+  display: none;
+}
+
+.brand-letters button {
+  flex: 0 0 auto;
+  min-width: 44px;
+  min-height: 44px;
+  padding-inline: 12px;
+  border: 1px solid #dce3eb;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #0c2a4d;
+  font: inherit;
+  font-weight: 700;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease;
+}
+
+.brand-letters button:hover {
+  border-color: #ff6b16;
+  color: #ff6b16;
+}
+
+.brand-letters .is-active {
+  background: #ff6b16;
+  border-color: #ff6b16;
+  color: #ffffff;
+}
+
+.brand-letters .is-active:hover {
+  color: #ffffff;
+}
+
+.brand-letters button:focus-visible {
+  outline: 2px solid #ff6b16;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-letters button {
+    transition: none;
+  }
+}

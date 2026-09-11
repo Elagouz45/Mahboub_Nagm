@@ -86,6 +86,16 @@ export const routes: Routes = [
           import('./features/policies/policies.routes').then((routes) => routes.PRIVACY_POLICY_ROUTES),
       },
       {
+        path: 'login',
+        loadChildren: () =>
+          import('./features/auth/auth.routes').then((routes) => routes.LOGIN_ROUTES),
+      },
+      {
+        path: 'register',
+        loadChildren: () =>
+          import('./features/auth/auth.routes').then((routes) => routes.REGISTER_ROUTES),
+      },
+      {
         path: 'auth',
         loadChildren: () =>
           import('./features/auth/auth.routes').then((routes) => routes.AUTH_ROUTES),

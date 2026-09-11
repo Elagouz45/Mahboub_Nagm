@@ -1,43 +1,27 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
-import { BrowserStorageService } from '@core/services/browser-storage.service';
+import { computed, inject, Injectable } from '@angular/core';
+import { DemoCommerceService } from '@core/services/demo-commerce.service';
 import { ToastService } from '@core/services/toast.service';
-import { CartItem, ProductSummary } from '@shared/models/storefront.model';
-
-const STORAGE_KEY = 'mahbub-najm.cart';
-
+import { ProductSummary } from '@shared/models/storefront.model';
 @Injectable({ providedIn: 'root' })
 export class CartStore {
-  private readonly storage = inject(BrowserStorageService);
+  private readonly commerce = inject(DemoCommerceService);
   private readonly toast = inject(ToastService);
-  private readonly state = signal<readonly CartItem[]>(this.storage.readJson<CartItem[]>(STORAGE_KEY) ?? []);
-
-  readonly items = computed(() => this.state());
-  readonly count = computed(() => this.state().reduce((total, item) => total + item.quantity, 0));
-
-  add(product: ProductSummary): void {
-    this.state.update((items) => {
-    const index = items.findIndex((item) => item.product.sku === product.sku);
-      if (index === -1) {
-        return [...items, { product, quantity: 1 }];
-      }
-
-      return items.map((item, itemIndex) =>
-        itemIndex === index ? { ...item, quantity: item.quantity + 1 } : item,
-      );
-    });
-    this.persist();
-    this.toast.show('تمت إضافة المنتج إلى السلة', {
-      actionLabel: 'عرض السلة',
-      actionLink: '/cart',
-    });
+  readonly items = this.commerce.cart;
+  readonly subtotal = this.commerce.subtotal;
+  readonly error = this.commerce.error;
+  readonly count = computed(() => this.items().reduce((sum, item) => sum + item.quantity, 0));
+  add(product: ProductSummary, quantity = 1): void {
+    if (this.commerce.add(product, quantity))
+      this.toast.show('تمت إضافة المنتج إلى السلة', {
+        actionLabel: 'عرض السلة',
+        actionLink: '/cart',
+      });
+    else this.toast.show(this.error());
   }
-
-  remove(productId: string): void {
-    this.state.update((items) => items.filter((item) => item.product.id !== productId));
-    this.persist();
+  remove(id: string): void {
+    this.commerce.remove(id);
   }
-
-  private persist(): void {
-    this.storage.writeJson(STORAGE_KEY, this.state());
+  setQuantity(id: string, quantity: number): void {
+    this.commerce.setQuantity(id, quantity);
   }
 }
