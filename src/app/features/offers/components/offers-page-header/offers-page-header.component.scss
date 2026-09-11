@@ -77,8 +77,15 @@
   gap: 0.2rem;
   padding: 24px 16px;
   background: var(--offers-orange);
-  color: #fffdf9;
+  color: #fff;
   text-align: center;
+}
+
+.coupon__stub-label,
+.coupon__stub-value,
+.coupon__stub-note,
+.coupon__stub-fallback {
+  color: #fff;
 }
 
 .coupon__stub-label {
